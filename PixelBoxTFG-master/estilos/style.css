@@ -1,3 +1,32 @@
+/* ===================== VARIABLES ===================== */
+:root {
+  /* BASE */
+  --bg-main: #0b0f19;
+  --bg-card: #121826;
+
+  /* PRIMARIOS */
+  --primary: #3b82f6;
+  --secondary: #2a2f3a;
+  --danger: #ef4444;
+
+  /* TEXTO */
+  --text-main: #d1d5db;
+  --text-muted: #9ca3af;
+  --text-white: #ffffff;
+
+  /* ESTADOS */
+  --status-playing: #3b82f6;
+  --status-pending: #eab308;
+  --status-completed: #22c55e;
+  --status-abandoned: #ef4444;
+
+  /* LOGROS */
+  --achievement-epic: #a855f7;
+  --achievement-special: #3b82f6;
+  --achievement-rare: #f97316;
+  --achievement-common: #6b7280;
+}
+
 /* ===================== RESET ===================== */
 * {
   margin: 0;
@@ -7,20 +36,23 @@
 }
 
 /* ===================== BODY ===================== */
+html,
 body {
-  background-color: #0b0f19;
-  color: #d1d5db;
+  height: 100%;
+}
+body {
+  background-color: var(--bg-main);
+  color: var(--text-main);
 }
 
-/* ===================== LOGIN PAGE ===================== */
+/* ===================== LOGIN ===================== */
 .login-page {
-  height: 100vh;
+  min-height: 100vh;
   display: flex;
   justify-content: center;
   align-items: center;
 }
 
-/* ===================== CONTAINER LOGIN ===================== */
 .container {
   width: 100%;
   max-width: 420px;
@@ -31,7 +63,7 @@ body {
 .logo {
   font-weight: 700;
   font-size: 28px;
-  color: #ffffff;
+  color: var(--text-white);
   margin-bottom: 8px;
   display: flex;
   align-items: center;
@@ -42,18 +74,18 @@ body {
 .logo svg {
   width: 28px;
   height: 28px;
-  color: #3b82f6;
+  color: var(--primary);
 }
 
 .subtitle {
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--text-muted);
   margin-bottom: 30px;
 }
 
-/* ===================== CARD LOGIN ===================== */
+/* ===================== CARD ===================== */
 .card {
-  background-color: #121826;
+  background-color: var(--bg-card);
   padding: 32px;
   border-radius: 12px;
 }
@@ -66,7 +98,7 @@ body {
 
 label {
   font-size: 14px;
-  color: #d1d5db;
+  color: var(--text-main);
   display: block;
   margin-bottom: 6px;
 }
@@ -75,20 +107,19 @@ input {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
-  border: 1px solid #2a2f3a;
-  background-color: #0b0f19;
-  color: #d1d5db;
+  border: 1px solid var(--secondary);
+  background-color: var(--bg-main);
+  color: var(--text-main);
   font-size: 14px;
   outline: none;
-  transition: 0.2s;
 }
 
 input::placeholder {
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 input:focus {
-  border-color: #3b82f6;
+  border-color: var(--primary);
 }
 
 /* ===================== BOTONES ===================== */
@@ -98,13 +129,11 @@ input:focus {
   padding: 12px;
   border: none;
   border-radius: 8px;
-  background-color: #3b82f6;
-  color: #ffffff;
+  background-color: var(--primary);
+  color: var(--text-white);
   font-weight: 600;
-  font-size: 14px;
-  text-align: center;
   cursor: pointer;
-  transition: 0.2s;
+  text-align: center;
 }
 
 .btn-primary:hover {
@@ -115,28 +144,28 @@ input:focus {
   padding: 10px 16px;
   border: none;
   border-radius: 8px;
-  background: #1f2937;
-  color: white;
+  background: var(--secondary);
+  color: var(--text-white);
   cursor: pointer;
 }
 
 /* ===================== DIVIDER ===================== */
 .divider {
   height: 1px;
-  background-color: #2a2f3a;
+  background-color: var(--secondary);
   margin: 25px 0;
 }
 
 /* ===================== TEST USERS ===================== */
 .test-title {
   font-size: 14px;
-  color: #9ca3af;
+  color: var(--text-muted);
   margin-bottom: 15px;
 }
 
 .test-card {
-  background-color: #0b0f19;
-  border: 1px solid #2a2f3a;
+  background-color: var(--bg-main);
+  border: 1px solid var(--secondary);
   padding: 14px;
   border-radius: 8px;
   margin-bottom: 10px;
@@ -146,12 +175,11 @@ input:focus {
 
 .role {
   font-weight: 700;
-  color: #ffffff;
-  margin-bottom: 4px;
+  color: var(--text-white);
 }
 
 .highlight {
-  color: #3b82f6;
+  color: var(--primary);
 }
 
 /* ===================== NAVBAR ===================== */
@@ -160,7 +188,8 @@ input:focus {
   justify-content: space-between;
   align-items: center;
   padding: 20px 40px;
-  border-bottom: 1px solid #1f2937;
+  border-bottom: 1px solid var(--secondary);
+  position: relative;
 }
 
 .nav-left {
@@ -169,15 +198,18 @@ input:focus {
   gap: 30px;
 }
 
+.nav-links {
+  display: flex;
+}
+
 .nav-links a {
-  color: #9ca3af;
+  color: var(--text-muted);
   text-decoration: none;
   margin-right: 20px;
-  font-size: 14px;
 }
 
 .nav-links a:hover {
-  color: #ffffff;
+  color: var(--text-white);
 }
 
 .nav-right {
@@ -190,15 +222,17 @@ input:focus {
   width: 32px;
   height: 32px;
   border-radius: 50%;
-  background: #1f2937;
+  background: var(--secondary);
 }
 
 /* ===================== HERO ===================== */
 .hero {
   height: 420px;
-  background:
-    linear-gradient(to right, rgba(11, 15, 25, 0.9), rgba(11, 15, 25, 0.4)),
-    url("../img/hero.jpg") center/cover no-repeat;
+  background: linear-gradient(
+    to right,
+    rgba(11, 15, 25, 0.9),
+    rgba(11, 15, 25, 0.4)
+  );
   display: flex;
   align-items: center;
   padding: 40px;
@@ -209,7 +243,7 @@ input:focus {
 }
 
 .badge {
-  background: #1f2937;
+  background: var(--secondary);
   padding: 5px 10px;
   border-radius: 999px;
   font-size: 12px;
@@ -221,14 +255,7 @@ input:focus {
 }
 
 .hero p {
-  color: #9ca3af;
-  margin-bottom: 15px;
-}
-
-.rating span {
-  margin-left: 10px;
-  color: #9ca3af;
-  font-size: 13px;
+  color: var(--text-muted);
 }
 
 .hero-buttons {
@@ -246,7 +273,6 @@ input:focus {
   font-size: 20px;
   margin-bottom: 20px;
   display: flex;
-  align-items: center;
   gap: 10px;
 }
 
@@ -257,14 +283,12 @@ input:focus {
   flex-wrap: wrap;
 }
 
-/* 4 por fila */
 .game-card {
-  background: #121826;
+  background: var(--bg-card);
   border-radius: 12px;
   overflow: hidden;
-  cursor: pointer;
-  transition: 0.2s;
   width: calc(25% - 15px);
+  transition: 0.2s;
 }
 
 .game-card:hover {
@@ -273,55 +297,39 @@ input:focus {
 
 .game-image {
   height: 180px;
-  background: #1f2937;
+  background: var(--secondary);
 }
 
 .game-card h3 {
   padding: 10px;
-  font-size: 16px;
 }
 
 .game-card span {
   padding: 0 10px 10px;
   display: block;
-  font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 /* ===================== RESEÑAS ===================== */
 .review-card {
   display: flex;
-  align-items: flex-start;
-  background: #121826;
+  gap: 20px;
+  background: var(--bg-card);
   padding: 20px;
   border-radius: 12px;
   margin-bottom: 20px;
-  gap: 20px;
 }
 
 .review-image {
   width: 60px;
   height: 60px;
-  background: #1f2937;
+  background: var(--secondary);
   border-radius: 8px;
 }
 
-.review-content h3 {
-  margin-bottom: 5px;
-}
-
-.review-meta {
-  font-size: 12px;
-  color: #9ca3af;
-}
-
-.review-content p {
-  margin: 10px 0;
-}
-
+.review-meta,
 .review-likes {
-  font-size: 12px;
-  color: #9ca3af;
+  color: var(--text-muted);
 }
 
 .review-rating {
@@ -330,34 +338,24 @@ input:focus {
 }
 
 /* ===================== HAMBURGUESA ===================== */
-
-/* ocultar checkbox */
 #menu-toggle {
   display: none;
 }
 
-/* icono hamburguesa */
 .menu-icon {
   display: none;
   flex-direction: column;
-  cursor: pointer;
   gap: 5px;
+  cursor: pointer;
 }
 
 .menu-icon span {
   width: 25px;
   height: 3px;
-  background: #ffffff;
-  border-radius: 2px;
-  transition: 0.3s;
-}
-/* ===================== RESPONSIVE ===================== */
-@media (max-width: 1024px) {
-  .game-card {
-    width: calc(33.33% - 14px);
-  }
+  background: var(--text-white);
 }
 
+/* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .menu-icon {
     display: flex;
@@ -368,42 +366,20 @@ input:focus {
     top: 70px;
     left: 0;
     width: 100%;
-    background: #121826;
-
+    background: var(--bg-card);
     flex-direction: column;
     align-items: center;
-    gap: 20px;
     padding: 20px 0;
-
+    gap: 20px;
     display: none;
   }
 
-  .nav-links a {
-    margin: 0;
-    font-size: 16px;
-  }
-
-  /* cuando el checkbox está activo */
   #menu-toggle:checked ~ .nav-links {
     display: flex;
   }
 
-  /* animación hamburguesa -> X */
-  #menu-toggle:checked + .menu-icon span:nth-child(1) {
-    transform: rotate(45deg) translate(5px, 5px);
-  }
-
-  #menu-toggle:checked + .menu-icon span:nth-child(2) {
-    opacity: 0;
-  }
-
-  #menu-toggle:checked + .menu-icon span:nth-child(3) {
-    transform: rotate(-45deg) translate(6px, -6px);
-  }
-
-  /* navbar ajuste */
-  .navbar {
-    position: relative;
+  .game-card {
+    width: calc(50% - 10px);
   }
 }
 
@@ -412,14 +388,8 @@ input:focus {
     width: 100%;
   }
 
-  .navbar {
-    flex-direction: column;
-    gap: 10px;
-  }
-
   .hero {
     height: auto;
-    padding: 20px;
   }
 
   .hero h1 {
