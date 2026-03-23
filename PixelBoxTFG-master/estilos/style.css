@@ -1,0 +1,159 @@
+
+
+
+
+*{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family: 'Inter', sans-serif;
+}
+
+/* =======================
+   FONDO PRINCIPAL
+======================= */
+body{
+    background-color:#0B0F19;
+    height:100vh;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    color:#D1D5DB;
+}
+
+/* =======================
+   CONTENEDOR
+======================= */
+.container{
+    width:100%;
+    max-width:420px;
+    text-align:center;
+}
+
+/* =======================
+   TITULOS
+======================= */
+.logo {
+    font-weight: 700;
+    font-size: 28px;
+    color: #FFFFFF;
+    margin-bottom: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+}
+
+.logo svg {
+    width: 28px;
+    height: 28px;
+    color: #3B82F6; 
+}
+
+.subtitle{
+    font-size:14px;
+    color:#9CA3AF;
+    margin-bottom:30px;
+}
+
+/* =======================
+   CARD
+======================= */
+.card{
+    background-color:#121826;
+    padding:32px;
+    border-radius:12px;
+}
+
+/* =======================
+   FORM
+======================= */
+.form-group{
+    margin-bottom:20px;
+    text-align:left;
+}
+
+label{
+    font-size:14px;
+    color:#D1D5DB;
+    display:block;
+    margin-bottom:6px;
+}
+
+input{
+    width:100%;
+    padding:12px;
+    border-radius:8px;
+    border:1px solid #2A2F3A;
+    background-color:#0B0F19;
+    color:#D1D5DB;
+    font-size:14px;
+    outline:none;
+    transition:0.2s ease;
+}
+
+input::placeholder{
+    color:#9CA3AF;
+}
+
+input:focus{
+    border-color:#3B82F6;
+}
+
+/* =======================
+   BOTONES
+======================= */
+.btn-primary{
+    width:100%;
+    padding:12px;
+    border:none;
+    border-radius:8px;
+    background-color:#3B82F6;
+    color:#FFFFFF;
+    font-weight:600;
+    font-size:14px;
+    cursor:pointer;
+    transition:0.2s ease;
+}
+
+.btn-primary:hover{
+    opacity:0.9;
+}
+
+/* =======================
+   DIVIDER
+======================= */
+.divider{
+    height:1px;
+    background-color:#2A2F3A;
+    margin:25px 0;
+}
+
+/* =======================
+   USUARIOS DE PRUEBA
+======================= */
+.test-title{
+    font-size:14px;
+    color:#9CA3AF;
+    margin-bottom:15px;
+}
+
+.test-card{
+    background-color:#0B0F19;
+    border:1px solid #2A2F3A;
+    padding:14px;
+    border-radius:8px;
+    margin-bottom:10px;
+    text-align:left;
+    font-size:13px;
+}
+
+.role{
+    font-weight:700;
+    color:#FFFFFF;
+    margin-bottom:4px;
+}
+
+.highlight{
+    color:#3B82F6;
+}
