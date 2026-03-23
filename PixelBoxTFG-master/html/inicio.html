@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <title>PixelBox - Inicio</title>
@@ -11,158 +12,163 @@
     <!-- Iconos -->
     <script src="https://unpkg.com/lucide@latest"></script>
 
-    <link rel="stylesheet" href="css/styles.css">
+    <link rel="stylesheet" href="../estilos/style.css">
 </head>
+
 <body>
 
-<!-- ===================== NAVBAR ===================== -->
+    <!-- ===================== NAVBAR ===================== -->
+    <header class="navbar">
 
-<header class="navbar">
-
-    <div class="nav-left">
+        
         <div class="logo">
             <i data-lucide="gamepad-2"></i>
-            <span>PixelBox</span>
+            PixelBox
         </div>
+        <!-- checkbox -->
+        <input type="checkbox" id="menu-toggle">
 
+        <!-- hamburguesa -->
+        <label for="menu-toggle" class="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <!-- menú -->
         <nav class="nav-links">
             <a href="#">Inicio</a>
             <a href="#">Descubrir</a>
             <a href="#">Mi Biblioteca</a>
         </nav>
-    </div>
 
-    <div class="nav-right">
-        <i data-lucide="search" class="icon"></i>
-        <div class="avatar"></div>
-    </div>
+    </header>
 
-</header>
+    <!-- ===================== HERO ===================== -->
 
-<!-- ===================== HERO ===================== -->
+    <section class="hero">
 
-<section class="hero">
+        <div class="hero-content">
 
-    <div class="hero-content">
+            <span class="badge">Destacado 2025</span>
 
-        <span class="badge">Destacado 2025</span>
+            <h1>Cyberpunk Chronicles</h1>
 
-        <h1>Cyberpunk Chronicles</h1>
-
-        <p>
-            Sumérgete en una ciudad futurista donde la tecnología y la humanidad colisionan.
-            Toma decisiones que darán forma al destino de Night City.
-        </p>
-
-        <div class="rating">
-            ⭐ 4.5
-            <span>RPG</span>
-            <span>Acción</span>
-            <span>Open World</span>
-        </div>
-
-        <div class="hero-buttons">
-            <button class="btn-primary">Ver detalles</button>
-            <button class="btn-secondary">Agregar a biblioteca</button>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ===================== TENDENCIAS ===================== -->
-
-<section class="section">
-
-    <h2 class="section-title">
-        <i data-lucide="trending-up"></i>
-        Tendencias
-    </h2>
-
-    <div class="card-grid">
-
-        <div class="game-card">
-            <div class="game-image"></div>
-            <h3>Stellar Odyssey</h3>
-            <span>2025</span>
-        </div>
-
-        <div class="game-card">
-            <div class="game-image"></div>
-            <h3>Shadow Castle</h3>
-            <span>2023</span>
-        </div>
-
-        <div class="game-card">
-            <div class="game-image"></div>
-            <h3>Velocity Racing</h3>
-            <span>2025</span>
-        </div>
-
-        <div class="game-card">
-            <div class="game-image"></div>
-            <h3>Nightmare Manor</h3>
-            <span>2024</span>
-        </div>
-
-    </div>
-
-</section>
-
-<!-- ===================== RESEÑAS ===================== -->
-
-<section class="section">
-
-    <h2 class="section-title">
-        <i data-lucide="users"></i>
-        Reseñas recientes de la comunidad
-    </h2>
-
-    <div class="review-card">
-
-        <div class="review-image"></div>
-
-        <div class="review-content">
-            <h3>Cyberpunk Chronicles</h3>
-            <span class="review-meta">@gamer_elite · 2026-02-08</span>
             <p>
-                Una obra maestra del cyberpunk. La narrativa es impresionante y cada decisión
-                tiene consecuencias reales. El mundo abierto es increíblemente detallado.
+                Sumérgete en una ciudad futurista donde la tecnología y la humanidad colisionan.
+                Toma decisiones que darán forma al destino de Night City.
             </p>
-            <span class="review-likes">234 personas encontraron útil esta reseña</span>
+
+            <div class="rating">
+                ⭐ 4.5
+                <span>RPG</span>
+                <span>Acción</span>
+                <span>Open World</span>
+            </div>
+
+            <div class="hero-buttons">
+                <button class="btn-primary">Ver detalles</button>
+                <button class="btn-secondary">Agregar a biblioteca</button>
+            </div>
+
         </div>
 
-        <div class="review-rating">
-            ⭐⭐⭐⭐⭐
+    </section>
+
+    <!-- ===================== TENDENCIAS ===================== -->
+
+    <section class="section">
+
+        <h2 class="section-title">
+            <i data-lucide="trending-up"></i>
+            Tendencias
+        </h2>
+
+        <div class="card-grid">
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Stellar Odyssey</h3>
+                <span>2025</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Shadow Castle</h3>
+                <span>2023</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Velocity Racing</h3>
+                <span>2025</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Nightmare Manor</h3>
+                <span>2024</span>
+            </div>
+
         </div>
 
-    </div>
+    </section>
 
-    <div class="review-card">
+    <!-- ===================== RESEÑAS ===================== -->
 
-        <div class="review-image"></div>
+    <section class="section">
 
-        <div class="review-content">
-            <h3>Legends of Eldoria</h3>
-            <span class="review-meta">@indie_lover · 2026-02-05</span>
-            <p>
-                El mejor RPG que he jugado en años. La historia te atrapa desde el primer momento
-                y los personajes son inolvidables. 120 horas y no me cansé ni un segundo.
-            </p>
-            <span class="review-likes">567 personas encontraron útil esta reseña</span>
+        <h2 class="section-title">
+            <i data-lucide="users"></i>
+            Reseñas recientes de la comunidad
+        </h2>
+
+        <div class="review-card">
+
+            <div class="review-image"></div>
+
+            <div class="review-content">
+                <h3>Cyberpunk Chronicles</h3>
+                <span class="review-meta">@gamer_elite · 2026-02-08</span>
+                <p>
+                    Una obra maestra del cyberpunk. La narrativa es impresionante y cada decisión
+                    tiene consecuencias reales. El mundo abierto es increíblemente detallado.
+                </p>
+                <span class="review-likes">234 personas encontraron útil esta reseña</span>
+            </div>
+
+            <div class="review-rating">
+                ⭐⭐⭐⭐⭐
+            </div>
+
         </div>
 
-        <div class="review-rating">
-            ⭐⭐⭐⭐⭐
+        <div class="review-card">
+
+            <div class="review-image"></div>
+
+            <div class="review-content">
+                <h3>Legends of Eldoria</h3>
+                <span class="review-meta">@indie_lover · 2026-02-05</span>
+                <p>
+                    El mejor RPG que he jugado en años. La historia te atrapa desde el primer momento
+                    y los personajes son inolvidables. 120 horas y no me cansé ni un segundo.
+                </p>
+                <span class="review-likes">567 personas encontraron útil esta reseña</span>
+            </div>
+
+            <div class="review-rating">
+                ⭐⭐⭐⭐⭐
+            </div>
+
         </div>
 
-    </div>
+    </section>
 
-</section>
-
-<script>
-    lucide.createIcons();
-</script>
+    <script>
+        lucide.createIcons();
+    </script>
 
 </body>
+
 </html>
