@@ -430,3 +430,138 @@ input:focus {
     font-size: 28px;
   }
 }
+
+/* ===================== BIBLIOTECA ESPECÍFICO ===================== */
+
+/* Contenedor General */
+.container-library {
+    max-width: 1400px; /* Un poco más ancho para que quepan las 5 en fila */
+    margin: 40px auto;
+    padding: 0 40px;
+}
+
+/* Títulos */
+.library-top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 25px;
+}
+
+.title-section h1 {
+    display: flex;
+    align-items: center; /* Alinea verticalmente el icono con el texto */
+    gap: 15px;           /* Espacio entre el icono y la palabra "Mi Biblioteca" */
+    font-size: 32px;
+    color: var(--text-white);
+    margin-bottom: 5px;
+}
+
+.lucide-library-icon {
+    width: 32px;         /* Tamaño del icono */
+    height: 32px;
+    color: var(--primary); /* Usa el azul #3b82f6 que definiste en :root */
+    stroke-width: 2.5px; /* Un poco más de grosor para que resalte */
+}
+
+/* Ajuste para el subtítulo */
+.subtitle-library {
+    color: var(--text-muted);
+    font-size: 15px;
+    margin-left: 47px; /* Alinea el texto justo debajo de donde empieza "Mi Biblioteca" */
+}
+
+.title-section .icon {
+    color: var(--primary);
+    margin-right: 10px;
+    letter-spacing: -2px;
+}
+
+/* BOTÓN ELIMINAR */
+.btn-delete {
+    background-color: #1f232c;
+    border: 1px solid #2e3440;
+    color: var(--text-white);
+    padding: 10px 18px;
+    border-radius: 10px;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    transition: 0.3s;
+}
+
+.btn-delete:hover {
+    background-color: var(--danger);
+    border-color: var(--danger);
+}
+
+/* GRID DE ESTADÍSTICAS */
+.stats-grid {
+    display: grid;
+    grid-template-columns: repeat(5, 1fr); /* Fuerza 5 columnas */
+    gap: 15px;
+    margin-bottom: 40px;
+}
+
+.stats-grid .card {
+    border-radius: 12px;
+    padding: 25px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    min-height: 140px; /* Altura para que se vea rectangular */
+}
+
+.card-dark {
+    background-color: #12141c; /* Color oscuro de la captura */
+}
+
+/* COLORES DE LOS NÚMEROS */
+.stats-grid .number {
+    font-size: 38px;
+    font-weight: 700;
+    margin-bottom: 5px;
+}
+
+.text-green { color: #22c55e; }
+.text-blue-light { color: #3b82f6; }
+.text-yellow { color: #eab308; }
+.text-purple { color: #a855f7; }
+
+.stats-grid .label {
+    font-size: 13px;
+    color: #94a3b8;
+}
+
+/* FILTROS */
+.filters-bar {
+    display: flex;
+    gap: 12px;
+}
+
+.filter-btn {
+    background-color: #12141c;
+    border: 1px solid #1f232c;
+    color: #94a3b8;
+    padding: 8px 16px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    font-size: 14px;
+    cursor: pointer;
+}
+
+.filter-btn.active {
+    background-color: var(--primary);
+    color: white;
+    border-color: var(--primary);
+}
+
+.filter-btn .count {
+    background-color: rgba(255, 255, 255, 0.1);
+    padding: 1px 8px;
+    border-radius: 10px;
+    font-size: 12px;
+}
