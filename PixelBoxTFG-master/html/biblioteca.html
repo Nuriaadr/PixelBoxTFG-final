@@ -16,11 +16,8 @@
 </head>
 
 <body>
-
     <!-- ===================== NAVBAR ===================== -->
     <header class="navbar">
-
-        
         <div class="logo">
             <i data-lucide="gamepad-2"></i>
             PixelBox
@@ -41,9 +38,53 @@
             <a href="descubrir.html">Descubrir</a>
             <a href="biblioteca.html">Mi Biblioteca</a>
         </nav>
-
     </header>
-<body>
 
+<body>
+    <main class="container">
+        <header class="header">
+            <div class="title-section">
+                <h1><span class="icon">|||\</span> Mi Biblioteca</h1>
+                <p>Gestiona tu colección personal de videojuegos</p>
+            </div>
+            <button class="btn-delete">
+                <span class="trash-icon">🗑</span> Eliminar juegos
+            </button>
+        </header>
+
+        <section class="stats-grid">
+            
+            <div class="card card-blue">
+                <span class="number">8</span>
+                <span class="label">Total de juegos</span>
+            </div>
+
+            <div class="card">
+                <span class="number text-green">3</span>
+                <span class="label">Completados</span>
+            </div>
+
+            <div class="card">
+                <span class="number text-blue-light">2</span>
+                <span class="label">Jugando</span>
+            </div>
+
+            <div class="card">
+                <span class="number text-yellow">3</span>
+                <span class="label">Pendientes</span>
+            </div>
+
+            <div class="card">
+                <span class="number text-purple">227h</span>
+                <span class="label">Tiempo total</span>
+            </div>
+
+        </section>
+    </main>
 </body>
+
+<script>
+      lucide.createIcons();
+</script>
+
 </html>
