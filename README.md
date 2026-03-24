@@ -11,9 +11,9 @@ Para ejecutar el proyecto en local, sigue estos pasos:
 
 1. Clona este repositorio en tu máquina local:
    ```bash
-   git clone https://github.com/tu-usuario/tu-repositorio.git
+   git clone https://github.com/Nuriaadr/PixelBoxTFG-master.git
    
-   cd tu-repositorio
+   cd PixelBoxTFG-master
 
 Abre el archivo index.html en tu navegador:
 Puedes hacer doble clic en el archivo
