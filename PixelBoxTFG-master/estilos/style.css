@@ -368,6 +368,27 @@ input:focus {
   background-color: var(--bg-main);
   color: var(--text-main);
 }
+
+.filters-title {
+  margin-bottom: 20px;
+  display: flex;
+  gap: 10px;
+}
+
+.results-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.link-primary {
+  color: var(--primary);
+  text-decoration: none;
+}
+
+.link-primary:hover {
+  text-decoration: underline;
+}
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .menu-icon {
