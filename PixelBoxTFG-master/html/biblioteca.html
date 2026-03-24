@@ -41,64 +41,66 @@
     </header>
 
 <body>
-    <main class="container">
-        <header class="header">
-            <div class="title-section">
-                <h1><span class="icon">|||\</span> Mi Biblioteca</h1>
-                <p>Gestiona tu colección personal de videojuegos</p>
-            </div>
-            <button class="btn-delete">
-                <span class="trash-icon">🗑</span> Eliminar juegos
-            </button>
-        </header>
+    <main class="container-library">
+    <div class="library-top-bar">
+    <div class="title-section">
+        <h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-library-icon">
+                <path d="m16 6 4 14"></path>
+                <path d="M12 6v14"></path>
+                <path d="M8 8v12"></path>
+                <path d="M4 4v16"></path>
+            </svg> 
+            Mi Biblioteca
+        </h1>
+        <p class="subtitle-library">Gestiona tu colección personal de videojuegos</p>
+    </div>
+    <button class="btn-delete">
+        <i data-lucide="trash-2"></i> Eliminar juegos
+    </button>
+    </div>
 
-        <section class="stats-grid">
-            
-            <div class="card card-blue">
-                <span class="number">8</span>
-                <span class="label">Total de juegos</span>
-            </div>
-
-            <div class="card">
-                <span class="number text-green">3</span>
-                <span class="label">Completados</span>
-            </div>
-
-            <div class="card">
-                <span class="number text-blue-light">2</span>
-                <span class="label">Jugando</span>
-            </div>
-
-            <div class="card">
-                <span class="number text-yellow">3</span>
-                <span class="label">Pendientes</span>
-            </div>
-
-            <div class="card">
-                <span class="number text-purple">227h</span>
-                <span class="label">Tiempo total</span>
-            </div>
-
-        </section>
-    </main>
+    <section class="stats-grid">
+        <div class="card card-blue">
+            <span class="number">8</span>
+            <span class="label">Total de juegos</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-green">3</span>
+            <span class="label">Completados</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-blue-light">2</span>
+            <span class="label">Jugando</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-yellow">3</span>
+            <span class="label">Pendientes</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-purple">227h</span>
+            <span class="label">Tiempo total</span>
+        </div>
+    </section>
 
     <nav class="filters-bar">
-    <button class="filter-btn active">
-        <span class="icon">|||\</span> Todos <span class="count">8</span>
-    </button>
-    <button class="filter-btn">
-        <i data-lucide="play"></i> Jugando <span class="count">2</span>
-    </button>
-    <button class="filter-btn">
-        <i data-lucide="check-circle-2"></i> Completados <span class="count">3</span>
-    </button>
-    <button class="filter-btn">
-        <i data-lucide="clock"></i> Pendientes <span class="count">3</span>
-    </button>
-    <button class="filter-btn">
-        <i data-lucide="x-circle"></i> Abandonados <span class="count">0</span>
-    </button>
-</nav>
+        <button class="filter-btn active">
+            <span class="icon">|||\</span> Todos <span class="count">8</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="play"></i> Jugando <span class="count">2</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="check-circle-2"></i> Completados <span class="count">3</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="clock"></i> Pendientes <span class="count">3</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="x-circle"></i> Abandonados <span class="count">0</span>
+        </button>
+    </nav>
+</main>
 
 <section class="games-grid">
     
