@@ -16,5 +16,4 @@ Para ejecutar el proyecto en local, sigue estos pasos:
    cd PixelBoxTFG-master
 
 Abre el archivo index.html en tu navegador:
-Puedes hacer doble clic en el archivo
-O usar una extensión como Live Server en VS Code
+Puedes hacer doble clic en el archivo o usar una extensión como Live Server en VS Code
