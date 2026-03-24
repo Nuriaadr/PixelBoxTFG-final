@@ -354,7 +354,20 @@ input:focus {
   height: 3px;
   background: var(--text-white);
 }
+.filters {
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
+}
 
+.filters select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--secondary);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+}
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 768px) {
   .menu-icon {
