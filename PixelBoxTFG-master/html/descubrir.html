@@ -17,167 +17,180 @@
 </head>
 
 <body>
+    <!DOCTYPE html>
+    <html lang="es">
 
-    <!-- ===================== NAVBAR ===================== -->
-    <header class="navbar">
+    <head>
+        <meta charset="UTF-8">
+        <title>PixelBox - Inicio</title>
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-        <div class="nav-left">
+        <!-- Tipografía -->
+        <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+        <!-- Iconos -->
+        <script src="https://unpkg.com/lucide@latest"></script>
+
+        <link rel="stylesheet" href="../estilos/style.css">
+    </head>
+
+    <body>
+
+        <!-- ===================== NAVBAR ===================== -->
+        <header class="navbar">
+
+
             <div class="logo">
                 <i data-lucide="gamepad-2"></i>
-                <span>PixelBox</span>
+                PixelBox
             </div>
+            <!-- checkbox -->
+            <input type="checkbox" id="menu-toggle">
 
-            <!-- MENÚ -->
+            <!-- hamburguesa -->
+            <label for="menu-toggle" class="menu-icon">
+                <span></span>
+                <span></span>
+                <span></span>
+            </label>
+
+            <!-- menú -->
             <nav class="nav-links">
                 <a href="inicio.html">Inicio</a>
-                <a href="#" class="active">Descubrir</a>
-                <a href="#">Mi Biblioteca</a>
+                <a href="descubrir.html">Descubrir</a>
+                <a href="biblioteca.html">Mi Biblioteca</a>
             </nav>
-        </div>
 
-        <!-- HAMBURGUESA -->
-        <input type="checkbox" id="menu-toggle">
-        <label for="menu-toggle" class="menu-icon">
-            <span></span>
-            <span></span>
-            <span></span>
-        </label>
+        </header>
 
-        <div class="nav-right">
-            <i data-lucide="search"></i>
-            <div class="avatar"></div>
-        </div>
+        <!-- ===================== HEADER ===================== -->
+        <section class="section">
 
-    </header>
+            <h1 class="section-title">
+                <i data-lucide="trending-up"></i>
+                Descubrir Juegos
+            </h1>
 
-    <!-- ===================== HEADER ===================== -->
-    <section class="section">
+            <p class="subtitle">
+                Explora nuestra colección completa de juegos y encuentra tu próxima aventura
+            </p>
 
-        <h1 class="section-title">
-            <i data-lucide="trending-up"></i>
-            Descubrir Juegos
-        </h1>
+        </section>
 
-        <p class="subtitle">
-            Explora nuestra colección completa de juegos y encuentra tu próxima aventura
-        </p>
+        <!-- ===================== FILTROS ===================== -->
+        <section class="section">
 
-    </section>
+            <div class="card">
 
-    <!-- ===================== FILTROS ===================== -->
-    <section class="section">
+                <h3 style="margin-bottom:20px; display:flex; gap:10px;">
+                    <i data-lucide="filter"></i>
+                    Filtros
+                </h3>
 
-        <div class="card">
+                <div class="filters">
 
-            <h3 style="margin-bottom:20px; display:flex; gap:10px;">
-                <i data-lucide="filter"></i>
-                Filtros
-            </h3>
+                    <div class="form-group">
+                        <label>Género</label>
+                        <select id="genero">
+                            <option>Todos los géneros</option>
+                            <option>RPG</option>
+                            <option>Acción</option>
+                            <option>Aventura</option>
+                        </select>
+                    </div>
 
-            <div class="filters">
+                    <div class="form-group">
+                        <label>Plataforma</label>
+                        <select id="platform">
+                            <option>Todas las plataformas</option>
+                            <option>PC</option>
+                            <option>PlayStation</option>
+                            <option>Xbox</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label>Género</label>
-                    <select id="genero">
-                        <option>Todos los géneros</option>
-                        <option>RPG</option>
-                        <option>Acción</option>
-                        <option>Aventura</option>
-                    </select>
-                </div>
+                    <div class="form-group">
+                        <label>Ordenar por</label>
+                        <select id="valoracion">
+                            <option>Mejor valorados</option>
+                            <option>Más recientes</option>
+                            <option>Más populares</option>
+                        </select>
+                    </div>
 
-                <div class="form-group">
-                    <label>Plataforma</label>
-                    <select id="platform">
-                        <option>Todas las plataformas</option>
-                        <option>PC</option>
-                        <option>PlayStation</option>
-                        <option>Xbox</option>
-                    </select>
-                </div>
-
-                <div class="form-group">
-                    <label>Ordenar por</label>
-                    <select id="valoracion">
-                        <option>Mejor valorados</option>
-                        <option>Más recientes</option>
-                        <option>Más populares</option>
-                    </select>
                 </div>
 
             </div>
 
-        </div>
+        </section>
 
-    </section>
+        <!-- ===================== RESULTADOS ===================== -->
+        <section class="section">
 
-    <!-- ===================== RESULTADOS ===================== -->
-    <section class="section">
-
-        <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
-            <span>8 juegos</span>
-            <a href="#" style="color:var(--primary); text-decoration:none;">Limpiar filtros</a>
-        </div>
-
-        <div class="card-grid">
-
-            <!-- CARD -->
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Legends of Eldoria</h3>
-                <span>2024</span>
+            <div style="display:flex; justify-content:space-between; margin-bottom:20px;">
+                <span>8 juegos</span>
+                <a href="#" style="color:var(--primary); text-decoration:none;">Limpiar filtros</a>
             </div>
 
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Dragon Quest Online</h3>
-                <span>2025</span>
+            <div class="card-grid">
+
+                <!-- CARD -->
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Legends of Eldoria</h3>
+                    <span>2024</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Dragon Quest Online</h3>
+                    <span>2025</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Velocity Racing</h3>
+                    <span>2025</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Cyberpunk Chronicles</h3>
+                    <span>2025</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Nightmare Manor</h3>
+                    <span>2024</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Stellar Odyssey</h3>
+                    <span>2025</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Shadow Castle</h3>
+                    <span>2023</span>
+                </div>
+
+                <div class="game-card">
+                    <div class="game-image"></div>
+                    <h3>Pixel Warriors</h3>
+                    <span>2023</span>
+                </div>
+
             </div>
 
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Velocity Racing</h3>
-                <span>2025</span>
-            </div>
+        </section>
 
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Cyberpunk Chronicles</h3>
-                <span>2025</span>
-            </div>
+        <script>
+            lucide.createIcons();
+        </script>
 
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Nightmare Manor</h3>
-                <span>2024</span>
-            </div>
+    </body>
 
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Stellar Odyssey</h3>
-                <span>2025</span>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Shadow Castle</h3>
-                <span>2023</span>
-            </div>
-
-            <div class="game-card">
-                <div class="game-image"></div>
-                <h3>Pixel Warriors</h3>
-                <span>2023</span>
-            </div>
-
-        </div>
-
-    </section>
-
-    <script>
-        lucide.createIcons();
-    </script>
-
-</body>
-
-</html>
+    </html>
