@@ -491,17 +491,34 @@ input:focus {
 }
 /* ===================== BOTÓN DELETE ===================== */
 .btn-delete {
-  background-color: var(--bg-card);
-  border: 1px solid var(--danger);
-  color: var(--text-white);
-  padding: 10px 18px;
-  border-radius: 10px;
-  display: flex;
-  gap: 10px;
+    background-color: #1a1c23; /* Fondo oscuro que combine con tus cards */
+    border: 2px solid rgba(239, 68, 68, 0.2); /* Borde rojo muy sutil */
+    color: #ef4444; /* Texto e icono en rojo suave inicialmente */
+    padding: 10px 20px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center; /* ESTO centra el icono con el texto verticalmente */
+    justify-content: center;
+    gap: 8px;
+    font-family: 'Inter', sans-serif;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
 }
 
 .btn-delete:hover {
-  background-color: var(--danger);
+    background-color: #ef4444; /* Al pasar el ratón, fondo rojo sólido */
+    border-color: #ef4444;
+    color: white; /* Texto blanco al hacer hover */
+    transform: translateY(-2px); /* Pequeño salto para feedback visual */
+    box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+}
+
+/* Ajuste específico para el icono dentro del botón */
+.btn-delete i {
+    width: 18px;
+    height: 18px;
 }
 
 /* ===================== STATS ===================== */
@@ -722,4 +739,102 @@ input:focus {
   .stats-grid .card {
     flex: 1 1 100%;
   }
+}
+
+/* ===================== ADMIN HEADER REFINADO ===================== */
+
+.admin-header-v2 {
+    background: #111827; /* Un fondo oscuro sólido y elegante */
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px 32px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: 16px;
+    margin: 20px auto;
+    max-width: 1400px;
+}
+
+.admin-profile {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.admin-avatar-wrapper {
+    width: 48px;
+    height: 48px;
+    background: rgba(59, 130, 246, 0.1); /* Azul sutil para el escudo */
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: #3b82f6;
+}
+
+.admin-info h1 {
+    font-size: 22px;
+    font-weight: 700;
+    color: #ffffff;
+    margin: 0;
+}
+
+.admin-info p {
+    font-size: 13px;
+    color: #6b7280;
+    margin: 2px 0 0 0;
+}
+
+/* BOTÓN CERRAR SESIÓN (Más llamativo y rojo en hover) */
+.btn-logout-refined {
+    background: rgba(239, 68, 68, 0.08); /* Fondo rojizo muy suave */
+    border: 1px solid rgba(239, 68, 68, 0.2); /* Borde rojo sutil */
+    color: #f8fafc;
+    padding: 10px 20px;
+    border-radius: 10px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.btn-logout-refined i {
+    width: 16px;
+    height: 16px;
+    color: #ef4444; /* El icono siempre es rojo */
+}
+
+.btn-logout-refined:hover {
+    background: #ef4444; /* Rojo sólido en hover */
+    border-color: #ef4444;
+    color: white;
+    transform: translateY(-2px);
+    box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4); /* Brillo rojo */
+}
+
+.btn-logout-refined:hover i {
+    color: white; /* El icono cambia a blanco para resaltar */
+}
+
+/* --- RESPONSIVE --- */
+@media (max-width: 768px) {
+    .admin-header-v2 {
+        flex-direction: column;
+        padding: 24px;
+        gap: 20px;
+        text-align: center;
+    }
+
+    .admin-profile {
+        flex-direction: column;
+        gap: 12px;
+    }
+
+    .btn-logout-refined {
+        width: 100%;
+        justify-content: center;
+    }
 }
