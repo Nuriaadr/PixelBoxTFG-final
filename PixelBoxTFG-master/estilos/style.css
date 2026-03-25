@@ -1064,7 +1064,6 @@ input:focus {
     transition: color 0.25s ease;
 }
 
-/* === EDITAR === */
 .actions .edit {
     color: var(--primary);
     border-color: rgba(59,130,246,0.3);
@@ -1079,7 +1078,6 @@ input:focus {
     color: var(--text-white);
 }
 
-/* === BORRAR === */
 .actions .delete {
     color: var(--danger);
     border-color: rgba(239,68,68,0.3);
@@ -1094,7 +1092,6 @@ input:focus {
     color: var(--text-white);
 }
 
-/* === RESPONSIVE === */
 @media (max-width: 700px) {
     .actions {
         flex-direction: row;
