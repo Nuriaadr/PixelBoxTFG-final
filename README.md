@@ -1,7 +1,7 @@
 # Proyecto HTML y CSS
 
 ## Descripción
-Este proyecto consiste en una página web desarrollada con HTML y CSS, enfocada en diseño responsive para adaptarse a distintos dispositivos (móvil y escritorio). Destinada a una aplicación tipo Letterboxd, pero orientada hacia la comunidad gamer, sin ánimo de lucro
+Este proyecto consiste en una página web desarrollada con HTML y CSS, enfocada en diseño responsive para adaptarse a distintos dispositivos (móvil y escritorio). Destinada a una aplicación tipo Letterboxd, pero orientada hacia la comunidad gamer, sin ánimo de lucro. 
 
 ---
 
@@ -16,4 +16,4 @@ Para ejecutar el proyecto en local, sigue estos pasos:
    cd PixelBoxTFG-master
 
 Abre el archivo index.html en tu navegador:
-Puedes hacer doble clic en el archivo o usar una extensión como Live Server en VS Code
+Puedes hacer doble clic en el archivo o usar una extensión como Live Server en VS Code. Para acceder a la vista admin, debes clickar en esa vista justamente, ya que no presentamos validación de login en html puro y duro :)
