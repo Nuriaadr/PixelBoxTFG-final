@@ -565,7 +565,62 @@ input:focus {
     border-radius: 10px;
     font-size: 12px;
 }
+@media (max-width: 1024px) {
+    .stats-grid {
+        grid-template-columns: repeat(3, 1fr); /* 3 columnas en lugar de 5 */
+    }
+    
+    .container-library {
+        padding: 0 20px;
+    }
+}
 
+/* --- Móviles Grandes / Phablets (Menos de 768px) --- */
+/* --- Móviles (Menos de 768px) --- */
+@media (max-width: 768px) {
+    .filters-bar {
+        display: flex;
+        gap: 12px;
+        overflow-x: auto;
+        padding-bottom: 5px;
+        white-space: nowrap;
+        
+        /* Ocultar barra en Firefox */
+        scrollbar-width: none; 
+        
+        /* Ocultar barra en Chrome, Safari y Edge */
+        -webkit-overflow-scrolling: touch; /* Mejora el deslizamiento en iOS */
+    }
+
+    .filters-bar::-webkit-scrollbar {
+        display: none; /* Aquí es donde ocurre la magia para Chrome/Safari */
+    }
+
+    .filter-btn {
+        flex-shrink: 0;
+    }
+}
+
+/* --- Móviles Pequeños (Menos de 480px) --- */
+@media (max-width: 480px) {
+    .stats-grid {
+        grid-template-columns: 1fr; /* 1 sola columna (tarjetas anchas) */
+    }
+
+    .stats-grid .card {
+        min-height: 100px; /* Más bajitas para no ocupar toda la pantalla */
+        padding: 15px;
+    }
+
+    .stats-grid .number {
+        font-size: 30px;
+    }
+
+    .btn-delete {
+        width: 100%; /* El botón de eliminar ocupa todo el ancho */
+        justify-content: center;
+    }
+}
 /* ===================== FOOTER (ESTILO CAPTURA) ===================== */
 
 .main-footer {
