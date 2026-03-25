@@ -1,88 +1,104 @@
 <!DOCTYPE html>
+
 <html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>PixelBox - Perfil</title>
     <link rel="stylesheet" href="../estilos/style.css">
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+```
+<!-- Fuente -->
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;600&display=swap" rel="stylesheet">
+
+<!-- Lucide Icons -->
+<script src="https://unpkg.com/lucide@latest"></script>
+```
+
 </head>
 <body>
 
-    <nav class="navbar">
-        <div class="logo">PixelBox</div>
-        <ul class="nav-links">
-            <li>Inicio</li>
-            <li>Descubrir</li>
-            <li>Mi Biblioteca</li>
-        </ul>
-        <div class="nav-icons">
-            <span>🔍</span>
-            <div class="user-mini-avatar"></div>
+```
+<nav class="navbar">
+    <div class="logo">PixelBox</div>
+    <ul class="nav-links">
+        <li>Inicio</li>
+        <li>Descubrir</li>
+        <li>Mi Biblioteca</li>
+    </ul>
+    <div class="nav-icons">
+        <i data-lucide="search"></i>
+        <div class="user-mini-avatar"></div>
+    </div>
+</nav>
+
+<main class="container">
+    <header class="profile-header">
+        <div class="profile-info">
+            <div class="avatar-large"></div>
+            <div class="profile-text">
+                <h1>@jugador_pro</h1>
+                <p class="bio">Amante de los RPG y juegos indie. Siempre buscando la próxima aventura.</p>
+                <div class="quick-stats">
+                    <span><i data-lucide="trophy"></i> 156 completados</span>
+                    <span><i data-lucide="gamepad-2"></i> 342 jugados</span>
+                    <span><i data-lucide="users"></i> 1243 seguidores</span>
+                </div>
+            </div>
         </div>
-    </nav>
+        <button class="btn-follow">+ Seguir</button>
+    </header>
 
-    <main class="container">
-        <header class="profile-header">
-            <div class="profile-info">
-                <div class="avatar-large"></div>
-                <div class="profile-text">
-                    <h1>@jugador_pro</h1>
-                    <p class="bio">Amante de los RPG y juegos indie. Siempre buscando la próxima aventura.</p>
-                    <div class="quick-stats">
-                        <span>🏆 156 completados</span>
-                        <span>🎮 342 jugados</span>
-                        <span>👥 1243 seguidores</span>
-                    </div>
-                </div>
-            </div>
-            <button class="btn-follow">+ Seguir</button>
-        </header>
-
-        <section class="stats-grid">
-            <div class="stat-card blue">
-                <h2>342</h2>
-                <p>Total jugados</p>
-            </div>
-            <div class="stat-card green">
-                <h2>156</h2>
-                <p>Completados</p>
-            </div>
-            <div class="stat-card orange">
-                <h2>2</h2>
-                <p>Jugando ahora</p>
-            </div>
-            <div class="stat-card purple">
-                <h2>3</h2>
-                <p>Pendientes</p>
-            </div>
-        </section>
-
-        <div class="tabs">
-            <span class="active">Jugando (2)</span>
-            <span>Completados (3)</span>
-            <span>Pendientes (3)</span>
-            <span>Favoritos (3)</span>
-            <span>Logros (8)</span>
+    <section class="stats-grid">
+        <div class="stat-card blue">
+            <h2>342</h2>
+            <p>Total jugados</p>
         </div>
+        <div class="stat-card green">
+            <h2>156</h2>
+            <p>Completados</p>
+        </div>
+        <div class="stat-card orange">
+            <h2>2</h2>
+            <p>Jugando ahora</p>
+        </div>
+        <div class="stat-card purple">
+            <h2>3</h2>
+            <p>Pendientes</p>
+        </div>
+    </section>
 
-        <section class="game-grid">
-            <div class="game-card">
-                <div class="game-img" style="background-image: url('https://via.placeholder.com/200x300')">
-                    <span class="tag">Jugando</span>
-                </div>
-                <h3>Cyberpunk Chronicles</h3>
-                <p>2025</p>
+    <div class="tabs">
+        <span class="active">Jugando (2)</span>
+        <span>Completados (3)</span>
+        <span>Pendientes (3)</span>
+        <span>Favoritos (3)</span>
+        <span>Logros (8)</span>
+    </div>
+
+    <section class="game-grid">
+        <div class="game-card">
+            <div class="game-img" style="background-image: url('https://via.placeholder.com/200x300')">
+                <span class="tag">Jugando</span>
             </div>
-            <div class="game-card">
-                <div class="game-img" style="background-image: url('https://via.placeholder.com/200x300')">
-                    <span class="tag">Jugando</span>
-                </div>
-                <h3>Velocity Racing</h3>
-                <p>2025</p>
+            <h3>Cyberpunk Chronicles</h3>
+            <p>2025</p>
+        </div>
+        <div class="game-card">
+            <div class="game-img" style="background-image: url('https://via.placeholder.com/200x300')">
+                <span class="tag">Jugando</span>
             </div>
-        </section>
-    </main>
+            <h3>Velocity Racing</h3>
+            <p>2025</p>
+        </div>
+    </section>
+</main>
+
+<!-- Activar iconos -->
+<script>
+    lucide.createIcons();
+</script>
+```
 
 </body>
 </html>
