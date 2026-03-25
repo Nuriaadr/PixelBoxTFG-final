@@ -1,16 +1,25 @@
 /* ===================== VARIABLES ===================== */
+/*Colores Base*/
 :root {
   --bg-main: #0b0f19;
   --bg-card: #121826;
+  --bg-profile: #0d0d0d;
 
+  /*Colores primarios*/ 
   --primary: #3b82f6;
   --secondary: #2a2f3a;
   --danger: #ef4444;
+  --accent-green: #2ecc71;
+  --accent-purple: #a855f7;
+  --accent-orange: #f97316;
 
+  /* Colores texto*/
   --text-main: #d1d5db;
   --text-muted: #9ca3af;
   --text-white: #ffffff;
+  --text-dim: #a0a0a0;
 
+  /* estados y logros */
   --status-playing: #3b82f6;
   --status-pending: #eab308;
   --status-completed: #22c55e;
@@ -38,6 +47,7 @@ body {
 body {
   background-color: var(--bg-main);
   color: var(--text-main);
+  line-height: 1.6;
 }
 
 /* ===================== LOGIN ===================== */
@@ -183,6 +193,10 @@ input:focus {
   padding: 20px 40px;
   border-bottom: 1px solid var(--secondary);
   position: relative;
+  background-color: var(--bg-main);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
 }
 
 .nav-left {
@@ -193,12 +207,17 @@ input:focus {
 
 .nav-links {
   display: flex;
+  list-style: none;
 }
 
 .nav-links a {
   color: var(--text-muted);
   text-decoration: none;
   margin-right: 20px;
+  margin-right: 20px;
+  cursor: pointer;
+  font-size: 14px;
+  transition: color 0.3s;
 }
 
 .nav-links a:hover {
@@ -211,11 +230,12 @@ input:focus {
   gap: 15px;
 }
 
-.avatar {
+.user-mini-avatar, .avatar {
   width: 32px;
   height: 32px;
   border-radius: 50%;
   background: var(--secondary);
+  border: 1px solid var(--primary);
 }
 
 /* ===================== HERO ===================== */
