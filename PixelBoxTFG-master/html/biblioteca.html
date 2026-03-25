@@ -1,0 +1,233 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PixelBox - Inicio</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Tipografía -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+
+    <!-- Iconos -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+
+    <link rel="stylesheet" href="../estilos/style.css">
+</head>
+
+<body>
+    <!-- ===================== NAVBAR ===================== -->
+    <header class="navbar">
+        <div class="logo">
+            <i data-lucide="gamepad-2"></i>
+            PixelBox
+        </div>
+        <!-- checkbox -->
+        <input type="checkbox" id="menu-toggle">
+
+        <!-- hamburguesa -->
+        <label for="menu-toggle" class="menu-icon">
+            <span></span>
+            <span></span>
+            <span></span>
+        </label>
+
+        <!-- menú -->
+        <nav class="nav-links">
+            <a href="inicio.html">Inicio</a>
+            <a href="descubrir.html">Descubrir</a>
+            <a href="biblioteca.html">Mi Biblioteca</a>
+        </nav>
+    </header>
+
+<body>
+    <main class="container-library">
+    <div class="library-top-bar">
+    <div class="title-section">
+        <h1>
+            <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" class="lucide-library-icon">
+                <path d="m16 6 4 14"></path>
+                <path d="M12 6v14"></path>
+                <path d="M8 8v12"></path>
+                <path d="M4 4v16"></path>
+            </svg> 
+            Mi Biblioteca
+        </h1>
+        <p class="subtitle-library">Gestiona tu colección personal de videojuegos</p>
+    </div>
+    <button class="btn-delete">
+        <i data-lucide="trash-2"></i> Eliminar juegos
+    </button>
+    </div>
+
+    <section class="stats-grid">
+        <div class="card card-blue">
+            <span class="number">8</span>
+            <span class="label">Total de juegos</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-green">3</span>
+            <span class="label">Completados</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-blue-light">2</span>
+            <span class="label">Jugando</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-yellow">3</span>
+            <span class="label">Pendientes</span>
+        </div>
+        <div class="card card-dark">
+            <span class="number text-purple">227h</span>
+            <span class="label">Tiempo total</span>
+        </div>
+    </section>
+
+    <nav class="filters-bar">
+        <button class="filter-btn active">
+            <span class="icon">|||\</span> Todos <span class="count">8</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="play"></i> Jugando <span class="count">2</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="check-circle-2"></i> Completados <span class="count">3</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="clock"></i> Pendientes <span class="count">3</span>
+        </button>
+        <button class="filter-btn">
+            <i data-lucide="x-circle"></i> Abandonados <span class="count">0</span>
+        </button>
+    </nav>
+</main>
+
+<section class="section">
+    
+    <div class="card-grid">
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Legends of Eldoria</h3>
+                <span>2024</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Dragon Quest Online</h3>
+                <span>2025</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Velocity Racing</h3>
+                <span>2025</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Cyberpunk Chronicles</h3>
+                <span>2025</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Nightmare Manor</h3>
+                <span>2024</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Stellar Odyssey</h3>
+                <span>2025</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Shadow Castle</h3>
+                <span>2023</span>
+            </div>
+
+            <div class="game-card">
+                <div class="game-image"></div>
+                <h3>Pixel Warriors</h3>
+                <span>2023</span>
+            </div>
+        </div>
+</section>
+</body>
+<footer class="main-footer">
+    <div class="footer-container">
+        <div class="footer-col brand-col">
+            <div class="logo">
+                <i data-lucide="gamepad-2"></i>
+                PixelBox
+            </div>
+            <p>La plataforma definitiva para gamers. Organiza, descubre y comparte tu pasión por los videojuegos.</p>
+            <div class="social-links">
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z"/>
+                    </svg>
+                </a>
+
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <rect x="2" y="2" width="20" height="20" rx="5" ry="5"></rect>
+                        <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z"></path>
+                        <line x1="17.5" y1="6.5" x2="17.51" y2="6.5"></line>
+                    </svg>
+                </a>
+
+                <a href="#">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                        <path d="M9 19c-5 1.5-5-2.5-7-3m14 6v-3.87a3.37 3.37 0 0 0-.94-2.61c3.14-.35 6.44-1.54 6.44-7A5.44 5.44 0 0 0 20 4.77 5.07 5.07 0 0 0 19.91 1S18.73.65 16 2.48a13.38 13.38 0 0 0-7 0C6.27.65 5.09 1 5.09 1A5.07 5.07 0 0 0 5 4.77a5.44 5.44 0 0 0-1.5 3.78c0 5.42 3.3 6.61 6.44 7A3.37 3.37 0 0 0 9 18.13V22"></path>
+                    </svg>
+                </a>   
+                <a href="#"><i data-lucide="mail"></i></a>
+            </div>
+        </div>
+
+        <div class="footer-col">
+            <h3>Navegación</h3>
+            <ul>
+                <li><a href="#">Inicio</a></li>
+                <li><a href="#">Descubrir</a></li>
+                <li><a href="#">Mi Biblioteca</a></li>
+                <li><a href="#">Mi Perfil</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>Comunidad</h3>
+            <ul>
+                <li><a href="#">Foros</a></li>
+                <li><a href="#">Guías</a></li>
+                <li><a href="#">Eventos</a></li>
+                <li><a href="#">Blog</a></li>
+            </ul>
+        </div>
+
+        <div class="footer-col">
+            <h3>Soporte</h3>
+            <ul>
+                <li><a href="#">Centro de Ayuda</a></li>
+                <li><a href="#">Términos de Servicio</a></li>
+                <li><a href="#">Política de Privacidad</a></li>
+                <li><a href="#">Contacto</a></li>
+            </ul>
+        </div>
+    </div>
+
+    <hr class="footer-divider">
+
+    <div class="footer-bottom">
+        <p>&copy; 2026 PixelBox. Todos los derechos reservados.</p>
+        <p>Hecho con <span class="heart">❤️</span> para la comunidad gamer</p>
+    </div>
+</footer>
+
+<script>
+      lucide.createIcons();
+</script>
+
+</html>
