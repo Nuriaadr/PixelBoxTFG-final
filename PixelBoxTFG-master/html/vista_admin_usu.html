@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PixelBox - VistaAdminUsu</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../estilos/style.css">
+</head>
+<body>
+     <header class="admin-header-v2">
+        <div class="admin-profile">
+            <div class="admin-avatar-wrapper">
+                <i data-lucide="shield-check"></i>
+            </div>
+            <div class="admin-info">
+                <h1>Panel de Administración</h1>
+                <p>Gestiona juegos y usuarios del sistema</p>
+            </div>
+        </div>
+
+        <button onclick="location.href='../index.html'" class="btn-logout-refined">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+        </button>
+    </header>
+    <div class="admin-nav-container">
+        <div class="admin-tabs">
+            <button class="tab-item" onclick="location.href='vista_admin.html'">
+                <i data-lucide="gamepad-2"></i>
+                <span>Juegos <span class="tab-count">(8)</span></span>
+            </button>
+            <button class="tab-item active" onclick="location.href='vista_admin_usu.html'">
+                <i data-lucide="users"></i>
+                <span>Usuarios <span class="tab-count">(3)</span></span>
+            </button>
+        </div>
+
+        <div class="tab-separator"></div>
+
+        <div class="action-bar">
+            <button class="btn-add-flat">
+                <i data-lucide="plus"></i>
+                <span>Añadir Juego</span>
+            </button>
+        </div>
+    </div>
+    
+</body>
+<script>
+    lucide.createIcons();
+</script>
+</html>
