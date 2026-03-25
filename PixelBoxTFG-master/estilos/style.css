@@ -415,6 +415,51 @@ input:focus {
   font-size: 11px;
   font-weight: bold;
 }
+
+/* ===================== LOGIN & COMPONENTES COMUNES ===================== */
+.login-page {
+  min-height: 100vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.card {
+  background-color: var(--bg-card);
+  padding: 32px;
+  border-radius: 12px;
+}
+
+.form-group {
+  margin-bottom: 20px;
+  text-align: left;
+}
+
+input, select {
+  width: 100%;
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--secondary);
+  background-color: var(--bg-main);
+  color: var(--text-main);
+  outline: none;
+}
+
+input:focus { border-color: var(--primary); }
+
+.btn-primary {
+  width: 100%;
+  padding: 12px;
+  border: none;
+  border-radius: 8px;
+  background-color: var(--primary);
+  color: var(--text-white);
+  font-weight: 600;
+  cursor: pointer;
+  transition: 0.3s;
+}
+
+.btn-primary:hover { filter: brightness(1.2); }
 /* ===================== SECCIONES ===================== */
 .section {
   padding: 40px;
