@@ -380,7 +380,6 @@ img {
   display: none;
 }
 /* Mostrar menú desplegable cuando se active el checkbox */
-
 #menu-toggle:checked + .menu-icon + .nav-links {
   display: flex;
   flex-direction: column;
@@ -392,7 +391,7 @@ img {
   padding: 20px;
   border-radius: 12px;
   gap: 15px;
-  z-index: 1000;
+  width: 200px;
 }
 
 .menu-icon {
