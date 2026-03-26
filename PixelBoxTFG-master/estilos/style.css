@@ -323,7 +323,7 @@ input:focus {
 
 .review-rating {
   margin-left: auto;
-  color: #facc15;
+  color: var(--warning);
 }
 
 /* ===================== HAMBURGUESA ===================== */
@@ -487,13 +487,13 @@ input:focus {
 }
 /* ===================== BOTÓN DELETE ===================== */
 .btn-delete {
-  background-color: #1a1c23; /* Fondo oscuro que combine con tus cards */
-  border: 2px solid rgba(239, 68, 68, 0.2); /* Borde rojo muy sutil */
-  color: #ef4444; /* Texto e icono en rojo suave inicialmente */
+  background-color: #1a1c23;
+  border: 2px solid rgba(239, 68, 68, 0.2);
+  color: var(--danger);
   padding: 10px 20px;
   border-radius: 12px;
   display: flex;
-  align-items: center; /* ESTO centra el icono con el texto verticalmente */
+  align-items: center;
   justify-content: center;
   gap: 8px;
   font-family: "Inter", sans-serif;
@@ -504,10 +504,10 @@ input:focus {
 }
 
 .btn-delete:hover {
-  background-color: #ef4444; /* Al pasar el ratón, fondo rojo sólido */
-  border-color: #ef4444;
-  color: white; /* Texto blanco al hacer hover */
-  transform: translateY(-2px); /* Pequeño salto para feedback visual */
+  background-color: var(--danger);
+  border-color: var(--danger);
+  color: var(--text-white);
+  transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
 }
 
@@ -709,19 +709,19 @@ input:focus {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: #3b82f6;
+  color: var(--primary);
 }
 
 .admin-info h1 {
   font-size: 22px;
   font-weight: 700;
-  color: #ffffff;
+  color: var(--text-white);
   margin: 0;
 }
 
 .admin-info p {
   font-size: 13px;
-  color: #6b7280;
+  color: var(--text-muted);
   margin: 2px 0 0 0;
 }
 
@@ -729,7 +729,7 @@ input:focus {
 .btn-logout-refined {
   background: rgba(239, 68, 68, 0.08);
   border: 1px solid rgba(239, 68, 68, 0.2);
-  color: #f8fafc;
+  color: var(--text-white);
   padding: 10px 20px;
   border-radius: 10px;
   display: flex;
@@ -744,19 +744,19 @@ input:focus {
 .btn-logout-refined i {
   width: 16px;
   height: 16px;
-  color: #ef4444;
+  color: var(--danger);
 }
 
 .btn-logout-refined:hover {
-  background: #ef4444;
-  border-color: #ef4444;
-  color: white;
+  background: var(--danger);
+  border-color: var(--danger);
+  color: var(--text-white);
   transform: translateY(-2px);
   box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
 }
 
 .btn-logout-refined:hover i {
-  color: white;
+  color: var(--text-white);
 }
 /* ===================== ADMIN TABS & ACTIONS ===================== */
 
@@ -775,7 +775,7 @@ input:focus {
 .tab-item {
   background: none;
   border: none;
-  color: #94a3b8;
+  color: var(--text-muted);
   display: flex;
   align-items: center;
   gap: 10px;
@@ -793,7 +793,7 @@ input:focus {
 }
 
 .tab-item.active {
-  color: #ffffff;
+  color: var(--text-white);
 }
 
 .tab-item.active::after {
@@ -803,7 +803,7 @@ input:focus {
   left: 0;
   width: 100%;
   height: 3px;
-  background-color: #3b82f6;
+  background-color: var(--primary);
   border-radius: 10px 10px 0 0;
 }
 
@@ -821,8 +821,8 @@ input:focus {
 }
 
 .btn-add-flat {
-  background-color: #2563eb;
-  color: white;
+  background-color: var(--primary);
+  color: var(--text-white);
   border: none;
   padding: 12px 24px;
   border-radius: 10px;
@@ -836,7 +836,7 @@ input:focus {
 }
 
 .btn-add-flat:hover {
-  background-color: #1d4ed8;
+  background-color: var(--primary);
   transform: translateY(-1px);
 }
 
@@ -988,125 +988,133 @@ input:focus {
 
 /* === LISTA DE USUARIOS === */
 .user-list {
-    display: flex;
-    flex-direction: column;
-    gap: 20px;
-    max-width: 1400px;
-    margin: 0 auto;
-    padding: 20px 40px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 20px 40px;
 }
 
 /* === TARJETA DE USUARIO === */
 .user-card {
-    background: var(--bg-card);
-    border: 1px solid var(--secondary);
-    border-radius: 12px;
-    padding: 20px;
-    display: flex;
-    align-items: center;
-    gap: 20px;
-    transition: background 0.2s ease;
+  background: var(--bg-card);
+  border: 1px solid var(--secondary);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  transition: background 0.2s ease;
 }
 
 .user-card:hover {
-    background: rgba(255,255,255,0.03);
+  background: rgba(255, 255, 255, 0.03);
 }
 
 /* === FOTO DE PERFIL === */
 .user-avatar {
-    width: 70px;
-    height: 70px;
-    border-radius: 50%;
-    background: var(--secondary);
-    flex-shrink: 0;
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  overflow: hidden;
+  background: var(--secondary);
+  flex-shrink: 0;
+}
+
+.user-avatar img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
 }
 
 /* === INFO === */
 .user-info {
-    flex: 1;
+  flex: 1;
 }
 
 .user-info h2 {
-    color: var(--text-white);
-    margin-bottom: 6px;
-    font-size: 1rem; /* MÁS PEQUEÑO */
+  color: var(--text-white);
+  margin-bottom: 6px;
+  font-size: 1rem;
 }
 
 .user-desc {
-    color: var(--text-muted);
-    font-size: 0.85rem;
-    margin-bottom: 12px;
+  color: var(--text-muted);
+  font-size: 0.85rem;
+  margin-bottom: 12px;
 }
 
 /* === ESTADÍSTICAS === */
 .user-stats {
-    display: flex;
-    gap: 20px;
-    flex-wrap: wrap;
+  display: flex;
+  gap: 20px;
+  flex-wrap: wrap;
 }
 
 .user-stats span {
-    color: var(--text-main);
-    font-size: 0.85rem;
+  color: var(--text-main);
+  font-size: 0.85rem;
 }
 
 .user-stats strong {
-    color: var(--text-white);
+  color: var(--text-white);
 }
 
 /* === ACCIONES === */
 .user-actions {
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
 }
 
 .user-actions button {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    padding: 10px;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: all 0.25s ease;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  background: rgba(255, 255, 255, 0.05);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 10px;
+  border-radius: 10px;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 .user-actions button i {
-    width: 18px;
-    height: 18px;
-    transition: color 0.25s ease;
+  width: 18px;
+  height: 18px;
+  transition: color 0.25s ease;
 }
 
 /* EDITAR */
 .user-actions .edit {
-    color: var(--primary);
-    border-color: rgba(59,130,246,0.3);
+  color: var(--primary);
+  border-color: rgba(59, 130, 246, 0.3);
 }
 
 .user-actions .edit:hover {
-    background: var(--primary);
-    color: var(--text-white);
+  background: var(--primary);
+  color: var(--text-white);
 }
 
 .user-actions .edit:hover i {
-    color: var(--text-white);
+  color: var(--text-white);
 }
 
 /* BORRAR */
 .user-actions .delete {
-    color: var(--danger);
-    border-color: rgba(239,68,68,0.3);
+  color: var(--danger);
+  border-color: rgba(239, 68, 68, 0.3);
 }
 
 .user-actions .delete:hover {
-    background: var(--danger);
-    color: var(--text-white);
+  background: var(--danger);
+  color: var(--text-white);
 }
 
 .user-actions .delete:hover i {
-    color: var(--text-white);
+  color: var(--text-white);
 }
 
 /* ===================== RESPONSIVE ===================== */
@@ -1200,4 +1208,3 @@ input:focus {
     flex: 1 1 100%;
   }
 }
-
