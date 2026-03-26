@@ -379,6 +379,21 @@ img {
 #menu-toggle {
   display: none;
 }
+/* Mostrar menú desplegable cuando se active el checkbox */
+
+#menu-toggle:checked + .menu-icon + .nav-links {
+  display: flex;
+  flex-direction: column;
+  position: absolute;
+  top: 70px;
+  right: 40px;
+  background-color: var(--bg-card);
+  border: 1px solid var(--secondary);
+  padding: 20px;
+  border-radius: 12px;
+  gap: 15px;
+  z-index: 1000;
+}
 
 .menu-icon {
   display: none;
@@ -1401,6 +1416,9 @@ img {
   .btn-logout-refined {
     width: 100%;
     justify-content: center;
+  }
+  .nav-links {
+    display: none;
   }
 }
 
