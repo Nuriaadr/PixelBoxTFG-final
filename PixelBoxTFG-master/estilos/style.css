@@ -427,9 +427,9 @@ input:focus {
   padding: 10px 16px;
 
   border-radius: 999px;
-  border: 1px solid rgba(255, 255, 255, 0.06);
+  border: 1px solid var(--secondary);
 
-  background: rgba(255, 255, 255, 0.02);
+  background: var(--secondary);
   color: var(--text-muted);
 
   font-size: 14px;
@@ -450,7 +450,7 @@ input:focus {
 
 /* HOVER */
 .filter-btn:hover {
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--secondary);
   color: var(--text-white);
   transform: translateY(-2px);
 }
@@ -487,8 +487,8 @@ input:focus {
 }
 /* ===================== BOTÓN DELETE ===================== */
 .btn-delete {
-  background-color: #1a1c23;
-  border: 2px solid rgba(239, 68, 68, 0.2);
+  background-color: var(--secondary);
+  border: 2px solid var(--status-abandoned);
   color: var(--danger);
   padding: 10px 20px;
   border-radius: 12px;
@@ -508,7 +508,7 @@ input:focus {
   border-color: var(--danger);
   color: var(--text-white);
   transform: translateY(-2px);
-  box-shadow: 0 4px 12px rgba(239, 68, 68, 0.3);
+  box-shadow: 0 4px 12px var(--status-abandoned);
 }
 
 /* Ajuste específico para el icono dentro del botón */
@@ -684,8 +684,8 @@ input:focus {
 /* ===================== ADMIN HEADER REFINADO ===================== */
 
 .admin-header-v2 {
-  background: #111827;
-  border: 1px solid rgba(255, 255, 255, 0.05);
+  background: var(--bg-card);
+  border: 1px solid var(--secondary);
   padding: 20px 32px;
   display: flex;
   justify-content: space-between;
@@ -704,7 +704,7 @@ input:focus {
 .admin-avatar-wrapper {
   width: 48px;
   height: 48px;
-  background: rgba(59, 130, 246, 0.1);
+  background: var(--primary-light);
   border-radius: 12px;
   display: flex;
   align-items: center;
@@ -727,8 +727,8 @@ input:focus {
 
 /* BOTÓN CERRAR SESIÓN  */
 .btn-logout-refined {
-  background: rgba(239, 68, 68, 0.08);
-  border: 1px solid rgba(239, 68, 68, 0.2);
+  background: var(--danger);
+  border: 1px solid var(--danger);
   color: var(--text-white);
   padding: 10px 20px;
   border-radius: 10px;
@@ -752,7 +752,7 @@ input:focus {
   border-color: var(--danger);
   color: var(--text-white);
   transform: translateY(-2px);
-  box-shadow: 0 4px 15px rgba(239, 68, 68, 0.4);
+  box-shadow: 0 4px 15px var(--achievement-common);
 }
 
 .btn-logout-refined:hover i {
@@ -815,7 +815,7 @@ input:focus {
 
 .tab-separator {
   height: 1px;
-  background: rgba(255, 255, 255, 0.1);
+  background: var(--secondary);
   width: 100%;
   margin-bottom: 25px;
 }
@@ -867,7 +867,7 @@ input:focus {
 }
 
 .game-item:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--secondary);
 }
 
 /* === MINIATURA === */
@@ -926,7 +926,7 @@ input:focus {
 }
 
 .platforms span {
-  background: rgba(255, 255, 255, 0.08);
+  background: var(--secondary);
   padding: 4px 8px;
   border-radius: 6px;
   font-size: 0.75rem;
@@ -941,8 +941,8 @@ input:focus {
 }
 
 .actions button {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--secondary);
+  border: 1px solid var(--secondary);
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
@@ -960,7 +960,7 @@ input:focus {
 
 .actions .edit {
   color: var(--primary);
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: var(--primary-light);
 }
 
 .actions .edit:hover {
@@ -974,7 +974,7 @@ input:focus {
 
 .actions .delete {
   color: var(--danger);
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: var(--danger);
 }
 
 .actions .delete:hover {
@@ -1009,7 +1009,7 @@ input:focus {
 }
 
 .user-card:hover {
-  background: rgba(255, 255, 255, 0.03);
+  background: var(--secondary);
 }
 
 /* === FOTO DE PERFIL === */
@@ -1070,8 +1070,8 @@ input:focus {
 }
 
 .user-actions button {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--secondary);
+  border: 1px solid var(--secondary);
   padding: 10px;
   border-radius: 10px;
   cursor: pointer;
@@ -1105,7 +1105,7 @@ input:focus {
 /* BORRAR */
 .user-actions .delete {
   color: var(--danger);
-  border-color: rgba(239, 68, 68, 0.3);
+  border-color: var(--danger);
 }
 
 .user-actions .delete:hover {
