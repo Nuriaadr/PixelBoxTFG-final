@@ -649,7 +649,7 @@ img {
 }
 
 .stars {
-  color: #facc15;
+  color: var(--status-pending);
   margin-bottom: 1rem;
 }
 
@@ -1310,7 +1310,7 @@ img {
 /* EDITAR */
 .user-actions .edit {
   color: var(--primary);
-  border-color: rgba(59, 130, 246, 0.3);
+  border-color: var(--primary);
 }
 
 .user-actions .edit:hover {
