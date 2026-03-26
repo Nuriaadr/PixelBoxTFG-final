@@ -222,6 +222,7 @@ input:focus {
 .hero {
   height: 420px;
   background: url(../img/space.webp) center/cover no-repeat;
+  background-position: center 40%;
   display: flex;
   align-items: center;
   padding: 40px;
