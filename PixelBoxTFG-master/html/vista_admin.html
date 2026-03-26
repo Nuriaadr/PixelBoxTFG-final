@@ -1,0 +1,183 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <title>PixelBox - VistaAdmin</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <link rel="stylesheet" href="../estilos/style.css">
+</head>
+
+<body>
+    <header class="admin-header-v2">
+        <div class="admin-profile">
+            <div class="admin-avatar-wrapper">
+                <i data-lucide="shield-check"></i>
+            </div>
+            <div class="admin-info">
+                <h1>Panel de Administración</h1>
+                <p>Gestiona juegos y usuarios del sistema</p>
+            </div>
+        </div>
+
+        <button onclick="location.href='../index.html'" class="btn-logout-refined">
+            <i data-lucide="log-out"></i>
+            <span>Cerrar sesión</span>
+        </button>
+    </header>
+    <div class="admin-nav-container">
+        <div class="admin-tabs">
+            <button class="tab-item active" onclick="location.href='vista_admin.html'">
+                <i data-lucide="gamepad-2"></i>
+                <span>Juegos <span class="tab-count">(8)</span></span>
+            </button>
+            <button class="tab-item" onclick="location.href='vista_admin_usu.html'">
+                <i data-lucide="users"></i>
+                <span>Usuarios <span class="tab-count">(3)</span></span>
+            </button>
+        </div>
+
+        <div class="tab-separator"></div>
+
+        <div class="action-bar">
+            <button class="btn-add-flat">
+                <i data-lucide="plus"></i>
+                <span>Añadir Juego</span>
+            </button>
+        </div>
+    </div>
+    <section class="game-list">
+
+        <article class="game-item">
+            <img src="img/cyberpunk.jpg" class="game-thumb" alt="Cyberpunk Chronicles">
+            <div class="game-details">
+                <h2>Cyberpunk Chronicles</h2>
+                <p class="developer">NeoGames Studio</p>
+                <div class="tags"><span>RPG</span><span>Acción</span><span>Open World</span>
+                </div>
+                <p class="year">2025</p>
+                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span>
+                </div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+
+        </article>
+        <article class="game-item">
+            <img src="img/eldoria.jpg" class="game-thumb" alt="Legends of Eldoria">
+            <div class="game-details">
+                <h2>Legends of Eldoria</h2>
+                <p class="developer">Mythic Games</p>
+                <div class="tags"><span>RPG</span><span>Fantasy</span><span>Aventura</span></div>
+                <p class="year">2024</p>
+                <div class="platforms"><span>PC</span><span>Nintendo Switch</span><span>PlayStation 5</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+
+        <article class="game-item">
+            <img src="img/stellar.jpg" class="game-thumb" alt="Stellar Odyssey">
+            <div class="game-details">
+                <h2>Stellar Odyssey</h2>
+                <p class="developer">Cosmos Interactive</p>
+                <div class="tags"><span>Acción</span><span>Ciencia Ficción</span><span>Shooter</span></div>
+                <p class="year">2025</p>
+                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+
+        <article class="game-item">
+            <img src="img/shadow.jpg" class="game-thumb" alt="Shadow Castle">
+            <div class="game-details">
+                <h2>Shadow Castle</h2>
+                <p class="developer">Dark Moon Studios</p>
+                <div class="tags"><span>Horror</span><span>Aventura</span><span>Puzzle</span></div>
+                <p class="year">2023</p>
+                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+
+        <article class="game-item">
+            <img src="img/velocity.jpg" class="game-thumb" alt="Velocity Racing">
+            <div class="game-details">
+                <h2>Velocity Racing</h2>
+                <p class="developer">Speed Demons Inc.</p>
+                <div class="tags"><span>Carreras</span><span>Simulación</span><span>Multijugador</span></div>
+                <p class="year">2025</p>
+                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+
+        <article class="game-item">
+            <img src="img/nightmare.jpg" class="game-thumb" alt="Nightmare Manor">
+            <div class="game-details">
+                <h2>Nightmare Manor</h2>
+                <p class="developer">Indie Horror Collective</p>
+                <div class="tags"><span>Horror</span><span>Supervivencia</span><span>Indie</span></div>
+                <p class="year">2024</p>
+                <div class="platforms"><span>PC</span><span>PlayStation 5</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+
+        <article class="game-item">
+            <img src="img/pixelwarriors.jpg" class="game-thumb" alt="Pixel Warriors">
+            <div class="game-details">
+                <h2>Pixel Warriors</h2>
+                <p class="developer">Pixel Perfect Games</p>
+                <div class="tags"><span>Plataformas</span><span>Indie</span><span>Retro</span></div>
+                <p class="year">2023</p>
+                <div class="platforms"><span>PC</span><span>Nintendo Switch</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+
+        <article class="game-item">
+            <img src="img/dragonquest.jpg" class="game-thumb" alt="Dragon Quest Online">
+            <div class="game-details">
+                <h2>Dragon Quest Online</h2>
+                <p class="developer">Massive Worlds Entertainment</p>
+                <div class="tags"><span>MMORPG</span><span>Fantasy</span><span>Multijugador</span></div>
+                <p class="year">2025</p>
+                <div class="platforms"><span>PC</span></div>
+            </div>
+            <div class="actions">
+                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
+                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            </div>
+        </article>
+    </section>
+
+</body>
+
+<script>
+    lucide.createIcons();
+</script>
+
+</html>
