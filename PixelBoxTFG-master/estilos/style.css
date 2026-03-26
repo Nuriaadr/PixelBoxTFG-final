@@ -1157,7 +1157,8 @@ img {
   width: 24px;
   height: 24px;
   flex-shrink: 0; 
-  
+  margin-left: 70px;
+  margin-bottom: 10px;
 }
 
 .date {
