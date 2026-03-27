@@ -320,7 +320,7 @@ img {
 
 .game-card:hover {
   transform: translateY(-6px) scale(1.01);
-  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+  box-shadow: 0 10px 25px var(--secondary);
 }
 .game-img {
   height: 180px;
@@ -1110,10 +1110,10 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(90deg, #d97706, #ea580c);
+  background: linear-gradient(90deg, var( --achievement-rare), var(--status-pending));
   padding: 15px;
   border-radius: 12px;
-  color: white;
+  color: var(--text-white);
   gap: 15px;
 }
 
