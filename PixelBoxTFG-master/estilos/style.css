@@ -5,7 +5,7 @@
   --bg-card: #121826;
   --bg-profile: #0d0d0d;
 
-  /*Colores primarios*/ 
+  /*Colores primarios*/
   --primary: #3b82f6;
   --secondary: #2a2f3a;
   --danger: #ef4444;
@@ -152,6 +152,7 @@ input:focus {
   color: var(--text-white);
   cursor: pointer;
 }
+
 .btn-follow {
   background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--secondary);
@@ -170,6 +171,7 @@ input:focus {
   cursor: pointer;
   transition: all 0.25s ease;
 }
+
 /* ICONO */
 .btn-follow i {
   width: 16px;
@@ -222,11 +224,10 @@ input:focus {
 /* ===================== NAVBAR ===================== */
 .navbar {
   display: flex;
-  justify-content: space-between;
   align-items: center;
- padding: 15px 40px;
+  justify-content: space-between;
+  padding: 15px 40px;
   border-bottom: 1px solid var(--secondary);
-  position: relative;
   background-color: var(--bg-main);
   position: sticky;
   top: 0;
@@ -242,8 +243,9 @@ input:focus {
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 15px; /* Espacio entre la lupa y el avatar */
-  
+  gap: 15px;
+  /* Espacio entre la lupa y el avatar */
+
 }
 
 /* Estilo para el icono de búsqueda */
@@ -256,61 +258,85 @@ input:focus {
 .nav-icons i[data-lucide="search"]:hover {
   color: var(--text-white);
 }
+
 .nav-links {
   display: flex;
-  gap: 5px; 
+  gap: 5px;
   list-style: none;
   align-items: center;
 }
 
+/* NAV LINKS CENTRADOS */
+.nav-links {
+  display: flex;
+  gap: 5px;
+  list-style: none;
+  align-items: center;
+
+  flex: 1;
+  justify-content: center;
+}
+
+/* LINKS */
 .nav-links a {
   color: var(--text-muted);
   text-decoration: none;
   font-size: 14px;
   font-weight: 500;
-  
-  /* === ESTO CREA LA PÍLDORA === */
-  padding: 8px 16px; /* Espacio interno para el fondo */
-  border-radius: 20px; /* Bordes muy redondeados */
-  
-  /* Transición suave para el fondo y el color */
+
+  padding: 8px 16px;
+  border-radius: 20px;
+
   transition: background-color 0.3s ease, color 0.3s ease;
-  cursor: pointer;
 }
 
 .nav-links a:hover {
   color: var(--text-white);
-
-  background-color: rgba(255, 255, 255, 0.08); 
+  background-color: rgba(255, 255, 255, 0.08);
 }
+
 .nav-links a.active {
   color: var(--text-white);
   background-color: var(--secondary);
 }
 
-.nav-right {
-  display: flex;
-  align-items: center;
-  gap: 15px;
+/* ICONO BUSCAR */
+.nav-icons i[data-lucide="search"] {
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.3s ease;
 }
 
-.user-mini-avatar, .avatar {
-  width: 32px;
-  height: 32px;
+.nav-icons i[data-lucide="search"]:hover {
+  color: var(--text-white);
+}
+
+/* AVATAR */
+.user-mini-avatar {
+  width: 34px;
+  height: 34px;
   border-radius: 50%;
+
   background: var(--secondary);
-  border: 1px solid var(--primary);
+  border: 2px solid transparent;
 
   background-size: cover;
   background-position: center;
+
   cursor: pointer;
-  transition: border-color 0.3s ease, transform 0.2s ease;
-}
-  .user-mini-avatar:hover {
-  border-color: var(--primary); /* Resalta con tu azul primario */
-  transform: scale(1.05); 
+  transition: all 0.25s ease;
 }
 
+.user-mini-avatar:hover {
+  border-color: var(--primary);
+  transform: scale(1.08);
+}
+
+.user-mini-avatar a {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
 
 /* ===================== HERO ===================== */
 .hero {
@@ -347,6 +373,7 @@ input:focus {
   border-radius: 999px;
   font-size: 12px;
 }
+
 /* ===================== PERFIL (NUEVO) ===================== */
 .profile_container {
   max-width: 1400px;
@@ -357,7 +384,8 @@ input:focus {
 .profile-header {
   display: flex;
   justify-content: space-between;
-  align-items: center; /* antes flex-start → esto lo arregla */
+  align-items: center;
+  /* antes flex-start → esto lo arregla */
   margin-bottom: 30px;
 }
 
@@ -422,10 +450,21 @@ input:focus {
   letter-spacing: 1px;
 }
 
-.stat-card.blue { border-left-color: var(--primary); }
-.stat-card.green { border-left-color: var(--accent-green); }
-.stat-card.orange { border-left-color: var(--status-pending); }
-.stat-card.purple { border-left-color: var(--accent-purple); }
+.stat-card.blue {
+  border-left-color: var(--primary);
+}
+
+.stat-card.green {
+  border-left-color: var(--accent-green);
+}
+
+.stat-card.orange {
+  border-left-color: var(--status-pending);
+}
+
+.stat-card.purple {
+  border-left-color: var(--accent-purple);
+}
 
 
 /* PESTAÑAS / TABS */
@@ -467,6 +506,7 @@ input:focus {
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: 25px;
 }
+
 .game-img {
   width: 100%;
   height: 280px;
@@ -475,6 +515,7 @@ input:focus {
   border-radius: 12px;
   position: relative;
 }
+
 .game-grid .game-card {
   width: 100%;
 }
@@ -488,6 +529,7 @@ input:focus {
   overflow: hidden;
   margin-bottom: 12px;
 }
+
 .tag {
   position: absolute;
   top: 10px;
@@ -498,6 +540,7 @@ input:focus {
   border-radius: 6px;
   font-size: 11px;
 }
+
 .status-tag {
   position: absolute;
   top: 10px;
@@ -529,7 +572,8 @@ input:focus {
   text-align: left;
 }
 
-input, select {
+input,
+select {
   width: 100%;
   padding: 12px;
   border-radius: 8px;
@@ -539,7 +583,9 @@ input, select {
   outline: none;
 }
 
-input:focus { border-color: var(--primary); }
+input:focus {
+  border-color: var(--primary);
+}
 
 .btn-primary {
   width: 100%;
@@ -553,7 +599,10 @@ input:focus { border-color: var(--primary); }
   transition: 0.3s;
 }
 
-.btn-primary:hover { filter: brightness(1.2); }
+.btn-primary:hover {
+  filter: brightness(1.2);
+}
+
 /* ===================== SECCIONES ===================== */
 .section {
   padding: 40px;
@@ -622,6 +671,7 @@ img {
   transform: translateY(-6px) scale(1.01);
   box-shadow: 0 10px 25px var(--secondary);
 }
+
 .game-img {
   height: 180px;
   background: var(--secondary);
@@ -680,13 +730,15 @@ img {
 #menu-toggle {
   display: none;
 }
+
 /* Mostrar menú desplegable cuando se active el checkbox */
-#menu-toggle:checked + .menu-icon + .nav-links {
+#menu-toggle:checked+.menu-icon+.nav-links {
   display: flex;
   flex-direction: column;
   position: absolute;
   top: 70px;
-  right: 40px;
+  left: 20px;
+  right: auto;
   background-color: var(--bg-card);
   border: 1px solid var(--secondary);
   padding: 20px;
@@ -771,6 +823,7 @@ img {
   font-size: 15px;
   margin-left: 47px;
 }
+
 /* ===================== FILTERS BAR ===================== */
 
 .filters-bar {
@@ -849,6 +902,7 @@ img {
 .filter-btn:active {
   transform: scale(0.96);
 }
+
 /* ===================== BOTÓN DELETE ===================== */
 .btn-delete {
   background-color: var(--secondary);
@@ -902,15 +956,19 @@ img {
 .text-green {
   color: var(--status-completed);
 }
+
 .text-blue-light {
   color: var(--status-playing);
 }
+
 .text-yellow {
   color: var(--status-pending);
 }
+
 .text-purple {
   color: var(--achievement-epic);
 }
+
 /* ===== GAME DETAIL ===== */
 
 .game-detail {
@@ -987,6 +1045,7 @@ img {
   background: var(--status-pending);
   color: var(--text-white);
 }
+
 /* HOVER SEGÚN ESTADO */
 .status-btn.playing:hover {
   background: var(--status-playing);
@@ -1007,6 +1066,7 @@ img {
   background: var(--status-abandoned);
   color: var(--text-white);
 }
+
 /* INFO */
 .game-info h1 {
   font-size: 2.5rem;
@@ -1050,6 +1110,7 @@ img {
   font-size: 14px;
   border-radius: 8px;
 }
+
 .reviews-section {
   margin-top: 2.5rem;
 }
@@ -1068,6 +1129,7 @@ img {
   text-align: center;
   color: var(--text-muted);
 }
+
 /* ===================== FOOTER ===================== */
 
 .main-footer {
@@ -1096,7 +1158,10 @@ img {
 
 /* MARCA */
 .brand-col {
-  flex: 2 1 280px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 15px;
 }
 
 .brand-col .logo {
@@ -1107,6 +1172,7 @@ img {
   font-weight: 800;
   color: var(--text-white);
   margin-bottom: 15px;
+  line-height: 1.2;
 }
 
 .brand-col p {
@@ -1114,7 +1180,10 @@ img {
   font-size: 14px;
   line-height: 1.6;
   margin-bottom: 20px;
+  margin-top: 10px;
+  max-width: 300px;
 }
+
 
 /* REDES */
 .social-links {
@@ -1278,6 +1347,7 @@ img {
 .btn-logout-refined:hover i {
   color: var(--text-white);
 }
+
 /* ===================== ADMIN TABS & ACTIONS ===================== */
 
 .admin-nav-container {
@@ -1365,6 +1435,7 @@ img {
   height: 18px;
   stroke-width: 2.5px;
 }
+
 /* === LISTA DE JUEGOS === */
 .game-list {
   display: flex;
@@ -1374,6 +1445,7 @@ img {
   gap: 20px;
   padding: 20px 40px;
 }
+
 /* === TARJETA DE JUEGO === */
 .game-item {
   background: var(--bg-card);
@@ -1397,6 +1469,7 @@ img {
   object-fit: cover;
   border-radius: 10px;
 }
+
 .achievements-section {
   margin-top: 40px;
 }
@@ -1410,7 +1483,7 @@ img {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  background: linear-gradient(90deg, var( --achievement-rare), var(--status-pending));
+  background: linear-gradient(90deg, var(--achievement-rare), var(--status-pending));
   padding: 15px;
   border-radius: 12px;
   color: var(--text-white);
@@ -1464,6 +1537,7 @@ img {
 .date {
   opacity: 0.8;
 }
+
 /* === DETALLES === */
 .game-details {
   flex: 1;
@@ -1731,6 +1805,7 @@ img {
     justify-content: center;
     padding: 15px;
   }
+
   .game-card {
     width: calc(50% - 10px);
   }
@@ -1774,6 +1849,7 @@ img {
   .social-links {
     justify-content: center;
   }
+
   .admin-header-v2 {
     flex-direction: column;
     padding: 24px;
@@ -1790,9 +1866,39 @@ img {
     width: 100%;
     justify-content: center;
   }
+
+
+  .navbar {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  /* HAMBURGUESA IZQUIERDA */
+  .menu-icon {
+    display: flex;
+    order: 1;
+  }
+
+  /* LOGO CENTRADO */
+  .logo {
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
+    margin: 0;
+  }
+
+  /* ICONOS DERECHA */
+  .nav-icons {
+    order: 3;
+  }
+
+  /* OCULTAR LINKS */
   .nav-links {
     display: none;
   }
+
 }
 
 @media (max-width: 480px) {
@@ -1811,6 +1917,7 @@ img {
 
   .brand-col {
     border-bottom: none;
+    gap: 20px;
   }
 
   .footer-col h3 {
@@ -1822,9 +1929,16 @@ img {
   .footer-col ul li a:hover {
     transform: none;
   }
+
   .footer-bottom {
     flex-direction: column-reverse;
     gap: 15px;
     padding: 20px;
+  }
+
+
+  .brand-col p {
+    font-size: 13px;
+    line-height: 1.5;
   }
 }
