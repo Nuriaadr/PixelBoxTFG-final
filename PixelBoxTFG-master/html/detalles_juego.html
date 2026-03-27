@@ -14,7 +14,6 @@
 </head>
 
 <body>
-
     <header class="navbar">
 
 
@@ -38,30 +37,108 @@
 
     </header>
 
+    <section class="game-detail">
 
-    <section class="hero">
+        <div class="game-banner">
+            <img src="../img/img1.webp" alt="Stellar Odyssey" loading="lazy">
+        </div>
 
-        <div class="hero-content">
+        <div class="game-actions-card">
 
-            <span class="badge">Destacado 2025</span>
+            <p class="label">Tu valoración</p>
+            <div class="stars">
+                ★★★★★
+            </div>
 
-            <h1>Cyberpunk Chronicles</h1>
+            <p class="label">Estado</p>
 
-            <p>
-                Sumérgete en una ciudad futurista donde la tecnología y la humanidad colisionan.
-                Toma decisiones que darán forma al destino de Night City.
+            <div class="status-grid">
+                <button class="status-btn playing">
+                    <i data-lucide="play"></i> Jugando
+                </button>
+
+                <button class="status-btn completed">
+                    <i data-lucide="check"></i> Completado
+                </button>
+
+                <button class="status-btn pending">
+                    <i data-lucide="clock"></i> Pendiente
+                </button>
+
+                <button class="status-btn abandoned">
+                    <i data-lucide="x"></i> Abandonado
+                </button>
+            </div>
+
+        </div>
+
+        <div class="game-info">
+
+            <div class="meta">
+                <span class="year">2025</span>
+                <span class="rating">⭐ 4.3 / 5</span>
+            </div>
+
+            <h1>Stellar Odyssey</h1>
+
+            <p class="description">
+                Explora galaxias desconocidas, combate amenazas alienígenas y descubre los secretos del universo en esta
+                aventura espacial.
             </p>
 
-            <div class="rating">
-                ⭐ 4.5
-                <span>RPG</span>
-                <span>Acción</span>
-                <span>Open World</span>
+            <div class="info-grid">
+
+                <div class="info-card">
+                    <p class="label">Desarrollador</p>
+                    <h3>Cosmos Interactive</h3>
+                </div>
+
+                <div class="info-card">
+                    <p class="label">Géneros</p>
+                    <h3>Acción, Ciencia Ficción, Shooter</h3>
+                </div>
+
+                <div class="info-card">
+                    <p class="label">Plataformas</p>
+                    <h3>PC, PlayStation 5, Xbox Series X</h3>
+                </div>
+
             </div>
 
-            <div class="hero-buttons">
-                <button class="btn-primary">Ver detalles</button>
-                <button class="btn-secondary">Agregar a biblioteca</button>
+        </div>
+        <div class="achievements-section">
+
+            <h2 class="achievements-title">
+                 Logros (1/1)
+            </h2>
+
+            <div class="achievement-card">
+
+                <img src="../img/img1.webp" alt="logro" class="achievement-img">
+
+                <div class="achievement-info">
+                    <h3>Rey de Eldoria</h3>
+                    <p>Completa todas las misiones principales de Stellar Odyssey.</p>
+                    <span class="rarity">LEGENDARY</span>
+                </div>
+
+                <div class="achievement-meta">
+                    <i data-lucide="award" class="trophy"></i>
+                    <span class="date">2026-02-05</span>
+                </div>
+
+            </div>
+
+        </div>
+        <div class="reviews-section">
+
+            <div class="reviews-header">
+                <h2>Reseñas de la comunidad</h2>
+                <button class="btn-primary btn-review">Escribir reseña</button>
+            </div>
+
+            <div class="empty-reviews">
+                Aún no hay reseñas. ¡Sé el primero en escribir una!
             </div>
 
         </div>
@@ -69,112 +146,6 @@
     </section>
 
 
-    <section class="section">
-
-        <h2 class="section-title">
-            <i data-lucide="trending-up"></i>
-            Tendencias
-        </h2>
-
-        <div class="card-grid">
-
-            <div class="game-card">
-
-                <a href="detalles_juego.html">
-                    <div class="game-img">
-                        <img src="../img/img1.webp" alt="Game">
-                    </div>
-                    <h3>Stellar Odyssey</h3>
-                    <span>2025</span>
-                </a>
-            </div>
-
-            <div class="game-card">
-
-                <a href="detalles_juego.html">
-                    <div class="game-img">
-                        <img src="../img/img2.webp" alt="Game">
-                    </div>
-                    <h3>Shadow Castle</h3>
-                    <span>2023</span>
-                </a>
-            </div>
-
-            <div class="game-card">
-
-                <a href="detalles_juego.html">
-                    <div class="game-img">
-                        <img src="../img/img4.webp" alt="Game">
-                    </div>
-                    <h3>Velocity Racing</h3>
-                    <span>2025</span>
-                </a>
-            </div>
-
-            <div class="game-card">
-
-                <a href="detalles_juego.html">
-                    <div class="game-img">
-                        <img src="../img/img5.webp" alt="Game">
-                    </div>
-                    <h3>Nightmare Manor</h3>
-                    <span>2024</span>
-                </a>
-            </div>
-
-        </div>
-
-    </section>
-
-
-    <section class="section">
-
-        <h2 class="section-title">
-            <i data-lucide="users"></i>
-            Reseñas recientes de la comunidad
-        </h2>
-
-        <div class="review-card">
-
-            <div class="review-img"> <img src="../img/user2.webp" alt="User"></div>
-
-            <div class="review-content">
-                <h3>Cyberpunk Chronicles</h3>
-                <span class="review-meta">@gamer_elite · 2026-02-08</span>
-                <p>
-                    Una obra maestra del cyberpunk. La narrativa es impresionante y cada decisión
-                    tiene consecuencias reales. El mundo abierto es increíblemente detallado.
-                </p>
-                <span class="review-likes">234 personas encontraron útil esta reseña</span>
-            </div>
-
-            <div class="review-rating">
-                ⭐⭐⭐⭐⭐
-            </div>
-
-        </div>
-
-        <div class="review-card">
-
-            <div class="review-img"> <img src="../img/user1.webp" alt="User"></div>
-
-            <div class="review-content">
-                <h3>Legends of Eldoria</h3>
-                <span class="review-meta">@indie_lover · 2026-02-05</span>
-                <p>
-                    El mejor RPG que he jugado en años. La historia te atrapa desde el primer momento
-                    y los personajes son inolvidables. 120 horas y no me cansé ni un segundo.
-                </p>
-                <span class="review-likes">567 personas encontraron útil esta reseña</span>
-            </div>
-
-            <div class="review-rating">
-                ⭐⭐⭐⭐⭐
-            </div>
-
-        </div>
-
-    </section>
     <footer class="main-footer">
         <div class="footer-container">
             <div class="footer-col brand-col">
@@ -189,7 +160,8 @@
                         <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24"
                             fill="currentColor">
                             <path
-                                d="M24 4.557c-.883.392-1.832.656-2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
+                                d="M24 4.557c-.883.392-1.832.656
+                                -2.828.775 1.017-.609 1.798-1.574 2.165-2.724-.951.564-2.005.974-3.127 1.195-.897-.957-2.178-1.555-3.594-1.555-3.179 0-5.515 2.966-4.797 6.045-4.091-.205-7.719-2.165-10.148-5.144-1.29 2.213-.669 5.108 1.523 6.574-.806-.026-1.566-.247-2.229-.616-.054 2.281 1.581 4.415 3.949 4.89-.693.188-1.452.232-2.224.084.626 1.956 2.444 3.379 4.6 3.419-2.07 1.623-4.678 2.348-7.29 2.04 2.179 1.397 4.768 2.212 7.548 2.212 9.142 0 14.307-7.721 13.995-14.646.962-.695 1.797-1.562 2.457-2.549z" />
                         </svg>
                     </a>
 
