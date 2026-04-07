@@ -148,8 +148,7 @@ document.addEventListener("DOMContentLoaded", () => {
       gameCard.id = `game-${game.nombre}`;
       gameCard.innerHTML = `
         <a href="detalles_juego.html?${params}">
-          <div class="game-img" style="background-image: url('${game.imagen}')">
-            <span class="tag">${game.estado.charAt(0).toUpperCase() + game.estado.slice(1)}</span>
+          <div class="game-img" style="background-image: url('${game.imagen}')">      
           </div>
           <h3>${game.nombre}</h3>
           <p>2025</p>

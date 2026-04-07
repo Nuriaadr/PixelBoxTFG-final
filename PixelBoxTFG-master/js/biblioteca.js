@@ -133,8 +133,6 @@ document.addEventListener("DOMContentLoaded", () => {
   function guardarBiblioteca() {
     localStorage.setItem("biblioteca", JSON.stringify(juegos));
   }
-
-  // Función para renderizar juegos dinámicamente desde el array
   function renderizarJuegos() {
     const container = document.querySelector(".card-grid");
     
@@ -174,17 +172,37 @@ document.addEventListener("DOMContentLoaded", () => {
   function agregarEventListenersEliminar() {
     document.querySelectorAll(".delete-game").forEach((btn) => {
       btn.addEventListener("click", (e) => {
+        e.preventDefault();
         e.stopPropagation();
 
         let card = btn.closest(".game-card");
-        let titulo = card.querySelector("h3").textContent;
+        if (!card) {
+          console.error("No se encontró la tarjeta del juego");
+          return;
+        }
+
+        let titulo = card.querySelector("h3")?.textContent;
+        if (!titulo) {
+          console.error("No se pudo obtener el título del juego");
+          return;
+        }
 
         juegoAEliminar = { card, titulo };
 
-        document.getElementById("modalText").textContent =
-          `¿Seguro que quieres eliminar "${titulo}"?`;
+        console.log("Abriendo modal para eliminar:", titulo);
 
-        document.getElementById("modal").classList.remove("hidden");
+        if (modalText) {
+          modalText.textContent = `¿Seguro que quieres eliminar "${titulo}"?`;
+        }
+
+        if (modal) {
+          // Forzar que se muestre el modal
+          modal.style.display = "flex";
+          modal.classList.remove("hidden");
+          console.log("Modal abierto exitosamente");
+        } else {
+          console.error("Modal no encontrado en el DOM");
+        }
       });
     });
   }
@@ -294,33 +312,60 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 
   // ======================
-  // MODAL
+  // MODAL DE ELIMINACIÓN
   // ======================
-  document.getElementById("confirmDelete").addEventListener("click", () => {
-    if (juegoAEliminar) {
-      juegoAEliminar.card.remove();
+  const confirmDeleteBtn = document.getElementById("confirmDelete");
+  const cancelDeleteBtn = document.getElementById("cancelDelete");
+  const modal = document.getElementById("modal");
+  const modalText = document.getElementById("modalText");
+  
+  console.log("Elementos del modal encontrados:", { modal, modalText, confirmDeleteBtn, cancelDeleteBtn });
 
-      juegos = juegos.filter((j) => j.titulo !== juegoAEliminar.titulo);
-      guardarBiblioteca(); // Guardar cambios en localStorage
+  // Click en botón confirmar
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener("click", () => {
+      console.log("Confirmando eliminación");
+      if (juegoAEliminar) {
+        // Eliminar del array
+        juegos = juegos.filter((j) => j.titulo !== juegoAEliminar.titulo);
+        guardarBiblioteca();
+        
+        // Re-renderizar
+        renderizarJuegos();
+        aplicarFiltro();
+      }
 
-      renderizarJuegos(); // Renderizar de nuevo
-      aplicarFiltro(); // Aplicar filtro
-      actualizarContadores();
-    }
+      // Cerrar modal
+      if (modal) {
+        modal.style.display = "none";
+        modal.classList.add("hidden");
+      }
+      juegoAEliminar = null;
+    });
+  }
 
-    document.getElementById("modal").classList.add("hidden");
-  });
+  // Click en botón cancelar
+  if (cancelDeleteBtn) {
+    cancelDeleteBtn.addEventListener("click", () => {
+      console.log("Cancelando eliminación");
+      if (modal) {
+        modal.style.display = "none";
+        modal.classList.add("hidden");
+      }
+      juegoAEliminar = null;
+    });
+  }
 
-  document.getElementById("cancelDelete").addEventListener("click", () => {
-    document.getElementById("modal").classList.add("hidden");
-  });
-
-  // cerrar al hacer click fuera
-  document.getElementById("modal").addEventListener("click", (e) => {
-    if (e.target.id === "modal") {
-      e.target.classList.add("hidden");
-    }
-  });
+  // Click fuera del modal
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) {
+        modal.style.display = "none";
+        modal.classList.add("hidden");
+        juegoAEliminar = null;
+      }
+    });
+  }
 
   // ======================
   // INICIAR
