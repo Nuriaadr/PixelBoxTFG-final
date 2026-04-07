@@ -33,7 +33,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // JUEGOS Y LOGROS
   // ======================
-  const gamesData = [
+  // Datos por defecto con logros
+  let juegosDefault = [
     {
       nombre: "Legends of Eldoria",
       imagen: "../img/img1.webp",
@@ -81,10 +82,43 @@ document.addEventListener("DOMContentLoaded", () => {
     },
   ];
 
-  const games = [
-    { titulo: "Cyberpunk Chronicles", estado: "jugando" },
-    { titulo: "Velocity Racing", estado: "jugando" },
-  ];
+  // Cargar juegos de la biblioteca (localStorage)
+  let bibliotecaGuardada = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+  
+  // Eliminar duplicados de la biblioteca
+  let bibliotecaLimpia = [];
+  let titulosSeen = new Set();
+  
+  bibliotecaGuardada.forEach((juego) => {
+    if (!titulosSeen.has(juego.titulo)) {
+      bibliotecaLimpia.push(juego);
+      titulosSeen.add(juego.titulo);
+    }
+  });
+  
+  // Guardar la biblioteca limpia de nuevo
+  if (bibliotecaLimpia.length !== bibliotecaGuardada.length) {
+    console.log(`Se eliminaron ${bibliotecaGuardada.length - bibliotecaLimpia.length} duplicados`);
+    localStorage.setItem("biblioteca", JSON.stringify(bibliotecaLimpia));
+  }
+  
+  console.log("Juegos en biblioteca (después de limpiar):", bibliotecaLimpia.length, bibliotecaLimpia);
+  
+  // Construcción de gamesData: usar los de biblioteca si existen, si no usar los por defecto
+  let gamesData = bibliotecaLimpia.length > 0 
+    ? bibliotecaLimpia.map((juego) => {
+        // Buscar logros en los juegos por defecto
+        const juegoDefault = juegosDefault.find((j) => j.nombre === juego.titulo);
+        return {
+          nombre: juego.titulo,
+          imagen: juego.imagen || "../img/img1.webp",
+          estado: juego.estado || "pendiente",
+          logros: juego.logros && juego.logros.length > 0 ? juego.logros : (juegoDefault?.logros || [])
+        };
+      })
+    : juegosDefault;
+  
+  console.log("GamesData después de mapear:", gamesData);
 
   // Elementos del DOM
   const tabs = document.querySelectorAll(".tab-btn");

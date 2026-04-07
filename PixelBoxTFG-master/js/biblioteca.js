@@ -84,8 +84,25 @@ document.addEventListener("DOMContentLoaded", () => {
   // Obtener juegos de localStorage
   let bibliotecaGuardada = JSON.parse(localStorage.getItem("biblioteca") || "[]");
 
+  // Eliminar duplicados
+  let bibliotecaLimpia = [];
+  let titulosSeen = new Set();
+  
+  bibliotecaGuardada.forEach((juego) => {
+    if (!titulosSeen.has(juego.titulo)) {
+      bibliotecaLimpia.push(juego);
+      titulosSeen.add(juego.titulo);
+    }
+  });
+  
+  // Guardar la biblioteca limpia si había duplicados
+  if (bibliotecaLimpia.length !== bibliotecaGuardada.length) {
+    console.log(`Se eliminaron ${bibliotecaGuardada.length - bibliotecaLimpia.length} duplicados`);
+    localStorage.setItem("biblioteca", JSON.stringify(bibliotecaLimpia));
+  }
+
   // Combinar juegos: primero los de la biblioteca, luego los por defecto
-  let juegos = [...bibliotecaGuardada];
+  let juegos = [...bibliotecaLimpia];
   
   // Agregar juegos por defecto que no estén en biblioteca
   juegosDefault.forEach((juegoDefault) => {
