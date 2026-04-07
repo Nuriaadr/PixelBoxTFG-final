@@ -30,57 +30,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ======================
+
   // JUEGOS Y LOGROS
   // ======================
-  // Datos por defecto con logros
-  let juegosDefault = [
-    {
-      nombre: "Legends of Eldoria",
-      imagen: "../img/img1.webp",
-      estado: "completado",
-      logros: [
-        {nombre: "Explorador del Mundo", descripcion: "Descubre todos los lugares secretos", rarity: "EPIC"},
-        {nombre: "Maestro de Combate", descripcion: "Vence 100 enemigos", rarity: "LEGENDARY"}
-      ]
-    },
-    {
-      nombre: "Dragon Quest Online",
-      imagen: "../img/img2.webp",
-      estado: "completado",
-      logros: [
-        {nombre: "Cazador de Dragones", descripcion: "Derrota 50 dragones", rarity: "EPIC"},
-        {nombre: "Héroe del Reino", descripcion: "Completa la historia principal", rarity: "LEGENDARY"}
-      ]
-    },
-    {
-      nombre: "Cyberpunk Chronicles",
-      imagen: "../img/img4.webp",
-      estado: "jugando",
-      logros: [
-        {nombre: "Hacker Maestro", descripcion: "Hackea 20 terminales", rarity: "EPIC"},
-        {nombre: "Nómada Urbano", descripcion: "Visita todos los distritos", rarity: "EPIC"}
-      ]
-    },
-    {
-      nombre: "Velocity Racing",
-      imagen: "../img/img4.webp",
-      estado: "jugando",
-      logros: [
-        {nombre: "Piloto Velocista", descripcion: "Completa 10 carreras", rarity: "RARE"},
-        {nombre: "Campeón de Circuitos", descripcion: "Gana un campeonato", rarity: "EPIC"}
-      ]
-    },
-    {
-      nombre: "Nightmare Manor",
-      imagen: "../img/img1.webp",
-      estado: "completado",
-      logros: [
-        {nombre: "Superviviente", descripcion: "Sobrevive la noche completa", rarity: "RARE"},
-        {nombre: "Desvelador de Secretos", descripcion: "Descubre todos los misterios", rarity: "LEGENDARY"}
-      ]
-    },
-  ];
+  // Los juegos se cargan de GAMES_DATA (centralizado)
+  // Se manejan estados de "completado", "jugando", "por_jugar"
 
   // Cargar juegos de la biblioteca (localStorage)
   let bibliotecaGuardada = JSON.parse(localStorage.getItem("biblioteca") || "[]");
@@ -104,19 +58,19 @@ document.addEventListener("DOMContentLoaded", () => {
   
   console.log("Juegos en biblioteca (después de limpiar):", bibliotecaLimpia.length, bibliotecaLimpia);
   
-  // Construcción de gamesData: usar los de biblioteca si existen, si no usar los por defecto
+  // Construcción de gamesData: usar los de biblioteca si existen, si no usar GAMES_DATA
   let gamesData = bibliotecaLimpia.length > 0 
     ? bibliotecaLimpia.map((juego) => {
-        // Buscar logros en los juegos por defecto
-        const juegoDefault = juegosDefault.find((j) => j.nombre === juego.titulo);
+        // Buscar información completa en GAMES_DATA
+        const juegoData = GAMES_DATA.find((j) => j.nombre === juego.titulo);
         return {
           nombre: juego.titulo,
           imagen: juego.imagen || "../img/img1.webp",
           estado: juego.estado || "pendiente",
-          logros: juego.logros && juego.logros.length > 0 ? juego.logros : (juegoDefault?.logros || [])
+          logros: juego.logros && juego.logros.length > 0 ? juego.logros : (juegoData?.logros || [])
         };
       })
-    : juegosDefault;
+    : GAMES_DATA;
   
   console.log("GamesData después de mapear:", gamesData);
 
@@ -134,8 +88,8 @@ document.addEventListener("DOMContentLoaded", () => {
     gameGrid.innerHTML = "";
 
     gamesData.forEach((game) => {
-      const juegoDefault = juegosDefault.find((j) => j.nombre === game.nombre);
-      const año = juegoDefault?.año || 2025;
+      const juegoData = GAMES_DATA.find((j) => j.nombre === game.nombre);
+      const año = juegoData?.año || 2025;
       
       const params = new URLSearchParams({
         titulo: game.nombre,

@@ -216,6 +216,26 @@
         </div>
     </footer>
 
+    <div id="searchModal" class="modal hidden">
+        <div class="modal-content search-modal-content">
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Busca un juego por nombre..."
+                    class="search-input"
+                >
+                <button id="closeSearchModal" class="search-close-btn" title="modal busqueda">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div id="searchResults" class="search-results">
+                <p class="search-placeholder">Escribe para buscar juegos...</p>
+            </div>
+        </div>
+    </div>
+
     <div id="modal" class="modal hidden">
         <div class="modal-content">
             <h3 id="modalTitle">Título</h3>
@@ -224,6 +244,8 @@
             <button id="closeModal" class="btn-primary">Aceptar</button>
         </div>
     </div>
+    <script src="../js/games.js"></script>
+    <script src="../js/search.js"></script>
     <script src="../js/inicio.js"></script>
 
 </body>

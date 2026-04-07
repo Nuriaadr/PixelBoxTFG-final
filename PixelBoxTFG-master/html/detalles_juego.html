@@ -46,6 +46,26 @@
         </button>
     </header>
 
+    <div id="searchModal" class="modal hidden">
+        <div class="modal-content search-modal-content">
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Busca un juego por nombre..."
+                    class="search-input"
+                >
+                <button id="closeSearchModal" class="search-close-btn" title="modal busqueda">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div id="searchResults" class="search-results">
+                <p class="search-placeholder">Escribe para buscar juegos...</p>
+            </div>
+        </div>
+    </div>
+
     <section class="game-detail">
 
         <div class="game-banner">
@@ -290,6 +310,8 @@
     <script>
         lucide.createIcons();
     </script>
+    <script src="../js/games.js"></script>
+    <script src="../js/search.js"></script>
     <script src="../js/review_modal.js"></script>
     <script src="../js/detalle_juego.js"></script>
 

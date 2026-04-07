@@ -76,176 +76,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // DATOS
   // ======================
-  // Juegos por defecto con logros
-  const juegosDefault = [
-    {
-      titulo: "Legends of Eldoria",
-      imagen: "../img/space.webp",
-      año: 2024,
-      descripcion: "Una aventura épica en un mundo mágico",
-      rating: 4.5,
-      estado: "completado",
-      logros: [
-        {
-          nombre: "Explorador del Mundo",
-          descripcion: "Descubre todos los lugares secretos",
-          rarity: "EPIC",
-        },
-        {
-          nombre: "Maestro de Combate",
-          descripcion: "Vence 100 enemigos",
-          rarity: "LEGENDARY",
-        },
-      ],
-    },
-    {
-      titulo: "Dragon Quest Online",
-      imagen: "../img/img5.webp",
-      año: 2025,
-      descripcion: "Un MMORPG épico con miles de aventuras",
-      rating: 4.8,
-      estado: "completado",
-      logros: [
-        {
-          nombre: "Cazador de Dragones",
-          descripcion: "Derrota 50 dragones",
-          rarity: "EPIC",
-        },
-        {
-          nombre: "Héroe del Reino",
-          descripcion: "Completa la historia principal",
-          rarity: "LEGENDARY",
-        },
-      ],
-    },
-    {
-      titulo: "Velocity Racing",
-      imagen: "../img/img4.webp",
-      año: 2025,
-      descripcion: "Carreras de velocidad en circuitos futuristas",
-      rating: 4.2,
-      estado: "jugando",
-      logros: [
-        {
-          nombre: "Piloto Velocista",
-          descripcion: "Completa 10 carreras",
-          rarity: "RARE",
-        },
-        {
-          nombre: "Campeón de Circuitos",
-          descripcion: "Gana un campeonato",
-          rarity: "EPIC",
-        },
-      ],
-    },
-    {
-      titulo: "Cyberpunk Chronicles",
-      imagen: "../img/img4.webp",
-      año: 2025,
-      descripcion: "Vive en una metrópolis futurista llena de peligros",
-      rating: 4.6,
-      estado: "jugando",
-      logros: [
-        {
-          nombre: "Hacker Maestro",
-          descripcion: "Hackea 20 terminales",
-          rarity: "EPIC",
-        },
-        {
-          nombre: "Nómada Urbano",
-          descripcion: "Visita todos los distritos",
-          rarity: "EPIC",
-        },
-      ],
-    },
-    {
-      titulo: "Nightmare Manor",
-      imagen: "../img/img1.webp",
-      año: 2024,
-      descripcion: "Terror psicológico en una mansión embrujada",
-      rating: 4.1,
-      estado: "completado",
-      logros: [
-        {
-          nombre: "Superviviente",
-          descripcion: "Sobrevive la noche completa",
-          rarity: "RARE",
-        },
-        {
-          nombre: "Desvelador de Secretos",
-          descripcion: "Descubre todos los misterios",
-          rarity: "LEGENDARY",
-        },
-      ],
-    },
-    {
-      titulo: "Stellar Odyssey",
-      imagen: "../img/img2.webp",
-      año: 2025,
-      descripcion: "Explora galaxias desconocidas en una aventura espacial",
-      rating: 4.3,
-      estado: "pendiente",
-      logros: [
-        {
-          nombre: "Explorador Galáctico",
-          descripcion: "Explora 50 planetas",
-          rarity: "EPIC",
-        },
-        {
-          nombre: "Conquistador del Espacio",
-          descripcion: "Completa todas las misiones",
-          rarity: "LEGENDARY",
-        },
-      ],
-    },
-    {
-      titulo: "Shadow Castle",
-      imagen: "../img/puzzle.webp",
-      año: 2023,
-      descripcion: "Un castillo lleno de sombras y secretos oscuros",
-      rating: 3.9,
-      estado: "pendiente",
-      logros: [
-        {
-          nombre: "Explorador de Castillos",
-          descripcion: "Descubre todas las salas",
-          rarity: "RARE",
-        },
-        {
-          nombre: "Vencedor de Oscuridad",
-          descripcion: "Derrota el jefe final",
-          rarity: "EPIC",
-        },
-      ],
-    },
-    {
-      titulo: "Pixel Warriors",
-      imagen: "../img/zombie.webp",
-      año: 2023,
-      descripcion: "Batalla en un mundo pixelado retro",
-      rating: 4.0,
-      estado: "abandonado",
-      logros: [
-        {
-          nombre: "Guerrero Pixel",
-          descripcion: "Vence 100 enemigos",
-          rarity: "RARE",
-        },
-        {
-          nombre: "Campeón de Batallas",
-          descripcion: "Gana 50 batallas",
-          rarity: "EPIC",
-        },
-      ],
-    },
-  ];
+  // Los juegos se cargan de GAMES_DATA (centralizado)
+  // Se manejan estados de "completado", "jugando", "por_jugar"
 
   let juegosGuardados = JSON.parse(localStorage.getItem("biblioteca") || "[]");
 
   // Función para asegurar estructura correcta
   function normalizarJuego(juego) {
     return {
-      titulo: juego.titulo || "Sin título",
+      titulo: juego.nombre || juego.titulo || "Sin título",
       imagen: juego.imagen || "../img/img1.webp",
       año: juego.año || 2025,
       descripcion: juego.descripcion || "",
@@ -258,9 +97,9 @@ document.addEventListener("DOMContentLoaded", () => {
   // Normalizar TODOS los juegos guardados
   let juegos = juegosGuardados.map(normalizarJuego);
 
-  // Si está vacío, usar default
+  // Si está vacío, usar GAMES_DATA como valor por defecto
   if (juegos.length === 0) {
-    juegos = juegosDefault.map(normalizarJuego);
+    juegos = GAMES_DATA.map(normalizarJuego);
     localStorage.setItem("biblioteca", JSON.stringify(juegos));
   }
 

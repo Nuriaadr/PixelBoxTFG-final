@@ -36,52 +36,8 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // JUEGOS DE TENDENCIAS
   // ======================
-  const tendenciasData = [
-    {
-      nombre: "Stellar Odyssey",
-      imagen: "../img/img1.webp",
-      año: 2025,
-      descripcion: "Explora galaxias desconocidas en una aventura espacial",
-      rating: 4.3,
-      logros: [
-        { nombre: "Viajero Estelar", descripcion: "Descubre 10 galaxias", rarity: "RARE" },
-        { nombre: "Explorador del Universo", descripcion: "Completa la odyssey galáctica", rarity: "LEGENDARY" }
-      ]
-    },
-    {
-      nombre: "Shadow Castle",
-      imagen: "../img/img2.webp",
-      año: 2023,
-      descripcion: "Un castillo lleno de sombras y secretos oscuros",
-      rating: 3.9,
-      logros: [
-        { nombre: "Cazador de Sombras", descripcion: "Derrota 15 enemigos sombra", rarity: "RARE" },
-        { nombre: "Guardián del Castillo", descripcion: "Desbloquea todos los secretos", rarity: "EPIC" }
-      ]
-    },
-    {
-      nombre: "Velocity Racing",
-      imagen: "../img/img4.webp",
-      año: 2025,
-      descripcion: "Carreras de velocidad en circuitos futuristas",
-      rating: 4.2,
-      logros: [
-        { nombre: "Piloto Velocista", descripcion: "Completa 10 carreras", rarity: "RARE" },
-        { nombre: "Campeón de Circuitos", descripcion: "Gana un campeonato", rarity: "EPIC" }
-      ]
-    },
-    {
-      nombre: "Nightmare Manor",
-      imagen: "../img/img1.webp",
-      año: 2024,
-      descripcion: "Terror psicológico en una mansión embrujada",
-      rating: 4.1,
-      logros: [
-        { nombre: "Superviviente", descripcion: "Sobrevive la noche completa", rarity: "RARE" },
-        { nombre: "Desvelador de Secretos", descripcion: "Descubre todos los misterios", rarity: "LEGENDARY" }
-      ]
-    }
-  ];
+  // Seleccionar juegos de tendencia de GAMES_DATA
+  const tendenciasData = GAMES_DATA.slice(4, 8); // Últimos 4 juegos como tendencias
 
   // Renderizar juegos de tendencias dinámicamente
   function renderTrendingGames() {

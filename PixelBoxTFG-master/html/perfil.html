@@ -48,7 +48,25 @@
             <i data-lucide="log-out"></i>
         </button>
     </header>
+    <div id="searchModal" class="modal hidden">
+        <div class="modal-content search-modal-content">
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Busca un juego por nombre..."
+                    class="search-input"
+                >
+                <button id="closeSearchModal" class="search-close-btn" title="modal busqueda">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
 
+            <div id="searchResults" class="search-results">
+                <p class="search-placeholder">Escribe para buscar juegos...</p>
+            </div>
+        </div>
+    </div>
     <main class="profile_container">
         <header class="profile-header">
             <div class="profile-info">
@@ -190,7 +208,9 @@
         <button id="closeFollowModal">Aceptar</button>
     </div>
 </div>
-<script src="../js/perfil.js"></script>
+<script src="../js/games.js"></script>
+    <script src="../js/search.js"></script>
+    <script src="../js/perfil.js"></script>
 
 </body>
 

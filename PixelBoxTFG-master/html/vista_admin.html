@@ -43,12 +43,36 @@
         <div class="tab-separator"></div>
 
         <div class="action-bar">
+            <div class="nav-icons">
+                <i data-lucide="search"></i>
+            </div>
             <button class="btn-add-flat">
                 <i data-lucide="plus"></i>
                 <span>Añadir Juego</span>
             </button>
         </div>
     </div>
+
+    <div id="searchModal" class="modal hidden">
+        <div class="modal-content search-modal-content">
+            <div class="search-input-wrapper">
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Busca un juego por nombre..."
+                    class="search-input"
+                >
+                <button id="closeSearchModal" class="search-close-btn" title="modal busqueda">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+
+            <div id="searchResults" class="search-results">
+                <p class="search-placeholder">Escribe para buscar juegos...</p>
+            </div>
+        </div>
+    </div>
+
     <section class="game-list">
 
         <article class="game-item">
@@ -176,6 +200,8 @@
 
 </body>
 
+<script src="../js/games.js"></script>
+<script src="../js/search.js"></script>
 <script src="../js/admin.js"></script>
 
 </html>
