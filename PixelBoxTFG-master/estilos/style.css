@@ -1914,6 +1914,13 @@ img {
 .hidden {
   display: none;
 }
+
+/*Perfil*/
+.btn-follow.active-follow {
+  background-color: var(--status-completed);
+  color: var(--text-white);
+}
+
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 1024px) {
   .stats-grid .card {

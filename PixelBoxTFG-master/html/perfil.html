@@ -36,13 +36,17 @@
             <a href="biblioteca.html">Mi Biblioteca</a>
         </nav>
 
+
         <div class="nav-icons">
             <i data-lucide="search"></i>
-
-            <div class="user-mini-avatar">
+            <div class="user-mini-avatar" id="userAvatar">
                 <span id="userName"></span>
             </div>
         </div>
+
+        <button id="logoutBtn" class="btn-secondary" title="Cerrar sesión">
+            <i data-lucide="log-out"></i>
+        </button>
     </header>
 
     <main class="profile_container">
@@ -87,7 +91,7 @@
             <span class="tab-btn active" id="tab-jugando">Jugando (2)</span>
             <span class="tab-btn" id="tab-completados">Completados (3)</span>
             <span class="tab-btn" id="tab-pendientes">Pendientes (3)</span>
-            <span class="tab-btn" id="tab-favoritos">Favoritos (3)</span>
+            <span class="tab-btn" id="tab-abandonados">Abandonados (0)</span>
             <span class="tab-btn" id="tab-logros">Logros (8)</span>
         </div>
 
@@ -105,6 +109,25 @@
                 </div>
                 <h3>Velocity Racing</h3>
                 <p>2025</p>
+            </div>
+        </section>
+
+        <section id="achievements-section" class="hidden">
+            <div class="achievement-card">
+
+                <img src="../img/img2.webp" alt="logro" class="achievement-img">
+
+                <div class="achievement-info">
+                    <h3>Explorador Galáctico</h3>
+                    <p>Descubre todos los planetas en Stellar Odyssey.</p>
+                    <span class="rarity">EPIC</span>
+                </div>
+
+                <div class="achievement-meta">
+                    <i data-lucide="map" class="trophy"></i>
+                    <span class="date">2026-01-12</span>
+                </div>
+
             </div>
         </section>
     </main>
@@ -189,7 +212,13 @@
     </div>
 </footer>
 
-<script src="../js/script.js"></script>
+<div id="followModal" class="modal hidden">
+    <div class="modal-content">
+        <p>Ahora sigues a este usuario</p>
+        <button id="closeFollowModal">Aceptar</button>
+    </div>
+</div>
+<script src="../js/perfil.js"></script>
 
 </body>
 
