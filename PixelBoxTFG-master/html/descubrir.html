@@ -32,15 +32,16 @@
             <a href="descubrir.html">Descubrir</a>
             <a href="biblioteca.html">Mi Biblioteca</a>
         </nav>
-
         <div class="nav-icons">
             <i data-lucide="search"></i>
-            <div class="user-mini-avatar">
-                <div class="user-mini-avatar">
-                    <span id="userName"></span>
-                </div>
+            <div class="user-mini-avatar" id="userAvatar">
+                <span id="userName"></span>
             </div>
         </div>
+
+        <button id="logoutBtn" class="btn-secondary" title="Cerrar sesión">
+            <i data-lucide="log-out"></i>
+        </button>
     </header>
 
     <section class="section">
@@ -98,11 +99,11 @@
     <section class="section">
 
         <div class="results-header">
-            <span>8 juegos</span>
-            <a href="descubrir.html" class="link-primary">Limpiar filtros</a>
+            <span id="gamesCount">8 juegos</span>
+            <a href="#" id="resetFilters" class="link-primary">Limpiar filtros</a>
         </div>
 
-        <div class="card-grid">
+        <div class="card-grid" id="gamesContainer">
             <div class="game-card">
 
                 <a href="detalles_juego.html">
@@ -270,9 +271,7 @@
         </div>
     </footer>
 
-    <script>
-        lucide.createIcons();
-    </script>
+    <script src="../js/descubrir.js"></script>
 
 </body>
 
