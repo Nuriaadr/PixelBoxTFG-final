@@ -280,8 +280,6 @@ document.addEventListener("DOMContentLoaded", () => {
       const logrosJSON = juego.logros ? JSON.stringify(juego.logros) : "[]";
       const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.titulo)}&imagen=${encodeURIComponent(juego.imagen)}&año=${encodeURIComponent(juego.año)}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&logros=${encodeURIComponent(logrosJSON)}`;
 
-      console.log(`Generando URL para ${juego.titulo}:`, href);
-      console.log(`Logros para ${juego.titulo}:`, juego.logros);
 
       card.innerHTML = `
         <i class="delete-game" data-lucide="x"></i>
@@ -317,15 +315,11 @@ document.addEventListener("DOMContentLoaded", () => {
 
         if (modalText) {
           modalText.textContent = `¿Seguro que quieres eliminar "${titulo}"?`;
-          console.log("Modal text actualizado:", modalText.textContent);
         }
 
         if (modal) {
-          console.log("Abriendo modal...");
           modal.classList.remove("hidden");
           modal.style.display = "flex";
-          console.log("Modal clases:", modal.className);
-          console.log("Modal display:", getComputedStyle(modal).display);
         }
       });
     });
