@@ -53,6 +53,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PC",
       año: 2024,
       img: "../img/img1.webp",
+      descripcion: "Una aventura épica en un mundo mágico",
+      rating: 4.5,
     },
     {
       nombre: "Dragon Quest Online",
@@ -60,6 +62,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PC",
       año: 2025,
       img: "../img/img2.webp",
+      descripcion: "Un MMORPG épico con miles de aventuras",
+      rating: 4.8,
     },
     {
       nombre: "Velocity Racing",
@@ -67,6 +71,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PlayStation",
       año: 2025,
       img: "../img/img4.webp",
+      descripcion: "Carreras de velocidad en circuitos futuristas",
+      rating: 4.2,
     },
     {
       nombre: "Cyberpunk Chronicles",
@@ -74,6 +80,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PC",
       año: 2025,
       img: "../img/img4.webp",
+      descripcion: "Vive en una metrópolis futurista llena de peligros",
+      rating: 4.6,
     },
     {
       nombre: "Nightmare Manor",
@@ -81,6 +89,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PC",
       año: 2024,
       img: "../img/img5.webp",
+      descripcion: "Terror psicológico en una mansión embrujada",
+      rating: 4.1,
     },
     {
       nombre: "Stellar Odyssey",
@@ -88,6 +98,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "Xbox",
       año: 2025,
       img: "../img/puzzle.webp",
+      descripcion: "Explora galaxias desconocidas en una aventura espacial",
+      rating: 4.3,
     },
     {
       nombre: "Shadow Castle",
@@ -95,6 +107,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PC",
       año: 2023,
       img: "../img/zombie.webp",
+      descripcion: "Un castillo lleno de sombras y secretos oscuros",
+      rating: 3.9,
     },
     {
       nombre: "Pixel Warriors",
@@ -102,6 +116,8 @@ document.addEventListener("DOMContentLoaded", () => {
       plataforma: "PC",
       año: 2023,
       img: "../img/space.webp",
+      descripcion: "Batalla en un mundo pixelado retro",
+      rating: 4.0,
     },
   ];
 
@@ -116,9 +132,17 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
 
     list.forEach((game) => {
+      const params = new URLSearchParams({
+        titulo: game.nombre,
+        imagen: game.img,
+        año: game.año,
+        descripcion: game.descripcion || "Descripción del juego",
+        rating: game.rating || 4.0,
+      }).toString();
+
       container.innerHTML += `
         <div class="game-card">
-          <a href="detalles_juego.html">
+          <a href="detalles_juego.html?${params}">
             <div class="game-img">
               <img src="${game.img}" alt="${game.nombre}">
             </div>
