@@ -237,7 +237,8 @@ document.addEventListener("DOMContentLoaded", () => {
   function obtenerTodosLosLogros() {
     const todosLosLogros = [];
     gamesData.forEach((game) => {
-      if (game.logros && game.logros.length > 0) {
+      // Solo incluir logros de juegos que estén jugando o completados
+      if ((game.estado === "jugando" || game.estado === "completado") && game.logros && game.logros.length > 0) {
         game.logros.forEach((logro) => {
           todosLosLogros.push({
             ...logro,
