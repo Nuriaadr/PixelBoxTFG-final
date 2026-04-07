@@ -103,17 +103,17 @@ const GAMES_DATA = [
     ]
   },
   {
-    nombre: "Pixel Memories",
-    imagen: "../img/img1.webp",
+    nombre: "Pixel Warriors",
+    imagen: "../img/img3.webp",
     año: 2023,
-    descripcion: "Un viaje nostálgico a través de mundos pixel art clásicos.",
-    rating: 4.4,
+    descripcion: "Batalla en un mundo pixelado retro lleno de acción y adrenalina.",
+    rating: 4.0,
     genero: "Acción",
     plataforma: "PC",
     estado: "por_jugar",
     logros: [
-      {nombre: "Coleccionista de Píxeles", descripcion: "Encuentra 50 secretos", rarity: "RARE"},
-      {nombre: "Maestro Retro", descripcion: "Completa todos los mundos en difícil", rarity: "EPIC"}
+      {nombre: "Guerrero Pixel", descripcion: "Vence 100 enemigos", rarity: "RARE"},
+      {nombre: "Campeón de Batallas", descripcion: "Gana 50 batallas", rarity: "EPIC"}
     ]
   }
 ];
