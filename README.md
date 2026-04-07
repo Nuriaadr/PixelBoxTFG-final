@@ -1,7 +1,7 @@
-# Proyecto HTML y CSS
+# Proyecto HTML y CSS con funcionalidad parcial de JavaScript
 
 ## Descripción
-Este proyecto consiste en una página web desarrollada con HTML y CSS, enfocada en diseño responsive para adaptarse a distintos dispositivos (móvil y escritorio). Destinada a una aplicación tipo Letterboxd, pero orientada hacia la comunidad gamer, sin ánimo de lucro. 
+Este proyecto consiste en una página web desarrollada con HTML y CSS, además, presenta ciertas funcionalidades de JavaScript para hacer más fluida y real la experiencia de usuario. Está enfocada en el diseño responsive para adaptarse a distintos dispositivos (móvil, escritorio y tablet). Destinada a una aplicación tipo Letterboxd, pero orientada hacia la comunidad gamer, sin ánimo de lucro. 
 
 ---
 
