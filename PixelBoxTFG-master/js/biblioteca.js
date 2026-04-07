@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener("click", () => {
       if (juegoAEliminar) {
-        juegos = juegos.filter(j => j.titulo !== juegoAEliminar.titulo);
+        juegos = juegos.filter((j) => j.titulo !== juegoAEliminar.titulo);
         localStorage.setItem("biblioteca", JSON.stringify(juegos));
 
         renderizarJuegos();
@@ -86,9 +86,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.5,
       estado: "completado",
       logros: [
-        {nombre: "Explorador del Mundo", descripcion: "Descubre todos los lugares secretos", rarity: "EPIC"},
-        {nombre: "Maestro de Combate", descripcion: "Vence 100 enemigos", rarity: "LEGENDARY"}
-      ]
+        {
+          nombre: "Explorador del Mundo",
+          descripcion: "Descubre todos los lugares secretos",
+          rarity: "EPIC",
+        },
+        {
+          nombre: "Maestro de Combate",
+          descripcion: "Vence 100 enemigos",
+          rarity: "LEGENDARY",
+        },
+      ],
     },
     {
       titulo: "Dragon Quest Online",
@@ -98,9 +106,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.8,
       estado: "completado",
       logros: [
-        {nombre: "Cazador de Dragones", descripcion: "Derrota 50 dragones", rarity: "EPIC"},
-        {nombre: "Héroe del Reino", descripcion: "Completa la historia principal", rarity: "LEGENDARY"}
-      ]
+        {
+          nombre: "Cazador de Dragones",
+          descripcion: "Derrota 50 dragones",
+          rarity: "EPIC",
+        },
+        {
+          nombre: "Héroe del Reino",
+          descripcion: "Completa la historia principal",
+          rarity: "LEGENDARY",
+        },
+      ],
     },
     {
       titulo: "Velocity Racing",
@@ -110,9 +126,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.2,
       estado: "jugando",
       logros: [
-        {nombre: "Piloto Velocista", descripcion: "Completa 10 carreras", rarity: "RARE"},
-        {nombre: "Campeón de Circuitos", descripcion: "Gana un campeonato", rarity: "EPIC"}
-      ]
+        {
+          nombre: "Piloto Velocista",
+          descripcion: "Completa 10 carreras",
+          rarity: "RARE",
+        },
+        {
+          nombre: "Campeón de Circuitos",
+          descripcion: "Gana un campeonato",
+          rarity: "EPIC",
+        },
+      ],
     },
     {
       titulo: "Cyberpunk Chronicles",
@@ -122,9 +146,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.6,
       estado: "jugando",
       logros: [
-        {nombre: "Hacker Maestro", descripcion: "Hackea 20 terminales", rarity: "EPIC"},
-        {nombre: "Nómada Urbano", descripcion: "Visita todos los distritos", rarity: "EPIC"}
-      ]
+        {
+          nombre: "Hacker Maestro",
+          descripcion: "Hackea 20 terminales",
+          rarity: "EPIC",
+        },
+        {
+          nombre: "Nómada Urbano",
+          descripcion: "Visita todos los distritos",
+          rarity: "EPIC",
+        },
+      ],
     },
     {
       titulo: "Nightmare Manor",
@@ -134,9 +166,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.1,
       estado: "completado",
       logros: [
-        {nombre: "Superviviente", descripcion: "Sobrevive la noche completa", rarity: "RARE"},
-        {nombre: "Desvelador de Secretos", descripcion: "Descubre todos los misterios", rarity: "LEGENDARY"}
-      ]
+        {
+          nombre: "Superviviente",
+          descripcion: "Sobrevive la noche completa",
+          rarity: "RARE",
+        },
+        {
+          nombre: "Desvelador de Secretos",
+          descripcion: "Descubre todos los misterios",
+          rarity: "LEGENDARY",
+        },
+      ],
     },
     {
       titulo: "Stellar Odyssey",
@@ -146,9 +186,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.3,
       estado: "pendiente",
       logros: [
-        {nombre: "Explorador Galáctico", descripcion: "Explora 50 planetas", rarity: "EPIC"},
-        {nombre: "Conquistador del Espacio", descripcion: "Completa todas las misiones", rarity: "LEGENDARY"}
-      ]
+        {
+          nombre: "Explorador Galáctico",
+          descripcion: "Explora 50 planetas",
+          rarity: "EPIC",
+        },
+        {
+          nombre: "Conquistador del Espacio",
+          descripcion: "Completa todas las misiones",
+          rarity: "LEGENDARY",
+        },
+      ],
     },
     {
       titulo: "Shadow Castle",
@@ -158,9 +206,17 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 3.9,
       estado: "pendiente",
       logros: [
-        {nombre: "Explorador de Castillos", descripcion: "Descubre todas las salas", rarity: "RARE"},
-        {nombre: "Vencedor de Oscuridad", descripcion: "Derrota el jefe final", rarity: "EPIC"}
-      ]
+        {
+          nombre: "Explorador de Castillos",
+          descripcion: "Descubre todas las salas",
+          rarity: "RARE",
+        },
+        {
+          nombre: "Vencedor de Oscuridad",
+          descripcion: "Derrota el jefe final",
+          rarity: "EPIC",
+        },
+      ],
     },
     {
       titulo: "Pixel Warriors",
@@ -170,34 +226,43 @@ document.addEventListener("DOMContentLoaded", () => {
       rating: 4.0,
       estado: "abandonado",
       logros: [
-        {nombre: "Guerrero Pixel", descripcion: "Vence 100 enemigos", rarity: "RARE"},
-        {nombre: "Campeón de Batallas", descripcion: "Gana 50 batallas", rarity: "EPIC"}
-      ]
-    }
+        {
+          nombre: "Guerrero Pixel",
+          descripcion: "Vence 100 enemigos",
+          rarity: "RARE",
+        },
+        {
+          nombre: "Campeón de Batallas",
+          descripcion: "Gana 50 batallas",
+          rarity: "EPIC",
+        },
+      ],
+    },
   ];
 
-  let juegos = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+  let juegosGuardados = JSON.parse(localStorage.getItem("biblioteca") || "[]");
 
-  // Si no hay juegos en localStorage, usar los datos por defecto
-  if (juegos.length === 0) {
-    juegos = juegosDefault;
-    localStorage.setItem("biblioteca", JSON.stringify(juegos));
-  } else {
-    // Si hay juegos pero les faltan logros, agregarlos desde juegosDefault
-    juegos = juegos.map((juego) => {
-      if (!juego.logros || juego.logros.length === 0) {
-        const juegoDefault = juegosDefault.find((j) => j.titulo === juego.titulo);
-        if (juegoDefault && juegoDefault.logros) {
-          juego.logros = juegoDefault.logros;
-        }
-      }
-      return juego;
-    });
-    localStorage.setItem("biblioteca", JSON.stringify(juegos));
+  // Función para asegurar estructura correcta
+  function normalizarJuego(juego) {
+    return {
+      titulo: juego.titulo || "Sin título",
+      imagen: juego.imagen || "../img/img1.webp",
+      año: juego.año || 2025,
+      descripcion: juego.descripcion || "",
+      rating: juego.rating || 0,
+      estado: juego.estado || "pendiente",
+      logros: Array.isArray(juego.logros) ? juego.logros : [],
+    };
   }
 
-  console.log("Juegos cargados:", juegos);
-  console.log("Primer juego logros:", juegos[0]?.logros);
+  // Normalizar TODOS los juegos guardados
+  let juegos = juegosGuardados.map(normalizarJuego);
+
+  // Si está vacío, usar default
+  if (juegos.length === 0) {
+    juegos = juegosDefault.map(normalizarJuego);
+    localStorage.setItem("biblioteca", JSON.stringify(juegos));
+  }
 
   // ======================
   // RENDER
@@ -205,7 +270,7 @@ document.addEventListener("DOMContentLoaded", () => {
   function renderizarJuegos() {
     const container = document.querySelector(".card-grid");
 
-    container.querySelectorAll(".game-card").forEach(card => card.remove());
+    container.querySelectorAll(".game-card").forEach((card) => card.remove());
 
     juegos.forEach((juego) => {
       const card = document.createElement("div");
@@ -273,13 +338,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   document.querySelectorAll(".filter-btn").forEach((btn) => {
     btn.addEventListener("click", () => {
-      document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+      document
+        .querySelectorAll(".filter-btn")
+        .forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
       if (btn.textContent.includes("Jugando")) filtroActual = "jugando";
-      else if (btn.textContent.includes("Completados")) filtroActual = "completado";
-      else if (btn.textContent.includes("Pendientes")) filtroActual = "pendiente";
-      else if (btn.textContent.includes("Abandonados")) filtroActual = "abandonado";
+      else if (btn.textContent.includes("Completados"))
+        filtroActual = "completado";
+      else if (btn.textContent.includes("Pendientes"))
+        filtroActual = "pendiente";
+      else if (btn.textContent.includes("Abandonados"))
+        filtroActual = "abandonado";
       else filtroActual = "todos";
 
       aplicarFiltro();
@@ -292,9 +362,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
     cards.forEach((card) => {
       const titulo = card.querySelector("h3").textContent;
-      const juego = juegos.find(j => j.titulo === titulo);
+      const juego = juegos.find((j) => j.titulo === titulo);
 
-      let mostrar = filtroActual === "todos" || (juego && juego.estado === filtroActual);
+      let mostrar =
+        filtroActual === "todos" || (juego && juego.estado === filtroActual);
 
       card.style.display = mostrar ? "block" : "none";
 
@@ -312,10 +383,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   function actualizarContadores() {
     const total = juegos.length;
-    const jugando = juegos.filter(j => j.estado === "jugando").length;
-    const completados = juegos.filter(j => j.estado === "completado").length;
-    const pendientes = juegos.filter(j => j.estado === "pendiente").length;
-    const abandonados = juegos.filter(j => j.estado === "abandonado").length;
+    const jugando = juegos.filter((j) => j.estado === "jugando").length;
+    const completados = juegos.filter((j) => j.estado === "completado").length;
+    const pendientes = juegos.filter((j) => j.estado === "pendiente").length;
+    const abandonados = juegos.filter((j) => j.estado === "abandonado").length;
 
     // Actualizar tarjetas de stats
     document.querySelector(".card-blue .number").textContent = total;
@@ -325,13 +396,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
     // Actualizar botones de filtro con el contador
     const filterBtns = document.querySelectorAll(".filter-btn");
-    if (filterBtns[0]) filterBtns[0].querySelector(".count").textContent = total;
-    if (filterBtns[1]) filterBtns[1].querySelector(".count").textContent = jugando;
-    if (filterBtns[2]) filterBtns[2].querySelector(".count").textContent = completados;
-    if (filterBtns[3]) filterBtns[3].querySelector(".count").textContent = pendientes;
-    if (filterBtns[4]) filterBtns[4].querySelector(".count").textContent = abandonados;
+    if (filterBtns[0])
+      filterBtns[0].querySelector(".count").textContent = total;
+    if (filterBtns[1])
+      filterBtns[1].querySelector(".count").textContent = jugando;
+    if (filterBtns[2])
+      filterBtns[2].querySelector(".count").textContent = completados;
+    if (filterBtns[3])
+      filterBtns[3].querySelector(".count").textContent = pendientes;
+    if (filterBtns[4])
+      filterBtns[4].querySelector(".count").textContent = abandonados;
 
-    console.log("Contadores actualizados:", { total, jugando, completados, pendientes, abandonados });
+    console.log("Contadores actualizados:", {
+      total,
+      jugando,
+      completados,
+      pendientes,
+      abandonados,
+    });
   }
 
   // ======================
