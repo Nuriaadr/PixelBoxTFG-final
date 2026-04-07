@@ -2083,30 +2083,83 @@ img {
     display: flex;
     align-items: center;
     justify-content: space-between;
+    padding: 15px 20px;
   }
 
-  /* HAMBURGUESA IZQUIERDA */
+  /* HAMBURGUESA Y LOGOUT A LA IZQUIERDA */
   .menu-icon {
     display: flex;
     order: 1;
+    flex-shrink: 0;
   }
 
-  /* LOGO CENTRADO */
+  #logoutBtn {
+    order: 2;
+    margin-left: 20px;
+    flex-shrink: 0;
+    padding: 4px 6px;
+    font-size: 11px;
+  }
+
+  /* LOGO CENTRADO CON ESPACIO */
   .logo {
-    position: absolute;
-    left: 50%;
-    transform: translateX(-50%);
+    position: static;
+    order: 3;
+    flex: 1;
+    text-align: center;
     margin: 0;
+    transform: none;
   }
 
   /* ICONOS DERECHA */
   .nav-icons {
-    order: 3;
+    order: 4;
+    flex-shrink: 0;
+    margin-left: auto;
   }
 
   /* OCULTAR LINKS */
   .nav-links {
     display: none;
+  }
+
+  /* OCULTAR CHECKBOX */
+  #menu-toggle {
+    display: none;
+  }
+
+  /* TABS ADAPTATIVO */
+  .tabs {
+    gap: 15px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+  }
+
+  .tabs span {
+    font-size: 12px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+
+  /* SCROLLBAR PERSONALIZADA */
+  .tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .tabs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .tabs::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+  }
+
+  .tabs::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
   }
 }
 
@@ -2148,5 +2201,78 @@ img {
   .brand-col p {
     font-size: 13px;
     line-height: 1.5;
+  }
+
+  /* NAVBAR CON HAMBURGUESA Y LOGOUT */
+  .navbar {
+    padding: 15px 15px;
+  }
+
+  #menu-toggle {
+    display: none;
+  }
+
+  .menu-icon {
+    order: 1;
+    flex-shrink: 0;
+  }
+
+  #logoutBtn {
+    order: 2;
+    margin-left: 15px;
+    padding: 3px 5px;
+    font-size: 10px;
+    flex-shrink: 0;
+  }
+
+  .logo {
+    order: 3;
+    flex: 1;
+    text-align: center;
+    position: static;
+    transform: none;
+  }
+
+  .nav-icons {
+    order: 4;
+    flex-shrink: 0;
+    margin-left: auto;
+  }
+
+  /* TABS EN MÓVIL */
+  .tabs {
+    gap: 10px;
+    overflow-x: auto;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    padding-bottom: 8px;
+    margin-top: 30px;
+    margin-bottom: 20px;
+  }
+
+  .tabs span {
+    font-size: 11px;
+    white-space: nowrap;
+    flex-shrink: 0;
+    padding: 0 5px;
+  }
+
+  /* SCROLLBAR PERSONALIZADA */
+  .tabs::-webkit-scrollbar {
+    height: 6px;
+  }
+
+  .tabs::-webkit-scrollbar-track {
+    background: transparent;
+  }
+
+  .tabs::-webkit-scrollbar-thumb {
+    background: var(--secondary);
+    border-radius: 3px;
+    transition: background 0.3s ease;
+  }
+
+  .tabs::-webkit-scrollbar-thumb:hover {
+    background: var(--primary);
   }
 }

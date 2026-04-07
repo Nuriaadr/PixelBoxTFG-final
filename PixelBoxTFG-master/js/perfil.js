@@ -134,10 +134,13 @@ document.addEventListener("DOMContentLoaded", () => {
     gameGrid.innerHTML = "";
 
     gamesData.forEach((game) => {
+      const juegoDefault = juegosDefault.find((j) => j.nombre === game.nombre);
+      const año = juegoDefault?.año || 2025;
+      
       const params = new URLSearchParams({
         titulo: game.nombre,
         imagen: game.imagen,
-        año: 2025,
+        año: año,
         descripcion: "Descripción del juego",
         rating: 4.5,
         logros: game.logros ? JSON.stringify(game.logros) : "[]",
@@ -151,7 +154,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="game-img" style="background-image: url('${game.imagen}')">      
           </div>
           <h3>${game.nombre}</h3>
-          <p>2025</p>
+          <p>${año}</p>
         </a>
       `;
       gameGrid.appendChild(gameCard);
