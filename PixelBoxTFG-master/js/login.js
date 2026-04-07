@@ -41,10 +41,11 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
     }
   }
 
-  let user = localStorage.getItem("usuario");
   let rol = localStorage.getItem("rol");
 
-  if (!user || rol !== "admin") {
-    window.location.href = "../index.html";
+  if (rol === "admin") {
+    console.log("Es administrador");
+  } else if (rol === "jugador") {
+    console.log("Es jugador");
   }
 });
