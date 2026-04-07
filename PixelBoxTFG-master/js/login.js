@@ -15,12 +15,13 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
   errorPassword.textContent = "";
 
   if (usuario.value.trim() === "" || usuario.value.length < 4) {
-    errorUsuario.textContent = "Usuario inválido";
+    errorUsuario.textContent = "El usuario debe tener al menos 4 caracteres";
     valido = false;
   }
 
   if (password.value.trim() === "" || password.value.length < 6) {
-    errorPassword.textContent = "Contraseña inválida";
+    errorPassword.textContent =
+      "La contraseña debe tener al menos 6 caracteres";
     valido = false;
   }
 
@@ -37,7 +38,8 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
       localStorage.setItem("rol", "jugador");
       window.location.href = "html/inicio.html";
     } else {
-      alert("Usuario o contraseña incorrectos");
+      errorPassword.textContent =
+        "Usuario o contraseña incorrecta";
     }
   }
 });
