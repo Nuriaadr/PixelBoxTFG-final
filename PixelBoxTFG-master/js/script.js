@@ -75,3 +75,27 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
         }
     }
 });
+
+//Comprobar si hay usuario logueado
+let user = localStorage.getItem("usuario");
+if (!user) {
+    window.location.href = "../index.html";
+}
+
+document.getElementById("userName").textContent = user;
+
+document.getElementById("logoutBtn").addEventListener("click", function () {
+    localStorage.removeItem("usuario");
+    window.location.href = "../index.html";
+});
+
+document.getElementById("addGameBtn").addEventListener("click", function () {
+
+    let juegos = JSON.parse(localStorage.getItem("biblioteca")) || [];
+
+    juegos.push("Cyberpunk Chronicles");
+
+    localStorage.setItem("biblioteca", JSON.stringify(juegos));
+
+    alert("Juego añadido a tu biblioteca");
+});
