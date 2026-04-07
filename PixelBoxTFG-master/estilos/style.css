@@ -2051,14 +2051,26 @@ img {
     text-align: center;
     border-bottom: 1px solid var(--secondary);
     padding-bottom: 20px;
+    display: flex;
+    flex-direction: column;
   }
 
   .brand-col .logo {
     justify-content: center;
+    order: 1;
   }
 
-  .social-links {
+  .brand-col p {
+    order: 2;
+  }
+
+  .brand-col .social-links {
+    order: 3;
     justify-content: center;
+  }
+
+  .brand-col {
+    max-width: 100%;
   }
 
   .admin-header-v2 {
@@ -2198,6 +2210,22 @@ img {
   .brand-col {
     border-bottom: none;
     gap: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .brand-col .logo {
+    order: 1;
+  }
+
+  .brand-col p {
+    order: 2;
+    font-size: 13px;
+    line-height: 1.5;
+  }
+
+  .brand-col .social-links {
+    order: 3;
   }
 
   .footer-col h3 {
@@ -2214,11 +2242,6 @@ img {
     flex-direction: column-reverse;
     gap: 15px;
     padding: 20px;
-  }
-
-  .brand-col p {
-    font-size: 13px;
-    line-height: 1.5;
   }
 
   /* NAVBAR CON HAMBURGUESA Y LOGOUT */
