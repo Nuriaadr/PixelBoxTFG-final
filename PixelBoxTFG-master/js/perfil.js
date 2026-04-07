@@ -163,7 +163,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Renderizar juegos al cargar
   renderGameCards();
-  filtrarPor("jugando"); // Aplicar filtro inicial
+  
+  // Aplicar filtro inicial
+  filtrarPor("jugando");
 
   function filtrarPor(tab) {
     let visibles = 0;
@@ -227,24 +229,7 @@ document.addEventListener("DOMContentLoaded", () => {
     followModal.classList.add("hidden");
   });
 
-  function actualizarContadores() {
-    let total = gamesData.length;
-    let jugando = gamesData.filter((g) => g.estado === "jugando").length;
-    let completados = gamesData.filter((g) => g.estado === "completado").length;
-    let pendientes = gamesData.filter((g) => g.estado === "pendiente").length;
-
-    let logros = document.querySelectorAll(".achievement-card").length;
-
-    document.getElementById("tab-jugando").textContent = `Jugando (${jugando})`;
-    document.getElementById("tab-completados").textContent =
-      `Completados (${completados})`;
-    document.getElementById("tab-pendientes").textContent =
-      `Pendientes (${pendientes})`;
-    document.getElementById("tab-abandonados").textContent = `Abandonados (0)`;
-    document.getElementById("tab-logros").textContent = `Logros (${logros})`;
-  }
-
-  actualizarContadores();
+  // Función para actualizar contadores (NO USADA - usar actualizarTabs en su lugar)
 
   // ======================
   // LOGROS
