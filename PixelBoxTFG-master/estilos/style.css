@@ -1777,6 +1777,22 @@ img {
   color: var(--text-white);
 }
 
+/*VALIDACIONES*/
+.input-error {
+    border: 2px solid red;
+}
+
+.input-correct {
+    border: 2px solid green;
+}
+
+.error {
+    color: red;
+    font-size: 12px;
+    display: block;
+    margin-top: 5px;
+}
+
 /* ===================== RESPONSIVE ===================== */
 @media (max-width: 1024px) {
   .stats-grid .card {

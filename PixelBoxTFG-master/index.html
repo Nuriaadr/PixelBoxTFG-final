@@ -24,20 +24,22 @@
 
         <div class="card">
 
-            <form>
+            <form id="loginForm">
                 <div class="form-group">
                     <label>Usuario</label>
-                    <input type="text" placeholder="Ingresa tu usuario">
+                    <input type="text" id="usuario" placeholder="Ingresa tu usuario">
+                    <small class="error" id="errorUsuario"></small>
                 </div>
 
                 <div class="form-group">
                     <label>Contraseña</label>
-                    <input type="password" placeholder="Ingresa tu contraseña">
+                    <input type="password" id="password" placeholder="Ingresa tu contraseña">
+                    <small class="error" id="errorPassword"></small>
                 </div>
 
-                <a href="html/inicio.html" class="btn-primary">
+                <button type="submit" class="btn-primary">
                     Iniciar sesión
-                </a>
+                </button>
             </form>
 
             <div class="divider"></div>
@@ -59,9 +61,7 @@
         </div>
 
     </div>
-    <script>
-        lucide.createIcons();
-    </script>
+   <script src="js/script.js"></script>
 </body>
 
 </html>
