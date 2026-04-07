@@ -1,5 +1,34 @@
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
+  let user = localStorage.getItem("usuario");
+
+  if (!user) {
+    window.location.href = "../index.html";
+    return;
+  }
+
+  // MOSTRAR USUARIO
+  let userName = document.getElementById("userName");
+  if (userName) {
+    userName.textContent = user;
+  }
+
+  let userAvatar = document.getElementById("userAvatar");
+  if (userAvatar) {
+    userAvatar.style.cursor = "pointer";
+    userAvatar.addEventListener("click", () => {
+      window.location.href = "perfil.html";
+    });
+  }
+
+  // LOGOUT
+  let logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", () => {
+      localStorage.removeItem("usuario");
+      window.location.href = "../index.html";
+    });
+  }
 
   // ======================
   // DATOS DE LOS JUEGOS
@@ -22,39 +51,39 @@ document.addEventListener("DOMContentLoaded", () => {
   // FILTRAR JUEGOS
   // ======================
   function aplicarFiltro() {
-  let cards = document.querySelectorAll(".game-card");
-  let visibles = 0;
+    let cards = document.querySelectorAll(".game-card");
+    let visibles = 0;
 
-  cards.forEach((card) => {
-    let titulo = card.querySelector("h3").textContent.trim().toLowerCase();
-    let juego = juegos.find((j) => j.titulo.toLowerCase() === titulo);
+    cards.forEach((card) => {
+      let titulo = card.querySelector("h3").textContent.trim().toLowerCase();
+      let juego = juegos.find((j) => j.titulo.toLowerCase() === titulo);
 
-    let mostrar = false;
+      let mostrar = false;
 
-    if (filtroActual === "todos") {
-      mostrar = true;
-    } else if (juego && juego.estado === filtroActual) {
-      mostrar = true;
-    }
+      if (filtroActual === "todos") {
+        mostrar = true;
+      } else if (juego && juego.estado === filtroActual) {
+        mostrar = true;
+      }
 
-    if (mostrar) {
-      card.style.display = "block";
-      visibles++;
+      if (mostrar) {
+        card.style.display = "block";
+        visibles++;
+      } else {
+        card.style.display = "none";
+      }
+    });
+
+    let mensaje = document.getElementById("noGamesMessage");
+
+    if (visibles === 0) {
+      mensaje.style.display = "block";
     } else {
-      card.style.display = "none";
+      mensaje.style.display = "none";
     }
-  });
 
-  let mensaje = document.getElementById("noGamesMessage");
-
-  if (visibles === 0) {
-    mensaje.style.display = "block";
-  } else {
-    mensaje.style.display = "none";
+    actualizarContadores();
   }
-
-  actualizarContadores();
-}
   // ======================
   // CONTADORES
   // ======================
