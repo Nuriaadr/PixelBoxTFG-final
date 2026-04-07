@@ -36,6 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const gamesData = [
     {
       nombre: "Legends of Eldoria",
+      imagen: "../img/img1.webp",
       estado: "completado",
       logros: [
         {nombre: "Explorador del Mundo", descripcion: "Descubre todos los lugares secretos", rarity: "EPIC"},
@@ -44,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       nombre: "Dragon Quest Online",
+      imagen: "../img/img2.webp",
       estado: "completado",
       logros: [
         {nombre: "Cazador de Dragones", descripcion: "Derrota 50 dragones", rarity: "EPIC"},
@@ -52,6 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       nombre: "Cyberpunk Chronicles",
+      imagen: "../img/img4.webp",
       estado: "jugando",
       logros: [
         {nombre: "Hacker Maestro", descripcion: "Hackea 20 terminales", rarity: "EPIC"},
@@ -60,6 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       nombre: "Velocity Racing",
+      imagen: "../img/img4.webp",
       estado: "jugando",
       logros: [
         {nombre: "Piloto Velocista", descripcion: "Completa 10 carreras", rarity: "RARE"},
@@ -68,6 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
     },
     {
       nombre: "Nightmare Manor",
+      imagen: "../img/img1.webp",
       estado: "completado",
       logros: [
         {nombre: "Superviviente", descripcion: "Sobrevive la noche completa", rarity: "RARE"},
@@ -97,7 +102,7 @@ document.addEventListener("DOMContentLoaded", () => {
     gamesData.forEach((game) => {
       const params = new URLSearchParams({
         titulo: game.nombre,
-        imagen: "../img/img1.webp",
+        imagen: game.imagen,
         año: 2025,
         descripcion: "Descripción del juego",
         rating: 4.5,
@@ -109,7 +114,7 @@ document.addEventListener("DOMContentLoaded", () => {
       gameCard.id = `game-${game.nombre}`;
       gameCard.innerHTML = `
         <a href="detalles_juego.html?${params}">
-          <div class="game-img" style="background-image: url('../img/img1.webp')">
+          <div class="game-img" style="background-image: url('${game.imagen}')">
             <span class="tag">${game.estado.charAt(0).toUpperCase() + game.estado.slice(1)}</span>
           </div>
           <h3>${game.nombre}</h3>
