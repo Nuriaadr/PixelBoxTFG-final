@@ -42,12 +42,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const logrosParam = urlParams.get("logros");
   let logros = [];
   
+  console.log("URL recibida:", window.location.href);
+  console.log("Parámetro logros recibido:", logrosParam);
+  
   try {
     if (logrosParam) {
       logros = JSON.parse(decodeURIComponent(logrosParam));
+      console.log("Logros parseados correctamente:", logros);
+    } else {
+      console.warn("No se encontró parámetro logros en la URL");
     }
   } catch (e) {
-    console.log("Error al parsear logros:", e);
+    console.error("Error al parsear logros:", e);
+    console.log("Valor que intentó parsear:", logrosParam);
   }
 
   // ======================

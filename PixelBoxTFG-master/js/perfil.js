@@ -228,8 +228,7 @@ document.addEventListener("DOMContentLoaded", () => {
     followModal.classList.add("hidden");
   });
 
-  // Función para actualizar contadores (NO USADA - usar actualizarTabs en su lugar)
-
+const deleteModal = document.getElementById("deleteModal");
   // ======================
   // LOGROS
   // ======================

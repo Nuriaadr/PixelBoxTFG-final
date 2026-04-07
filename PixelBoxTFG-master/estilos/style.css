@@ -1911,10 +1911,9 @@ img {
   z-index: 1000;
 }
 
-.modal.hidden {
+.hidden {
   display: none;
 }
-
 .modal-content {
   background: var(--bg-card);
   padding: 24px;
