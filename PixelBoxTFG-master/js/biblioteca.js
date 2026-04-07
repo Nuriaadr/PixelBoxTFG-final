@@ -56,6 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         renderizarJuegos();
         aplicarFiltro();
+        actualizarContadores();
       }
 
       cerrarModal();
@@ -307,18 +308,30 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
-  // CONTADORES (opcional)
+  // CONTADORES
   // ======================
   function actualizarContadores() {
     const total = juegos.length;
     const jugando = juegos.filter(j => j.estado === "jugando").length;
     const completados = juegos.filter(j => j.estado === "completado").length;
     const pendientes = juegos.filter(j => j.estado === "pendiente").length;
+    const abandonados = juegos.filter(j => j.estado === "abandonado").length;
 
+    // Actualizar tarjetas de stats
     document.querySelector(".card-blue .number").textContent = total;
-    document.querySelector(".text-green").textContent = completados;
-    document.querySelector(".text-blue-light").textContent = jugando;
-    document.querySelector(".text-yellow").textContent = pendientes;
+    document.querySelector(".number.text-green").textContent = completados;
+    document.querySelector(".number.text-blue-light").textContent = jugando;
+    document.querySelector(".number.text-yellow").textContent = pendientes;
+
+    // Actualizar botones de filtro con el contador
+    const filterBtns = document.querySelectorAll(".filter-btn");
+    if (filterBtns[0]) filterBtns[0].querySelector(".count").textContent = total;
+    if (filterBtns[1]) filterBtns[1].querySelector(".count").textContent = jugando;
+    if (filterBtns[2]) filterBtns[2].querySelector(".count").textContent = completados;
+    if (filterBtns[3]) filterBtns[3].querySelector(".count").textContent = pendientes;
+    if (filterBtns[4]) filterBtns[4].querySelector(".count").textContent = abandonados;
+
+    console.log("Contadores actualizados:", { total, jugando, completados, pendientes, abandonados });
   }
 
   // ======================
