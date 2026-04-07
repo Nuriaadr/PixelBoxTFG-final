@@ -62,7 +62,7 @@ const GAMES_DATA = [
   },
   {
     nombre: "Nightmare Manor",
-    imagen: "../img/img5.webp",
+    imagen: "../img/space.webp",
     año: 2024,
     descripcion: "Un juego de horror psicológico que te hará cuestionar la realidad.",
     rating: 4.2,
@@ -90,7 +90,7 @@ const GAMES_DATA = [
   },
   {
     nombre: "Shadow Castle",
-    imagen: "../img/img2.webp",
+    imagen: "../img/puzzle.webp",
     año: 2024,
     descripcion: "Un metroidvania oscuro lleno de desafíos y secretos.",
     rating: 4.6,
@@ -104,7 +104,7 @@ const GAMES_DATA = [
   },
   {
     nombre: "Pixel Warriors",
-    imagen: "../img/img3.webp",
+    imagen: "../img/zombie.webp",
     año: 2023,
     descripcion: "Batalla en un mundo pixelado retro lleno de acción y adrenalina.",
     rating: 4.0,
