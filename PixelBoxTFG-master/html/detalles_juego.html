@@ -79,6 +79,10 @@
                 </button>
             </div>
 
+            <button id="addToLibraryBtn" class="btn-primary" style="width: 100%; margin-top: 15px;">
+                <i data-lucide="plus"></i> Agregar a biblioteca
+            </button>
+
         </div>
 
         <div class="game-info">
@@ -233,6 +237,14 @@
             <p>Hecho con <span class="heart">❤️</span> para la comunidad gamer</p>
         </div>
     </footer>
+
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <h3 id="modalTitle">Título</h3>
+            <p id="modalMessage">Mensaje</p>
+            <button id="closeModal" class="btn-primary">Aceptar</button>
+        </div>
+    </div>
 
     <script>
         lucide.createIcons();

@@ -55,6 +55,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/img1.webp",
       descripcion: "Una aventura épica en un mundo mágico",
       rating: 4.5,
+      logros: [
+        {nombre: "Explorador del Mundo", descripcion: "Descubre todos los lugares secretos", rarity: "EPIC"},
+        {nombre: "Maestro de Combate", descripcion: "Vence 100 enemigos", rarity: "LEGENDARY"}
+      ]
     },
     {
       nombre: "Dragon Quest Online",
@@ -64,6 +68,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/img2.webp",
       descripcion: "Un MMORPG épico con miles de aventuras",
       rating: 4.8,
+      logros: [
+        {nombre: "Cazador de Dragones", descripcion: "Derrota 50 dragones", rarity: "EPIC"},
+        {nombre: "Héroe del Reino", descripcion: "Completa la historia principal", rarity: "LEGENDARY"}
+      ]
     },
     {
       nombre: "Velocity Racing",
@@ -73,6 +81,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/img4.webp",
       descripcion: "Carreras de velocidad en circuitos futuristas",
       rating: 4.2,
+      logros: [
+        {nombre: "Piloto Velocista", descripcion: "Completa 10 carreras", rarity: "RARE"},
+        {nombre: "Campeón de Circuitos", descripcion: "Gana un campeonato", rarity: "EPIC"}
+      ]
     },
     {
       nombre: "Cyberpunk Chronicles",
@@ -82,6 +94,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/img4.webp",
       descripcion: "Vive en una metrópolis futurista llena de peligros",
       rating: 4.6,
+      logros: [
+        {nombre: "Hacker Maestro", descripcion: "Hackea 20 terminales", rarity: "EPIC"},
+        {nombre: "Nómada Urbano", descripcion: "Visita todos los distritos", rarity: "EPIC"}
+      ]
     },
     {
       nombre: "Nightmare Manor",
@@ -91,6 +107,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/img5.webp",
       descripcion: "Terror psicológico en una mansión embrujada",
       rating: 4.1,
+      logros: [
+        {nombre: "Superviviente", descripcion: "Sobrevive la noche completa", rarity: "RARE"},
+        {nombre: "Desvelador de Secretos", descripcion: "Descubre todos los misterios", rarity: "LEGENDARY"}
+      ]
     },
     {
       nombre: "Stellar Odyssey",
@@ -100,6 +120,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/puzzle.webp",
       descripcion: "Explora galaxias desconocidas en una aventura espacial",
       rating: 4.3,
+      logros: [
+        {nombre: "Explorador Galáctico", descripcion: "Explora 50 planetas", rarity: "EPIC"},
+        {nombre: "Conquistador del Espacio", descripcion: "Completa todas las misiones", rarity: "LEGENDARY"}
+      ]
     },
     {
       nombre: "Shadow Castle",
@@ -109,6 +133,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/zombie.webp",
       descripcion: "Un castillo lleno de sombras y secretos oscuros",
       rating: 3.9,
+      logros: [
+        {nombre: "Explorador de Castillos", descripcion: "Descubre todas las salas", rarity: "RARE"},
+        {nombre: "Vencedor de Oscuridad", descripcion: "Derrota el jefe final", rarity: "EPIC"}
+      ]
     },
     {
       nombre: "Pixel Warriors",
@@ -118,6 +146,10 @@ document.addEventListener("DOMContentLoaded", () => {
       img: "../img/space.webp",
       descripcion: "Batalla en un mundo pixelado retro",
       rating: 4.0,
+      logros: [
+        {nombre: "Guerrero Pixel", descripcion: "Vence 100 enemigos", rarity: "RARE"},
+        {nombre: "Campeón de Batallas", descripcion: "Gana 50 batallas", rarity: "EPIC"}
+      ]
     },
   ];
 
@@ -138,6 +170,7 @@ document.addEventListener("DOMContentLoaded", () => {
         año: game.año,
         descripcion: game.descripcion || "Descripción del juego",
         rating: game.rating || 4.0,
+        logros: game.logros ? JSON.stringify(game.logros) : "[]",
       }).toString();
 
       container.innerHTML += `

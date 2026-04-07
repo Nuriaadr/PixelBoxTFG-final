@@ -39,6 +39,16 @@ document.addEventListener("DOMContentLoaded", () => {
   const año = urlParams.get("año");
   const descripcion = urlParams.get("descripcion") || "Descripción del juego";
   const rating = urlParams.get("rating") || "4.3";
+  const logrosParam = urlParams.get("logros");
+  let logros = [];
+  
+  try {
+    if (logrosParam) {
+      logros = JSON.parse(decodeURIComponent(logrosParam));
+    }
+  } catch (e) {
+    console.log("Error al parsear logros:", e);
+  }
 
   // ======================
   // ACTUALIZAR ELEMENTOS HTML
@@ -62,6 +72,84 @@ document.addEventListener("DOMContentLoaded", () => {
   if (descriptionP) descriptionP.textContent = descripcion;
 
   // ======================
+  // MODAL
+  // ======================
+  const modal = document.getElementById("modal");
+  const modalTitle = document.getElementById("modalTitle");
+  const modalMessage = document.getElementById("modalMessage");
+  const closeModal = document.getElementById("closeModal");
+
+  function showModal(title, message) {
+    if (!modal) return;
+
+    modalTitle.textContent = title;
+    modalMessage.textContent = message;
+    modal.classList.remove("hidden");
+  }
+
+  function hideModal() {
+    modal.classList.add("hidden");
+  }
+
+  if (closeModal) {
+    closeModal.addEventListener("click", hideModal);
+  }
+
+  if (modal) {
+    modal.addEventListener("click", (e) => {
+      if (e.target === modal) hideModal();
+    });
+  }
+
+  // ======================
+  // RENDERIZAR LOGROS DINÁMICOS
+  // ======================
+  const achievementsSection = document.querySelector(".achievements-section");
+  if (achievementsSection) {
+    // Actualizar el título con el conteo de logros
+    const achievementsTitle = achievementsSection.querySelector(".achievements-title");
+    if (achievementsTitle) {
+      achievementsTitle.textContent = `Logros (${logros.length}/${logros.length})`;
+    }
+
+    // Limpiar los logros anteriores
+    const oldCards = achievementsSection.querySelectorAll(".achievement-card");
+    oldCards.forEach((card) => card.remove());
+
+    // Renderizar los nuevos logros
+    if (logros.length === 0) {
+      const emptyMsg = document.createElement("p");
+      emptyMsg.textContent = "No hay logros para este juego aún";
+      emptyMsg.style.textAlign = "center";
+      emptyMsg.style.color = "#999";
+      achievementsSection.appendChild(emptyMsg);
+    } else {
+      logros.forEach((logro) => {
+        const card = document.createElement("div");
+        const rarityClass = `rarity-${(logro.rarity || "COMMON").toLowerCase()}`;
+        card.className = `achievement-card ${rarityClass}`;
+        const hoy = new Date().toISOString().split("T")[0];
+        card.innerHTML = `
+          <img src="${logro.imagen || "../img/img1.webp"}" alt="logro" class="achievement-img">
+
+          <div class="achievement-info">
+            <h3>${logro.nombre}</h3>
+            <p>${logro.descripcion}</p>
+            <span class="rarity rarity-badge-${(logro.rarity || "COMMON").toLowerCase()}">${logro.rarity || "COMMON"}</span>
+          </div>
+
+          <div class="achievement-meta">
+            <i data-lucide="award" class="trophy"></i>
+            <span class="date">${logro.fecha || hoy}</span>
+          </div>
+        `;
+        achievementsSection.appendChild(card);
+      });
+      lucide.createIcons();
+    }
+  }
+
+  // ======================
   // ESTADO DEL JUEGO (guardable en localStorage)
   // ======================
   const statusBtns = document.querySelectorAll(".status-btn");
@@ -82,4 +170,50 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem(`juego_${titulo}`, estado);
     });
   });
+
+  // ======================
+  // AGREGAR A BIBLIOTECA
+  // ======================
+  const addToLibraryBtn = document.getElementById("addToLibraryBtn");
+  if (addToLibraryBtn) {
+    addToLibraryBtn.addEventListener("click", () => {
+      // Obtener biblioteca actual del localStorage
+      let biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+
+      // Verificar si el juego ya está en la biblioteca
+      const existe = biblioteca.some((juego) => juego.titulo === titulo);
+
+      if (existe) {
+        showModal("Ya en biblioteca", "Este juego ya está en tu biblioteca");
+        return;
+      }
+
+      // Crear objeto del juego
+      const nuevoJuego = {
+        titulo: titulo,
+        imagen: imagen,
+        año: año,
+        descripcion: descripcion,
+        rating: rating,
+        estado: "pendiente", // Estado por defecto al agregar
+        logros: logros || [],
+        fechaAgregado: new Date().toISOString(),
+      };
+
+      // Agregar a la biblioteca
+      biblioteca.push(nuevoJuego);
+      localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
+
+      // Cambiar estado del botón
+      addToLibraryBtn.innerHTML = `<i data-lucide="check"></i> Agregado a biblioteca`;
+      addToLibraryBtn.classList.add("active-follow");
+      addToLibraryBtn.disabled = true;
+
+      // Mostrar modal de confirmación
+      showModal("¡Éxito!", `${titulo} ha sido agregado a tu biblioteca`);
+
+      // Actualizar iconos
+      lucide.createIcons();
+    });
+  }
 });
