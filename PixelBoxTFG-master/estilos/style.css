@@ -1047,13 +1047,23 @@ img {
 }
 
 .status-btn.active {
-  background: var(--primary);
   color: var(--text-white);
 }
 
-.status-btn.pending {
+.status-btn.playing.active {
+  background: var(--status-playing);
+}
+
+.status-btn.pending.active {
   background: var(--status-pending);
-  color: var(--text-white);
+}
+
+.status-btn.completed.active {
+  background: var(--status-completed);
+}
+
+.status-btn.abandoned.active {
+  background: var(--status-abandoned);
 }
 
 /* HOVER SEGÚN ESTADO */

@@ -150,15 +150,54 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
+  // FUNCIÓN PARA VERIFICAR SI JUEGO ESTÁ EN BIBLIOTECA
+  // ======================
+  function verificarJuegoEnBiblioteca() {
+    let biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+    return biblioteca.some((juego) => juego.titulo === titulo);
+  }
+
+  // Desactivar status buttons al cargar
+  function desactivarStatusBtns() {
+    const statusBtns = document.querySelectorAll(".status-btn");
+    statusBtns.forEach((btn) => {
+      btn.disabled = true;
+      btn.style.opacity = "0.5";
+      btn.style.cursor = "not-allowed";
+    });
+  }
+
+  // Activar status buttons
+  function activarStatusBtns() {
+    const statusBtns = document.querySelectorAll(".status-btn");
+    statusBtns.forEach((btn) => {
+      btn.disabled = false;
+      btn.style.opacity = "1";
+      btn.style.cursor = "pointer";
+    });
+  }
+
+  // Verificar al cargar si el juego ya está en biblioteca
+  if (verificarJuegoEnBiblioteca()) {
+    activarStatusBtns();
+  } else {
+    desactivarStatusBtns();
+  }
+
+  // ======================
   // ESTADO DEL JUEGO (guardable en localStorage)
   // ======================
   const statusBtns = document.querySelectorAll(".status-btn");
   statusBtns.forEach((btn) => {
     btn.addEventListener("click", () => {
-      statusBtns.forEach((b) => (b.style.opacity = "0.5"));
-      btn.style.opacity = "1";
+      // Si el botón está desactivado, no hacer nada
+      if (btn.disabled) return;
+      // Remover clase active de todos los botones
+      statusBtns.forEach((b) => b.classList.remove("active"));
+      // Agregar clase active al botón clickeado
+      btn.classList.add("active");
 
-      // Guardar el estado en localStorage
+      // Determinar el estado
       const estado = btn.classList.contains("playing")
         ? "jugando"
         : btn.classList.contains("completed")
@@ -167,7 +206,20 @@ document.addEventListener("DOMContentLoaded", () => {
             ? "pendiente"
             : "abandonado";
 
-      localStorage.setItem(`juego_${titulo}`, estado);
+      // Obtener biblioteca y actualizar el juego
+      let biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+      const juegoIndex = biblioteca.findIndex((j) => j.titulo === titulo);
+      
+      if (juegoIndex !== -1) {
+        // Si el juego está en biblioteca, actualizar su estado
+        biblioteca[juegoIndex].estado = estado;
+        localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
+        showModal("Estado actualizado", `El estado de ${titulo} ha sido cambiado a ${estado}`);
+      } else {
+        // Si no está en biblioteca, solo guardar en localStorage temporalmente
+        localStorage.setItem(`juego_${titulo}`, estado);
+        showModal("Estado guardado", `El estado ha sido guardado. Agrégalo a tu biblioteca para que se sincronice.`);
+      }
     });
   });
 
@@ -188,6 +240,21 @@ document.addEventListener("DOMContentLoaded", () => {
         return;
       }
 
+      // Determinar el estado seleccionado
+      let estadoSeleccionado = "pendiente";
+      const statusBtns = document.querySelectorAll(".status-btn");
+      statusBtns.forEach((btn) => {
+        if (btn.classList.contains("active")) {
+          estadoSeleccionado = btn.classList.contains("playing")
+            ? "jugando"
+            : btn.classList.contains("completed")
+              ? "completado"
+              : btn.classList.contains("pending")
+                ? "pendiente"
+                : "abandonado";
+        }
+      });
+
       // Crear objeto del juego
       const nuevoJuego = {
         titulo: titulo,
@@ -195,7 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
         año: año,
         descripcion: descripcion,
         rating: rating,
-        estado: "pendiente", // Estado por defecto al agregar
+        estado: estadoSeleccionado, // Usar el estado seleccionado
         logros: logros || [],
         fechaAgregado: new Date().toISOString(),
       };
@@ -209,8 +276,11 @@ document.addEventListener("DOMContentLoaded", () => {
       addToLibraryBtn.classList.add("active-follow");
       addToLibraryBtn.disabled = true;
 
+      // Activar los status buttons
+      activarStatusBtns();
+
       // Mostrar modal de confirmación
-      showModal("¡Éxito!", `${titulo} ha sido agregado a tu biblioteca`);
+      showModal("¡Éxito!", `${titulo} ha sido agregado a tu biblioteca con estado: ${estadoSeleccionado}`);
 
       // Actualizar iconos
       lucide.createIcons();
