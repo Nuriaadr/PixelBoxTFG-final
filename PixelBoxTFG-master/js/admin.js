@@ -133,7 +133,7 @@ function renderGames() {
         </div>
         <p class="year">${game.año}</p>
         <div class="platforms">
-          <span>Rating: ${game.rating}/10</span>
+          <span>Rating: ${game.rating}/5</span>
         </div>
       </div>
       <div class="actions">
