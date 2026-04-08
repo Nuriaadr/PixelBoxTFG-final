@@ -273,6 +273,22 @@ function closeSuccessModalFunc() {
   }
 }
 
+// ===================== IMÁGENES =====================
+// Array de imágenes disponibles
+const AVAILABLE_IMAGES = [
+  "../img/img1.webp",
+  "../img/img2.webp",
+  "../img/img4.webp",
+  "../img/space.webp",
+  "../img/puzzle.webp",
+  "../img/zombie.webp"
+];
+
+// Obtener una imagen aleatoria
+function getRandomImage() {
+  return AVAILABLE_IMAGES[Math.floor(Math.random() * AVAILABLE_IMAGES.length)];
+}
+
 // ===================== ADD / EDIT GAME =====================
 function openAddGameModal() {
   editingGameId = null;
@@ -315,24 +331,33 @@ function handleGameFormSubmit(e) {
   const gamePlatform = document.getElementById("gamePlatform").value;
   const gameRating = document.getElementById("gameRating").value;
 
-  const newGame = {
-    nombre: gameName,
-    año: parseInt(gameYear),
-    genero: gameGenre,
-    descripcion: gameDescription,
-    plataforma: gamePlatform,
-    rating: parseFloat(gameRating),
-    imagen: "../img/img1.webp",
-    logros: []
-  };
-
   if (editingGameId !== null) {
-    // Update existing game
-    GAMES_DATA[editingGameId] = { ...GAMES_DATA[editingGameId], ...newGame };
+    // Update existing game - preservar imagen existente
+    const imagenActual = GAMES_DATA[editingGameId].imagen;
+    GAMES_DATA[editingGameId] = {
+      ...GAMES_DATA[editingGameId],
+      nombre: gameName,
+      año: parseInt(gameYear),
+      genero: gameGenre,
+      descripcion: gameDescription,
+      plataforma: gamePlatform,
+      rating: parseFloat(gameRating),
+      imagen: imagenActual
+    };
     saveGamesToStorage();
     openSuccessModal("¡Juego Actualizado!", "Los cambios han sido guardados correctamente");
   } else {
-    // Add new game
+    // Add new game - asignar imagen aleatoria
+    const newGame = {
+      nombre: gameName,
+      año: parseInt(gameYear),
+      genero: gameGenre,
+      descripcion: gameDescription,
+      plataforma: gamePlatform,
+      rating: parseFloat(gameRating),
+      imagen: getRandomImage(),
+      logros: []
+    };
     GAMES_DATA.push(newGame);
     saveGamesToStorage();
     openSuccessModal("¡Juego Añadido!", "El juego ha sido añadido a la plataforma");
