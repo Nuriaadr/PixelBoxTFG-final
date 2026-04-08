@@ -139,34 +139,76 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
-  // BOTÓN SEGUIR
+  // MODAL DE SEGUIDORES
   // ======================
-  const followBtn = document.querySelector(".btn-follow");
-  const followModal = document.getElementById("followModal");
-  const closeFollowModal = document.getElementById("closeFollowModal");
+  const followersCounter = document.getElementById("followersCounter");
+  const followerCountText = document.getElementById("followerCountText");
+  const followersModal = document.getElementById("followersModal");
+  const closeFollowersModal = document.getElementById("closeFollowersModal");
+  const followersList = document.getElementById("followersList");
 
-  let siguiendo = false;
+  // Actualizar contador de seguidores dinámicamente
+  function updateFollowerCounter() {
+    const seguidores = getFollowersOfUser(user);
+    followerCountText.textContent = seguidores.length;
+  }
 
-  followBtn.addEventListener("click", () => {
-    siguiendo = !siguiendo;
+  // Mostrar contador inicial
+  updateFollowerCounter();
 
-    if (siguiendo) {
-      followBtn.innerHTML = `<i data-lucide="user-check"></i> Siguiendo`;
-      followBtn.classList.add("active-follow");
+  function renderFollowers() {
+    followersList.innerHTML = "";
 
-      followModal.classList.remove("hidden");
-      lucide.createIcons();
-    } else {
-      followBtn.innerHTML = `<i data-lucide="user-plus"></i> Seguir`;
-      followBtn.classList.remove("active-follow");
+    // Obtener seguidores dinámicamente del usuario actual
+    const seguidores = getFollowersOfUser(user);
+
+    if (seguidores.length === 0) {
+      followersList.innerHTML = "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No tienes seguidores aún</p>";
+      return;
     }
-  });
 
-  closeFollowModal.addEventListener("click", () => {
-    followModal.classList.add("hidden");
-  });
+    seguidores.forEach(follower => {
+      const followerCard = document.createElement("div");
+      followerCard.className = "follower-card";
+      followerCard.innerHTML = `
+        <div class="follower-avatar" style="background-image: url('${follower.avatar}')"></div>
+        <div class="follower-info">
+          <h3>${follower.username}</h3>
+          <p>${follower.description}</p>
+          <span class="follower-games">${follower.games} juegos</span>
+        </div>
+        <button class="btn-view-profile" onclick="window.location.href='user-profile.html?user=${encodeURIComponent(follower.username)}'">
+          Ver Perfil
+        </button>
+      `;
+      followersList.appendChild(followerCard);
+    });
 
-const deleteModal = document.getElementById("deleteModal");
+    lucide.createIcons();
+  }
+
+  if (followersCounter) {
+    followersCounter.addEventListener("click", () => {
+      updateFollowerCounter();
+      renderFollowers();
+      followersModal?.classList.remove("hidden");
+    });
+  }
+
+  if (closeFollowersModal) {
+    closeFollowersModal.addEventListener("click", () => {
+      followersModal?.classList.add("hidden");
+    });
+  }
+
+  if (followersModal) {
+    followersModal.addEventListener("click", (e) => {
+      if (e.target === followersModal) {
+        followersModal.classList.add("hidden");
+      }
+    });
+  }
+
   // ======================
   // LOGROS
   // ======================

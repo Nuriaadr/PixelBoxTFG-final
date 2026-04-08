@@ -77,13 +77,10 @@
                     <div class="quick-stats">
                         <span><i data-lucide="trophy"></i> 156 completados</span>
                         <span><i data-lucide="gamepad-2"></i> 342 jugados</span>
-                        <span><i data-lucide="users"></i> 1243 seguidores</span>
+                        <span id="followersCounter" style="cursor: pointer;"><i data-lucide="users"></i> <span id="followerCountText">0</span> seguidores</span>
                     </div>
                 </div>
             </div>
-            <button class="btn-follow">
-                <i data-lucide="user-plus"></i> Seguir
-            </button>
         </header>
 
         <section class="stats-grid">
@@ -202,13 +199,21 @@
     </div>
 </footer>
 
-<div id="followModal" class="modal hidden">
-    <div class="modal-content">
-        <p>Ahora sigues a este usuario</p>
-        <button id="closeFollowModal">Aceptar</button>
+<div id="followersModal" class="modal hidden">
+    <div class="modal-content followers-modal-content">
+        <div class="modal-header">
+            <h2>Mis Seguidores</h2>
+            <button class="modal-close-btn" id="closeFollowersModal" title="Cerrar">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div id="followersList" class="followers-list">
+            <!-- Seguidores se cargan dinámicamente -->
+        </div>
     </div>
 </div>
 <script src="../js/games.js"></script>
+    <script src="../js/users.js"></script>
     <script src="../js/search.js"></script>
     <script src="../js/perfil.js"></script>
 

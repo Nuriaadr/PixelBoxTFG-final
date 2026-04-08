@@ -304,7 +304,7 @@ function openEditGameModal(index) {
   document.getElementById("gameModalTitle").textContent = "Editar Juego";
   document.getElementById("gameName").value = game.nombre;
   document.getElementById("gameYear").value = game.año;
-  document.getElementById("gameDeveloper").value = game.genero;
+  document.getElementById("gameDeveloper").value = game.desarrollador;
   document.getElementById("gameDescription").value = game.descripcion;
   document.getElementById("gameGenre").value = game.genero;
   document.getElementById("gamePlatform").value = game.plataforma;
@@ -338,6 +338,7 @@ function handleGameFormSubmit(e) {
       ...GAMES_DATA[editingGameId],
       nombre: gameName,
       año: parseInt(gameYear),
+      desarrollador: gameDeveloper,
       genero: gameGenre,
       descripcion: gameDescription,
       plataforma: gamePlatform,
@@ -351,6 +352,7 @@ function handleGameFormSubmit(e) {
     const newGame = {
       nombre: gameName,
       año: parseInt(gameYear),
+      desarrollador: gameDeveloper,
       genero: gameGenre,
       descripcion: gameDescription,
       plataforma: gamePlatform,
