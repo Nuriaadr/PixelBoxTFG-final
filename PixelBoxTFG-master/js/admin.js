@@ -1,14 +1,485 @@
 
+// ===================== ADMIN PANEL JS =====================
+
+// Datos de usuarios (puede ser reemplazado por datos del servidor)
+const USERS_DATA = [
+  {
+    id: 1,
+    username: "@jugador_pro",
+    avatar: "../img/user1.webp",
+    description: "Amante de los RPG y juegos indie. Siempre buscando la próxima aventura.",
+    games: 342,
+    followers: 1243,
+    following: 892
+  },
+  {
+    id: 2,
+    username: "@gamer_elite",
+    avatar: "../img/space.webp",
+    description: "Speedrunner profesional. Récord mundial en 3 juegos.",
+    games: 567,
+    followers: 5432,
+    following: 234
+  },
+  {
+    id: 3,
+    username: "@indie_lover",
+    avatar: "../img/user2.webp",
+    description: "Descubriendo gemas ocultas del gaming indie.",
+    games: 289,
+    followers: 2341,
+    following: 456
+  }
+];
+
+// Variables globales
+let currentPage = "games";
+let gamesDatabase = [...GAMES_DATA];
+let usersDatabase = [...USERS_DATA];
+let editingGameId = null;
+let deletingGameId = null;
+let deletingUserId = null;
+
 document.addEventListener("DOMContentLoaded", () => {
+  lucide.createIcons();
 
-    lucide.createIcons();
-
-    document.getElementById("logoutBtnAdmin").addEventListener("click", function () {
-
-        localStorage.removeItem("usuario");
-        localStorage.removeItem("rol");
-
-        window.location.href = "../index.html";
+  // Logout
+  const logoutBtn = document.getElementById("logoutBtnAdmin");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", function () {
+      localStorage.removeItem("usuario");
+      localStorage.removeItem("rol");
+      window.location.href = "../index.html";
     });
+  }
 
+  // Tabs
+  setupTabs();
+
+  // Search
+  setupSearch();
+
+  // Modals
+  setupModals();
+
+  // Add Game/User buttons
+  const addGameBtn = document.getElementById("addGameBtn");
+  const addUserBtn = document.getElementById("addUserBtn");
+  
+  if (addGameBtn) {
+    addGameBtn.addEventListener("click", openAddGameModal);
+  }
+  if (addUserBtn) {
+    addUserBtn.addEventListener("click", () => {
+      alert("Funcionalidad para añadir usuarios próximamente");
+    });
+  }
+
+  // Render initial view
+  renderGames();
+  renderUsers();
 });
+
+// ===================== TABS =====================
+function setupTabs() {
+  const tabButtons = document.querySelectorAll(".tab-item");
+
+  tabButtons.forEach(button => {
+    button.addEventListener("click", () => {
+      // Remove active class from all tabs
+      tabButtons.forEach(btn => btn.classList.remove("active"));
+      
+      // Add active class to clicked tab
+      button.classList.add("active");
+
+      // Get the tab name
+      const tabName = button.getAttribute("data-tab");
+
+      // Show/hide content
+      switchTab(tabName);
+    });
+  });
+}
+
+function switchTab(tabName) {
+  currentPage = tabName;
+
+  const gamesList = document.getElementById("gamesList");
+  const usersList = document.getElementById("usersList");
+
+  if (tabName === "games") {
+    gamesList?.classList.remove("hidden");
+    usersList?.classList.add("hidden");
+  } else if (tabName === "users") {
+    gamesList?.classList.add("hidden");
+    usersList?.classList.remove("hidden");
+  }
+}
+
+// ===================== RENDER GAMES =====================
+function renderGames() {
+  const gamesList = document.getElementById("gamesList");
+  if (!gamesList) return;
+
+  gamesList.innerHTML = gamesDatabase.map((game, index) => `
+    <article class="game-item">
+      <img src="${game.imagen}" class="game-thumb" alt="${game.nombre}">
+      <div class="game-details">
+        <h2>${game.nombre}</h2>
+        <p class="developer">${game.genero}</p>
+        <div class="tags">
+          <span>${game.genero}</span>
+          <span>${game.plataforma}</span>
+        </div>
+        <p class="year">${game.año}</p>
+        <div class="platforms">
+          <span>Rating: ${game.rating}/10</span>
+        </div>
+      </div>
+      <div class="actions">
+        <button class="edit" aria-label="btn" onclick="openEditGameModal(${index})" title="Editar">
+          <i data-lucide="pencil"></i>
+        </button>
+        <button class="delete" aria-label="btn" onclick="openDeleteGameModal(${index})" title="Eliminar">
+          <i data-lucide="trash-2"></i>
+        </button>
+      </div>
+    </article>
+  `).join("");
+
+  lucide.createIcons();
+}
+
+// ===================== RENDER USERS =====================
+function renderUsers() {
+  const usersList = document.getElementById("usersList");
+  if (!usersList) return;
+
+  usersList.innerHTML = usersDatabase.map((user, index) => `
+    <article class="user-card">
+      <div class="user-avatar">
+        <img src="${user.avatar}" alt="${user.username}">
+      </div>
+      <div class="user-info">
+        <h2>${user.username}</h2>
+        <p class="user-desc">${user.description}</p>
+        <div class="user-stats">
+          <span><strong>${user.games}</strong> juegos</span>
+          <span><strong>${user.followers}</strong> seguidores</span>
+          <span><strong>${user.following}</strong> siguiendo</span>
+        </div>
+      </div>
+      <div class="user-actions">
+        <button class="edit" aria-label="boton" onclick="alert('Funcionalidad próximamente')" title="Editar">
+          <i data-lucide="pencil"></i>
+        </button>
+        <button class="delete" aria-label="boton" onclick="openDeleteUserModal(${index})" title="Eliminar">
+          <i data-lucide="trash-2"></i>
+        </button>
+      </div>
+    </article>
+  `).join("");
+
+  lucide.createIcons();
+}
+
+// ===================== MODALS =====================
+function setupModals() {
+  // Game Modal
+  const gameModal = document.getElementById("gameModal");
+  const gameForm = document.getElementById("gameForm");
+  const closeGameModal = document.getElementById("closeGameModal");
+  const cancelGameBtn = document.getElementById("cancelGameBtn");
+
+  if (closeGameModal) {
+    closeGameModal.addEventListener("click", closeModal);
+  }
+  if (cancelGameBtn) {
+    cancelGameBtn.addEventListener("click", closeModal);
+  }
+  if (gameForm) {
+    gameForm.addEventListener("submit", handleGameFormSubmit);
+  }
+
+  // DeleteModal
+  const deleteModal = document.getElementById("deleteModal");
+  const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
+  const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
+
+  if (cancelDeleteBtn) {
+    cancelDeleteBtn.addEventListener("click", closeDeleteModal);
+  }
+  if (confirmDeleteBtn) {
+    confirmDeleteBtn.addEventListener("click", handleDelete);
+  }
+
+  // Success Modal
+  const successModal = document.getElementById("successModal");
+  const closeSuccessBtn = document.getElementById("closeSuccessModal");
+
+  if (closeSuccessBtn) {
+    closeSuccessBtn.addEventListener("click", closeSuccessModalFunc);
+  }
+
+  // Close modals when clicking outside
+  if (gameModal) {
+    gameModal.addEventListener("click", (e) => {
+      if (e.target === gameModal) closeModal();
+    });
+  }
+  if (deleteModal) {
+    deleteModal.addEventListener("click", (e) => {
+      if (e.target === deleteModal) closeDeleteModal();
+    });
+  }
+  if (successModal) {
+    successModal.addEventListener("click", (e) => {
+      if (e.target === successModal) closeSuccessModalFunc();
+    });
+  }
+}
+
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) {
+    modal.classList.remove("hidden");
+  }
+}
+
+function closeModal() {
+  const gameModal = document.getElementById("gameModal");
+  if (gameModal) {
+    gameModal.classList.add("hidden");
+  }
+  editingGameId = null;
+  resetGameForm();
+}
+
+function closeDeleteModal() {
+  const deleteModal = document.getElementById("deleteModal");
+  if (deleteModal) {
+    deleteModal.classList.add("hidden");
+  }
+  deletingGameId = null;
+  deletingUserId = null;
+}
+
+function openSuccessModal(title, message) {
+  const successModal = document.getElementById("successModal");
+  document.getElementById("successModalTitle").textContent = title;
+  document.getElementById("successModalMessage").textContent = message;
+  
+  if (successModal) {
+    successModal.classList.remove("hidden");
+  }
+}
+
+function closeSuccessModalFunc() {
+  const successModal = document.getElementById("successModal");
+  if (successModal) {
+    successModal.classList.add("hidden");
+  }
+}
+
+// ===================== ADD / EDIT GAME =====================
+function openAddGameModal() {
+  editingGameId = null;
+  resetGameForm();
+  document.getElementById("gameModalTitle").textContent = "Añadir Juego";
+  openModal("gameModal");
+}
+
+function openEditGameModal(index) {
+  editingGameId = index;
+  const game = gamesDatabase[index];
+
+  document.getElementById("gameModalTitle").textContent = "Editar Juego";
+  document.getElementById("gameName").value = game.nombre;
+  document.getElementById("gameYear").value = game.año;
+  document.getElementById("gameDeveloper").value = game.genero;
+  document.getElementById("gameDescription").value = game.descripcion;
+  document.getElementById("gameGenre").value = game.genero;
+  document.getElementById("gamePlatform").value = game.plataforma;
+  document.getElementById("gameRating").value = game.rating;
+
+  openModal("gameModal");
+}
+
+function resetGameForm() {
+  const gameForm = document.getElementById("gameForm");
+  if (gameForm) {
+    gameForm.reset();
+  }
+}
+
+function handleGameFormSubmit(e) {
+  e.preventDefault();
+
+  const gameName = document.getElementById("gameName").value;
+  const gameYear = document.getElementById("gameYear").value;
+  const gameDeveloper = document.getElementById("gameDeveloper").value;
+  const gameDescription = document.getElementById("gameDescription").value;
+  const gameGenre = document.getElementById("gameGenre").value;
+  const gamePlatform = document.getElementById("gamePlatform").value;
+  const gameRating = document.getElementById("gameRating").value;
+
+  const newGame = {
+    nombre: gameName,
+    año: parseInt(gameYear),
+    genero: gameGenre,
+    descripcion: gameDescription,
+    plataforma: gamePlatform,
+    rating: parseFloat(gameRating),
+    imagen: "../img/img1.webp",
+    logros: []
+  };
+
+  if (editingGameId !== null) {
+    // Update existing game
+    gamesDatabase[editingGameId] = { ...gamesDatabase[editingGameId], ...newGame };
+    openSuccessModal("¡Juego Actualizado!", "Los cambios han sido guardados correctamente");
+  } else {
+    // Add new game
+    gamesDatabase.push(newGame);
+    openSuccessModal("¡Juego Añadido!", "El juego ha sido añadido a la plataforma");
+  }
+
+  closeModal();
+  setTimeout(() => {
+    renderGames();
+    closeSuccessModalFunc();
+  }, 1500);
+}
+
+// ===================== DELETE GAME / USER =====================
+function openDeleteGameModal(index) {
+  deletingGameId = index;
+  const game = gamesDatabase[index];
+
+  document.getElementById("deleteGameName").textContent = game.nombre;
+  openModal("deleteModal");
+}
+
+function openDeleteUserModal(index) {
+  deletingUserId = index;
+  const user = usersDatabase[index];
+
+  document.getElementById("deleteUserName").textContent = user.username;
+  openModal("deleteModal");
+}
+
+function handleDelete() {
+  if (deletingGameId !== null) {
+    const gameName = gamesDatabase[deletingGameId].nombre;
+    gamesDatabase.splice(deletingGameId, 1);
+    openSuccessModal("¡Juego Eliminado!", `"${gameName}" ha sido eliminado correctamente`);
+    renderGames();
+  } else if (deletingUserId !== null) {
+    const userName = usersDatabase[deletingUserId].username;
+    usersDatabase.splice(deletingUserId, 1);
+    openSuccessModal("¡Usuario Eliminado!", `"${userName}" ha sido eliminado correctamente`);
+    renderUsers();
+  }
+
+  closeDeleteModal();
+  setTimeout(() => {
+    closeSuccessModalFunc();
+  }, 1500);
+}
+
+// ===================== SEARCH =====================
+function setupSearch() {
+  const searchIconBtn = document.getElementById("openSearchModalBtn");
+  const searchModal = document.getElementById("searchModal");
+  const closeSearchModal = document.getElementById("closeSearchModal");
+  const searchInput = document.getElementById("searchInput");
+  const searchResults = document.getElementById("searchResults");
+
+  if (searchIconBtn) {
+    searchIconBtn.addEventListener("click", () => {
+      if (searchModal) searchModal.classList.remove("hidden");
+    });
+  }
+
+  if (closeSearchModal) {
+    closeSearchModal.addEventListener("click", () => {
+      if (searchModal) searchModal.classList.add("hidden");
+    });
+  }
+
+  if (searchModal) {
+    searchModal.addEventListener("click", (e) => {
+      if (e.target === searchModal) {
+        searchModal.classList.add("hidden");
+      }
+    });
+  }
+
+  if (searchInput) {
+    searchInput.addEventListener("input", (e) => {
+      const query = e.target.value.toLowerCase();
+      performSearch(query);
+    });
+  }
+}
+
+function performSearch(query) {
+  const searchResults = document.getElementById("searchResults");
+  if (!searchResults) return;
+
+  let results = [];
+
+  if (currentPage === "games") {
+    results = gamesDatabase.filter(game =>
+      game.nombre.toLowerCase().includes(query)
+    );
+  } else if (currentPage === "users") {
+    results = usersDatabase.filter(user =>
+      user.username.toLowerCase().includes(query)
+    );
+  }
+
+  if (query.trim() === "") {
+    searchResults.innerHTML = `<p class="search-placeholder">Escribe para buscar...</p>`;
+    return;
+  }
+
+  if (results.length === 0) {
+    searchResults.innerHTML = `<p class="search-placeholder">No se encontraron resultados</p>`;
+    return;
+  }
+
+  searchResults.innerHTML = results.map(item => {
+    if (item.nombre) {
+      // It's a game
+      return `
+        <div class="search-result-item" style="padding: 12px 16px; border-bottom: 1px solid var(--secondary); cursor: pointer;">
+          <p style="margin: 0; font-weight: 500;">${item.nombre}</p>
+          <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">${item.genero} • ${item.año}</p>
+        </div>
+      `;
+    } else {
+      // It's a user
+      return `
+        <div class="search-result-item" style="padding: 12px 16px; border-bottom: 1px solid var(--secondary); cursor: pointer;">
+          <p style="margin: 0; font-weight: 500;">${item.username}</p>
+          <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">${item.games} juegos</p>
+        </div>
+      `;
+    }
+  }).join("");
+}
+
+// ===================== UTILITIES =====================
+function capitalizeStatus(status) {
+  const statusMap = {
+    "jugando": "Jugando",
+    "completado": "Completado",
+    "por_jugar": "Por Jugar",
+    "abandonado": "Abandonado",
+    "Activo": "Activo",
+    "Próximamente": "Próximamente",
+    "Descontinuado": "Descontinuado"
+  };
+  return statusMap[status] || status;
+}

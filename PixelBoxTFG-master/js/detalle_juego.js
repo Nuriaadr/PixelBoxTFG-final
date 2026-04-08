@@ -189,7 +189,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
-  // ESTADO DEL JUEGO (guardable en localStorage)
+  // ESTADO DEL JUEGO 
   // ======================
   const statusBtns = document.querySelectorAll(".status-btn");
   statusBtns.forEach((btn) => {
@@ -266,7 +266,7 @@ document.addEventListener("DOMContentLoaded", () => {
         año: año,
         descripcion: descripcion,
         rating: rating,
-        estado: estadoSeleccionado, // Usar el estado seleccionado
+        estado: estadoSeleccionado, 
         logros: logros || [],
         fechaAgregado: new Date().toISOString(),
       };

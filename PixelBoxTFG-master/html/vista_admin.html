@@ -30,11 +30,11 @@
     </header>
     <div class="admin-nav-container">
         <div class="admin-tabs">
-            <button class="tab-item active" onclick="location.href='vista_admin.html'">
+            <button class="tab-item active" data-tab="games">
                 <i data-lucide="gamepad-2"></i>
                 <span>Juegos <span class="tab-count">(8)</span></span>
             </button>
-            <button class="tab-item" onclick="location.href='vista_admin_usu.html'">
+            <button class="tab-item" data-tab="users">
                 <i data-lucide="users"></i>
                 <span>Usuarios <span class="tab-count">(3)</span></span>
             </button>
@@ -43,10 +43,10 @@
         <div class="tab-separator"></div>
 
         <div class="action-bar">
-            <div class="nav-icons">
+            <button class="search-icon-btn" id="openSearchModalBtn" title="Buscar">
                 <i data-lucide="search"></i>
-            </div>
-            <button class="btn-add-flat">
+            </button>
+            <button class="btn-add-flat" id="addGameBtn">
                 <i data-lucide="plus"></i>
                 <span>Añadir Juego</span>
             </button>
@@ -73,129 +73,90 @@
         </div>
     </div>
 
-    <section class="game-list">
-
-        <article class="game-item">
-            <img src="../img/img1.webp" class="game-thumb" alt="Cyberpunk Chronicles">
-            <div class="game-details">
-                <h2>Cyberpunk Chronicles</h2>
-                <p class="developer">NeoGames Studio</p>
-                <div class="tags"><span>RPG</span><span>Acción</span><span>Open World</span>
+    <!-- Modal para Añadir/Editar Juego -->
+    <div id="gameModal" class="modal hidden">
+        <div class="modal-content game-modal-content">
+            <div class="modal-header">
+                <h2 id="gameModalTitle">Añadir Juego</h2>
+                <button class="modal-close-btn" id="closeGameModal" title="Cerrar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="gameForm">
+                <div class="form-group">
+                    <label for="gameName">Nombre del Juego</label>
+                    <input type="text" id="gameName" required>
                 </div>
-                <p class="year">2025</p>
-                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span>
+                <div class="form-group">
+                    <label for="gameYear">Año</label>
+                    <input type="number" id="gameYear" required>
                 </div>
-            </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
+                <div class="form-group">
+                    <label for="gameDeveloper">Desarrollador</label>
+                    <input type="text" id="gameDeveloper" required>
+                </div>
+                <div class="form-group">
+                    <label for="gameDescription">Descripción</label>
+                    <textarea id="gameDescription" rows="4" required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gameGenre">Género</label>
+                        <input type="text" id="gameGenre" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="gamePlatform">Plataforma</label>
+                        <input type="text" id="gamePlatform" required>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="gameRating">Calificación</label>
+                        <input type="number" id="gameRating" min="0" max="5" step="0.1" required>
+                    </div>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelGameBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Juego</button>
+                </div>
+            </form>
+        </div>
+    </div>
 
-        </article>
-        <article class="game-item">
-            <img src="../img/img2.webp" class="game-thumb" alt="Legends of Eldoria">
-            <div class="game-details">
-                <h2>Legends of Eldoria</h2>
-                <p class="developer">Mythic Games</p>
-                <div class="tags"><span>RPG</span><span>Fantasy</span><span>Aventura</span></div>
-                <p class="year">2024</p>
-                <div class="platforms"><span>PC</span><span>Nintendo Switch</span><span>PlayStation 5</span></div>
+    <!-- Modal de Confirmación de Eliminación -->
+    <div id="deleteModal" class="modal hidden">
+        <div class="modal-content delete-modal-content">
+            <div class="modal-header">
+                <h2>Confirmar Eliminación</h2>
             </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
+            <div class="modal-body">
+                <p>¿Estás seguro de que deseas eliminar <strong id="deleteGameName"></strong>?</p>
+                <p class="text-muted">Esta acción no se puede deshacer.</p>
             </div>
-        </article>
+            <div class="modal-actions">
+                <button class="btn-secondary" id="cancelDeleteBtn">Cancelar</button>
+                <button class="btn-danger" id="confirmDeleteBtn">Eliminar</button>
+            </div>
+        </div>
+    </div>
 
-        <article class="game-item">
-            <img src="../img/img4.webp" class="game-thumb" alt="Stellar Odyssey">
-            <div class="game-details">
-                <h2>Stellar Odyssey</h2>
-                <p class="developer">Cosmos Interactive</p>
-                <div class="tags"><span>Acción</span><span>Ciencia Ficción</span><span>Shooter</span></div>
-                <p class="year">2025</p>
-                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span></div>
+    <!-- Modal de Éxito -->
+    <div id="successModal" class="modal hidden">
+        <div class="modal-content success-modal-content">
+            <div class="modal-success-icon">
+                <i data-lucide="check-circle"></i>
             </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
-        </article>
+            <h2 id="successModalTitle">¡Éxito!</h2>
+            <p id="successModalMessage">Operación completada correctamente</p>
+            <button class="btn-primary" id="closeSuccessModal">Continuar</button>
+        </div>
+    </div>
 
-        <article class="game-item">
-            <img src="../img/img4.webp" class="game-thumb" alt="Shadow Castle">
-            <div class="game-details">
-                <h2>Shadow Castle</h2>
-                <p class="developer">Dark Moon Studios</p>
-                <div class="tags"><span>Horror</span><span>Aventura</span><span>Puzzle</span></div>
-                <p class="year">2023</p>
-                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span></div>
-            </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
-        </article>
+    <section class="game-list" id="gamesList">
+    </section>
 
-        <article class="game-item">
-            <img src="../img/img5.webp" class="game-thumb" alt="Velocity Racing">
-            <div class="game-details">
-                <h2>Velocity Racing</h2>
-                <p class="developer">Speed Demons Inc.</p>
-                <div class="tags"><span>Carreras</span><span>Simulación</span><span>Multijugador</span></div>
-                <p class="year">2025</p>
-                <div class="platforms"><span>PC</span><span>PlayStation 5</span><span>Xbox Series X</span></div>
-            </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
-        </article>
-
-        <article class="game-item">
-            <img src="../img/space.webp" class="game-thumb" alt="Nightmare Manor">
-            <div class="game-details">
-                <h2>Nightmare Manor</h2>
-                <p class="developer">Indie Horror Collective</p>
-                <div class="tags"><span>Horror</span><span>Supervivencia</span><span>Indie</span></div>
-                <p class="year">2024</p>
-                <div class="platforms"><span>PC</span><span>PlayStation 5</span></div>
-            </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
-        </article>
-
-        <article class="game-item">
-            <img src="../img/puzzle.webp" class="game-thumb" alt="Pixel Warriors">
-            <div class="game-details">
-                <h2>Pixel Warriors</h2>
-                <p class="developer">Pixel Perfect Games</p>
-                <div class="tags"><span>Plataformas</span><span>Indie</span><span>Retro</span></div>
-                <p class="year">2023</p>
-                <div class="platforms"><span>PC</span><span>Nintendo Switch</span></div>
-            </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
-        </article>
-
-        <article class="game-item">
-            <img src="../img/zombie.webp" class="game-thumb" alt="Dragon Quest Online">
-            <div class="game-details">
-                <h2>Dragon Quest Online</h2>
-                <p class="developer">Massive Worlds Entertainment</p>
-                <div class="tags"><span>MMORPG</span><span>Fantasy</span><span>Multijugador</span></div>
-                <p class="year">2025</p>
-                <div class="platforms"><span>PC</span></div>
-            </div>
-            <div class="actions">
-                <button class="edit" aria-label="btn"><i data-lucide="pencil"></i></button>
-                <button class="delete" aria-label="btn"><i data-lucide="trash-2"></i></button>
-            </div>
-        </article>
+    <!-- Contenedor para la lista de usuarios (inicialmente oculto) -->
+    <section class="user-list hidden" id="usersList">
     </section>
 
 </body>

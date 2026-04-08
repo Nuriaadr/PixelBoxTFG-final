@@ -1,8 +1,7 @@
 document.addEventListener("DOMContentLoaded", () => {
-  // Inicializar iconos
-  if (typeof lucide !== "undefined") {
+ 
     lucide.createIcons();
-  }
+  
 
   // =========================
   // PROTECCIÓN DE PÁGINA
