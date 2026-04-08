@@ -31,45 +31,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // JUEGOS Y LOGROS
   // ======================
   // Los juegos se cargan de GAMES_DATA (centralizado)
-  // Se manejan estados de "completado", "jugando", "por_jugar"
+  // La biblioteca solo guarda referencias (nombreJuego + estado)
 
-  // Cargar juegos de la biblioteca (localStorage)
-  let bibliotecaGuardada = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-  
-  // Eliminar duplicados de la biblioteca
-  let bibliotecaLimpia = [];
-  let titulosSeen = new Set();
-  
-  bibliotecaGuardada.forEach((juego) => {
-    if (!titulosSeen.has(juego.titulo)) {
-      bibliotecaLimpia.push(juego);
-      titulosSeen.add(juego.titulo);
+  // Cargar referencias de la biblioteca
+  let bibliotecaReferencias = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+
+  // Función para obtener juego completo desde GAMES_DATA
+  function obtenerJuegoCompleto(nombreJuego) {
+    const juego = GAMES_DATA.find(g => g.nombre.toLowerCase() === nombreJuego.toLowerCase());
+    if (juego) {
+      const ref = bibliotecaReferencias.find(b => b.nombreJuego === juego.nombre);
+      return {
+        ...juego,
+        estado: ref?.estado || "pendiente"
+      };
     }
-  });
-  
-  // Guardar la biblioteca limpia de nuevo
-  if (bibliotecaLimpia.length !== bibliotecaGuardada.length) {
-    console.log(`Se eliminaron ${bibliotecaGuardada.length - bibliotecaLimpia.length} duplicados`);
-    localStorage.setItem("biblioteca", JSON.stringify(bibliotecaLimpia));
+    return null;
   }
-  
-  console.log("Juegos en biblioteca (después de limpiar):", bibliotecaLimpia.length, bibliotecaLimpia);
-  
-  // Construcción de gamesData: usar los de biblioteca si existen, si no usar GAMES_DATA
-  let gamesData = bibliotecaLimpia.length > 0 
-    ? bibliotecaLimpia.map((juego) => {
-        // Buscar información completa en GAMES_DATA
-        const juegoData = GAMES_DATA.find((j) => j.nombre === juego.titulo);
-        return {
-          nombre: juego.titulo,
-          imagen: juego.imagen || "../img/img1.webp",
-          estado: juego.estado || "pendiente",
-          logros: juego.logros && juego.logros.length > 0 ? juego.logros : (juegoData?.logros || [])
-        };
-      })
-    : GAMES_DATA;
-  
-  console.log("GamesData después de mapear:", gamesData);
+
+  // Obtener todos los juegos con datos completos
+  function obtenerTodosLosJuegos() {
+    return bibliotecaReferencias
+      .map(ref => obtenerJuegoCompleto(ref.nombreJuego))
+      .filter(juego => juego !== null);
+  }
+
+  let gamesData = obtenerTodosLosJuegos();
 
   // Elementos del DOM
   const tabs = document.querySelectorAll(".tab-btn");
@@ -85,15 +72,12 @@ document.addEventListener("DOMContentLoaded", () => {
     gameGrid.innerHTML = "";
 
     gamesData.forEach((game) => {
-      const juegoData = GAMES_DATA.find((j) => j.nombre === game.nombre);
-      const año = juegoData?.año || 2025;
-      
       const params = new URLSearchParams({
         titulo: game.nombre,
         imagen: game.imagen,
-        año: año,
-        descripcion: "Descripción del juego",
-        rating: 4.5,
+        año: game.año,
+        descripcion: game.descripcion,
+        rating: game.rating,
         logros: game.logros ? JSON.stringify(game.logros) : "[]",
       }).toString();
 
@@ -105,7 +89,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <div class="game-img" style="background-image: url('${game.imagen}')">      
           </div>
           <h3>${game.nombre}</h3>
-          <p>${año}</p>
+          <p>${game.año}</p>
         </a>
       `;
       gameGrid.appendChild(gameCard);

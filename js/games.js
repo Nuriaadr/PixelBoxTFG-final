@@ -142,9 +142,33 @@ function filterGames(query) {
   );
 }
 
+// ===================== PERSISTENCIA EN STORAGE =====================
+// Guardar juegos en localStorage
+function saveGamesToStorage() {
+  localStorage.setItem("gamesData", JSON.stringify(GAMES_DATA));
+}
+
+// Cargar juegos desde localStorage (si existen cambios guardados)
+function loadGamesFromStorage() {
+  const savedGames = localStorage.getItem("gamesData");
+  if (savedGames) {
+    try {
+      const parsedGames = JSON.parse(savedGames);
+      // Reemplazar GAMES_DATA con los datos guardados
+      GAMES_DATA.length = 0;
+      GAMES_DATA.push(...parsedGames);
+    } catch (error) {
+      console.error("Error cargando juegos del storage", error);
+    }
+  }
+}
+
+// Cargar juegos al iniciar (apenas se carga games.js)
+loadGamesFromStorage();
+
 // Función para manejar logout con confirmación
-function setupLogoutHandler() {
-  const logoutBtn = document.getElementById("logoutBtn");
+function setupLogoutHandler(buttonId = "logoutBtn") {
+  const logoutBtn = document.getElementById(buttonId);
   if (logoutBtn) {
     logoutBtn.addEventListener("click", (e) => {
       e.preventDefault();

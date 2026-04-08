@@ -34,7 +34,6 @@ const USERS_DATA = [
 
 // Variables globales
 let currentPage = "games";
-let gamesDatabase = [...GAMES_DATA];
 let usersDatabase = [...USERS_DATA];
 let editingGameId = null;
 let deletingGameId = null;
@@ -44,14 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 
   // Logout
-  const logoutBtn = document.getElementById("logoutBtnAdmin");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", function () {
-      localStorage.removeItem("usuario");
-      localStorage.removeItem("rol");
-      window.location.href = "../index.html";
-    });
-  }
+  setupLogoutHandler("logoutBtnAdmin");
 
   // Tabs
   setupTabs();
@@ -121,7 +113,7 @@ function renderGames() {
   const gamesList = document.getElementById("gamesList");
   if (!gamesList) return;
 
-  gamesList.innerHTML = gamesDatabase.map((game, index) => `
+  gamesList.innerHTML = GAMES_DATA.map((game, index) => `
     <article class="game-item">
       <img src="${game.imagen}" class="game-thumb" alt="${game.nombre}">
       <div class="game-details">
@@ -291,7 +283,7 @@ function openAddGameModal() {
 
 function openEditGameModal(index) {
   editingGameId = index;
-  const game = gamesDatabase[index];
+  const game = GAMES_DATA[index];
 
   document.getElementById("gameModalTitle").textContent = "Editar Juego";
   document.getElementById("gameName").value = game.nombre;
@@ -336,11 +328,13 @@ function handleGameFormSubmit(e) {
 
   if (editingGameId !== null) {
     // Update existing game
-    gamesDatabase[editingGameId] = { ...gamesDatabase[editingGameId], ...newGame };
+    GAMES_DATA[editingGameId] = { ...GAMES_DATA[editingGameId], ...newGame };
+    saveGamesToStorage();
     openSuccessModal("¡Juego Actualizado!", "Los cambios han sido guardados correctamente");
   } else {
     // Add new game
-    gamesDatabase.push(newGame);
+    GAMES_DATA.push(newGame);
+    saveGamesToStorage();
     openSuccessModal("¡Juego Añadido!", "El juego ha sido añadido a la plataforma");
   }
 
@@ -354,7 +348,7 @@ function handleGameFormSubmit(e) {
 // ===================== DELETE GAME / USER =====================
 function openDeleteGameModal(index) {
   deletingGameId = index;
-  const game = gamesDatabase[index];
+  const game = GAMES_DATA[index];
 
   document.getElementById("deleteGameName").textContent = game.nombre;
   openModal("deleteModal");
@@ -370,8 +364,9 @@ function openDeleteUserModal(index) {
 
 function handleDelete() {
   if (deletingGameId !== null) {
-    const gameName = gamesDatabase[deletingGameId].nombre;
-    gamesDatabase.splice(deletingGameId, 1);
+    const gameName = GAMES_DATA[deletingGameId].nombre;
+    GAMES_DATA.splice(deletingGameId, 1);
+    saveGamesToStorage();
     openSuccessModal("¡Juego Eliminado!", `"${gameName}" ha sido eliminado correctamente`);
     renderGames();
   } else if (deletingUserId !== null) {
@@ -430,7 +425,7 @@ function performSearch(query) {
   let results = [];
 
   if (currentPage === "games") {
-    results = gamesDatabase.filter(game =>
+    results = GAMES_DATA.filter(game =>
       game.nombre.toLowerCase().includes(query)
     );
   } else if (currentPage === "users") {

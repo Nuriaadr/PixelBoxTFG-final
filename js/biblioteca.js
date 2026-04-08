@@ -46,8 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
   if (confirmDeleteBtn) {
     confirmDeleteBtn.addEventListener("click", () => {
       if (juegoAEliminar) {
-        juegos = juegos.filter((j) => j.titulo !== juegoAEliminar.titulo);
-        localStorage.setItem("biblioteca", JSON.stringify(juegos));
+        biblioteca = biblioteca.filter((j) => j.nombreJuego !== juegoAEliminar.nombreJuego);
+        guardarBiblioteca();
 
         renderizarJuegos();
         aplicarFiltro();
@@ -71,57 +71,130 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // DATOS
   // ======================
-  // Los juegos se cargan de GAMES_DATA (centralizado)
-  // Se manejan estados de "completado", "jugando", "por_jugar"
-
-  let juegosGuardados = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-
-  // Función para asegurar estructura correcta
-  function normalizarJuego(juego) {
-    return {
-      titulo: juego.nombre || juego.titulo || "Sin título",
-      imagen: juego.imagen || "../img/img1.webp",
-      año: juego.año || 2025,
-      descripcion: juego.descripcion || "",
-      rating: juego.rating || 0,
-      estado: juego.estado || "pendiente",
-      logros: Array.isArray(juego.logros) ? juego.logros : [],
-    };
+  // La biblioteca guarda solo: nombre del juego + estado personal
+  // Los datos completos se obtienen de GAMES_DATA para consistencia
+  
+  let bibliotecaStorage = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+  
+  // Función para migrar datos antiguos a nueva estructura
+  function migrarBibliotecaAntigua(datos) {
+    if (datos.length === 0) return [];
+    
+    // Verificar si están en formato antiguo (tienen 'titulo' o 'imagen')
+    if (datos[0].titulo || datos[0].imagen) {
+      console.log("Migrando biblioteca antigua a nueva estructura...");
+      return datos.map(juego => ({
+        nombreJuego: juego.nombre || juego.titulo,
+        estado: juego.estado || "pendiente"
+      }));
+    }
+    
+    return datos;
+  }
+  
+  // Estructura: [{ nombreJuego: "...", estado: "completado/jugando/pendiente/abandonado" }]
+  let biblioteca = migrarBibliotecaAntigua(bibliotecaStorage);
+  
+  // Guardar la migración
+  if (biblioteca.length > 0) {
+    localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
   }
 
-  // Normalizar TODOS los juegos guardados
-  let juegos = juegosGuardados.map(normalizarJuego);
-
-  // Si está vacío, usar GAMES_DATA como valor por defecto
-  if (juegos.length === 0) {
-    juegos = GAMES_DATA.map(normalizarJuego);
-    localStorage.setItem("biblioteca", JSON.stringify(juegos));
+  // Función para obtener juego completo desde GAMES_DATA
+  function obtenerJuegoCompleto(nombreJuego) {
+    const juego = GAMES_DATA.find(g => g.nombre.toLowerCase() === nombreJuego.toLowerCase());
+    if (juego) {
+      return {
+        ...juego,
+        estado: biblioteca.find(b => b.nombreJuego === juego.nombre)?.estado || "pendiente"
+      };
+    } else {
+      console.warn("No encontrado en GAMES_DATA:", nombreJuego);
+    }
+    return null;
   }
+
+  // Función para obtener todos los juegos de la biblioteca con datos completos
+  function obtenerJuegosConDatos() {
+    return biblioteca
+      .map(item => obtenerJuegoCompleto(item.nombreJuego))
+      .filter(juego => juego !== null);
+  }
+
+  // Guardar en localStorage solo las referencias
+  function guardarBiblioteca() {
+    localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
+  }
+
+  // Si la biblioteca está vacía, cargar juegos iniciales de GAMES_DATA
+  function inicializarBibliotecaConDatosDefecto() {
+    if (biblioteca.length === 0) {
+      console.log("Biblioteca vacía, verificando GAMES_DATA...");
+      console.log("GAMES_DATA:", GAMES_DATA);
+      console.log("GAMES_DATA.length:", GAMES_DATA?.length);
+      
+      // Fallback: si GAMES_DATA está vacío o no existe, cargar array por defecto
+      const juegosDisponibles = GAMES_DATA && GAMES_DATA.length > 0 
+        ? GAMES_DATA 
+        : [
+            { nombre: "Legends of Eldoria" },
+            { nombre: "Dragon Quest Online" },
+            { nombre: "Velocity Racing" },
+            { nombre: "Cyberpunk Chronicles" },
+            { nombre: "Nightmare Manor" },
+            { nombre: "Stellar Odyssey" },
+            { nombre: "Shadow Castle" },
+            { nombre: "Pixel Warriors" }
+          ];
+      
+      biblioteca = juegosDisponibles.map(juego => ({
+        nombreJuego: juego.nombre,
+        estado: "pendiente"
+      }));
+      guardarBiblioteca();
+      console.log("Biblioteca inicializada con", biblioteca.length, "juegos");
+    } else {
+      console.log("Biblioteca ya tiene", biblioteca.length, "juegos");
+    }
+  }
+
+  // Inicializar si es necesario
+  inicializarBibliotecaConDatosDefecto();
 
   // ======================
   // RENDER
   // ======================
   function renderizarJuegos() {
     const container = document.querySelector(".card-grid");
-
+    if (!container) {
+      console.error("No se encontró .card-grid");
+      return;
+    }
+    
     container.querySelectorAll(".game-card").forEach((card) => card.remove());
 
-    juegos.forEach((juego) => {
+    const juegosConDatos = obtenerJuegosConDatos();
+    console.log("Renderizando", juegosConDatos.length, "juegos");
+
+    if (juegosConDatos.length === 0) {
+      console.warn("No hay juegos para mostrar. Biblioteca:", biblioteca);
+    }
+
+    juegosConDatos.forEach((juego) => {
       const card = document.createElement("div");
       card.className = "game-card";
+      card.dataset.nombreJuego = juego.nombre;
 
-      // Crear el href con todos los parámetros incluyendo logros
       const logrosJSON = juego.logros ? JSON.stringify(juego.logros) : "[]";
-      const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.titulo)}&imagen=${encodeURIComponent(juego.imagen)}&año=${encodeURIComponent(juego.año)}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&logros=${encodeURIComponent(logrosJSON)}`;
-
+      const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.nombre)}&imagen=${encodeURIComponent(juego.imagen)}&año=${juego.año}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&logros=${encodeURIComponent(logrosJSON)}`;
 
       card.innerHTML = `
         <i class="delete-game" data-lucide="x"></i>
         <a href="${href}">
           <div class="game-img">
-            <img src="${juego.imagen}" alt="${juego.titulo}">
+            <img src="${juego.imagen}" alt="${juego.nombre}">
           </div>
-          <h3>${juego.titulo}</h3>
+          <h3>${juego.nombre}</h3>
           <span>${juego.año}</span>
         </a>
       `;
@@ -129,8 +202,10 @@ document.addEventListener("DOMContentLoaded", () => {
       container.appendChild(card);
     });
 
-    lucide.createIcons();
-    agregarEventosEliminar();
+    if (juegosConDatos.length > 0) {
+      lucide.createIcons();
+      agregarEventosEliminar();
+    }
   }
 
   // ======================
@@ -143,12 +218,12 @@ document.addEventListener("DOMContentLoaded", () => {
         e.stopPropagation();
 
         const card = btn.closest(".game-card");
-        const titulo = card.querySelector("h3")?.textContent || "Juego";
+        const nombreJuego = card.dataset.nombreJuego;
 
-        juegoAEliminar = { titulo };
+        juegoAEliminar = { nombreJuego };
 
         if (modalText) {
-          modalText.textContent = `¿Seguro que quieres eliminar "${titulo}"?`;
+          modalText.textContent = `¿Seguro que quieres eliminar "${nombreJuego}"?`;
         }
 
         if (modal) {
@@ -189,11 +264,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let visibles = 0;
 
     cards.forEach((card) => {
-      const titulo = card.querySelector("h3").textContent;
-      const juego = juegos.find((j) => j.titulo === titulo);
+      const nombreJuego = card.dataset.nombreJuego;
+      const item = biblioteca.find((b) => b.nombreJuego === nombreJuego);
 
       let mostrar =
-        filtroActual === "todos" || (juego && juego.estado === filtroActual);
+        filtroActual === "todos" || (item && item.estado === filtroActual);
 
       card.style.display = mostrar ? "block" : "none";
 
@@ -210,11 +285,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // CONTADORES
   // ======================
   function actualizarContadores() {
-    const total = juegos.length;
-    const jugando = juegos.filter((j) => j.estado === "jugando").length;
-    const completados = juegos.filter((j) => j.estado === "completado").length;
-    const pendientes = juegos.filter((j) => j.estado === "pendiente").length;
-    const abandonados = juegos.filter((j) => j.estado === "abandonado").length;
+    const total = biblioteca.length;
+    const jugando = biblioteca.filter((j) => j.estado === "jugando").length;
+    const completados = biblioteca.filter((j) => j.estado === "completado").length;
+    const pendientes = biblioteca.filter((j) => j.estado === "pendiente").length;
+    const abandonados = biblioteca.filter((j) => j.estado === "abandonado").length;
 
     // Actualizar tarjetas de stats
     document.querySelector(".card-blue .number").textContent = total;
@@ -244,9 +319,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ======================
-  // INICIO
-  // ======================
+
+  
+  // Intentar inicializar la biblioteca si está vacía
+  inicializarBibliotecaConDatosDefecto();
+  
   renderizarJuegos();
   aplicarFiltro();
   actualizarContadores();

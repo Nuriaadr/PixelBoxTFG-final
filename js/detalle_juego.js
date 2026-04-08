@@ -155,7 +155,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   function verificarJuegoEnBiblioteca() {
     let biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-    return biblioteca.some((juego) => juego.titulo === titulo);
+    return biblioteca.some((item) => item.nombreJuego === titulo);
   }
 
   // Desactivar status buttons al cargar
@@ -209,17 +209,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Obtener biblioteca y actualizar el juego
       let biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-      const juegoIndex = biblioteca.findIndex((j) => j.titulo === titulo);
+      const itemIndex = biblioteca.findIndex((item) => item.nombreJuego === titulo);
       
-      if (juegoIndex !== -1) {
+      if (itemIndex !== -1) {
         // Si el juego está en biblioteca, actualizar su estado
-        biblioteca[juegoIndex].estado = estado;
+        biblioteca[itemIndex].estado = estado;
         localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
         showModal("Estado actualizado", `El estado de ${titulo} ha sido cambiado a ${estado}`);
       } else {
-        // Si no está en biblioteca, solo guardar en localStorage temporalmente
-        localStorage.setItem(`juego_${titulo}`, estado);
-        showModal("Estado guardado", `El estado ha sido guardado. Agrégalo a tu biblioteca para que se sincronice.`);
+        // Si no está en biblioteca, informar al usuario
+        showModal("No en biblioteca", "Debes agregar el juego a tu biblioteca primero");
       }
     });
   });
@@ -234,7 +233,7 @@ document.addEventListener("DOMContentLoaded", () => {
       let biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
 
       // Verificar si el juego ya está en la biblioteca
-      const existe = biblioteca.some((juego) => juego.titulo === titulo);
+      const existe = biblioteca.some((item) => item.nombreJuego === titulo);
 
       if (existe) {
         showModal("Ya en biblioteca", "Este juego ya está en tu biblioteca");
@@ -256,20 +255,15 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Crear objeto del juego
-      const nuevoJuego = {
-        titulo: titulo,
-        imagen: imagen,
-        año: año,
-        descripcion: descripcion,
-        rating: rating,
-        estado: estadoSeleccionado, 
-        logros: logros || [],
-        fechaAgregado: new Date().toISOString(),
+      // Guardar solo referencia: nombre del juego + estado
+      // Los datos completos se obtienen de GAMES_DATA para consistencia
+      const referencia = {
+        nombreJuego: titulo,
+        estado: estadoSeleccionado
       };
 
       // Agregar a la biblioteca
-      biblioteca.push(nuevoJuego);
+      biblioteca.push(referencia);
       localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
 
       // Cambiar estado del botón
