@@ -25,13 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // LOGOUT
-  let logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("usuario");
-      window.location.href = "../index.html";
-    });
-  }
+  setupLogoutHandler();
 
   // ======================
   // JUEGOS DE TENDENCIAS

@@ -24,10 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   let logoutBtn = document.getElementById("logoutBtn");
   if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("usuario");
-      window.location.href = "../index.html";
-    });
+    setupLogoutHandler();
   }
 
   // ======================

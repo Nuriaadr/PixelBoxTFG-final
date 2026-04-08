@@ -30,16 +30,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // LOGOUT
-  let logoutBtn = document.getElementById("logoutBtn");
-
-  if (logoutBtn) {
-    logoutBtn.addEventListener("click", () => {
-      localStorage.removeItem("usuario");
-      localStorage.removeItem("rol");
-
-      window.location.href = "../index.html";
-    });
-  }
+  setupLogoutHandler();
 
   // =========================
   // FILTROS

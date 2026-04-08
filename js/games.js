@@ -141,3 +141,50 @@ function filterGames(query) {
     game.nombre.toLowerCase().includes(query.toLowerCase())
   );
 }
+
+// Función para manejar logout con confirmación
+function setupLogoutHandler() {
+  const logoutBtn = document.getElementById("logoutBtn");
+  if (logoutBtn) {
+    logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showLogoutConfirmation();
+    });
+  }
+}
+
+// Función para mostrar modal de confirmación de logout
+function showLogoutConfirmation() {
+  const modal = document.createElement("div");
+  modal.className = "modal";
+  modal.id = "logoutConfirmation";
+  modal.innerHTML = `
+    <div class="modal-content">
+      <h3>Cerrar sesión</h3>
+      <p>¿Seguro que quieres cerrar sesión?</p>
+      <div class="modal-actions" style="display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px;">
+        <button id="cancelLogoutBtn" class="btn-secondary">Cancelar</button>
+        <button id="confirmLogoutBtn" class="btn-primary">Cerrar sesión</button>
+      </div>
+    </div>
+  `;
+  
+  document.body.appendChild(modal);
+  
+  document.getElementById("cancelLogoutBtn").addEventListener("click", () => {
+    modal.remove();
+  });
+  
+  document.getElementById("confirmLogoutBtn").addEventListener("click", () => {
+    localStorage.removeItem("usuario");
+    localStorage.removeItem("rol");
+    window.location.href = "../index.html";
+  });
+  
+  // Cerrar modal al hacer clic fuera
+  modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+      modal.remove();
+    }
+  });
+}
