@@ -78,7 +78,7 @@ document.addEventListener("DOMContentLoaded", () => {
       .join("");
   });
 
-  // Cerrar modal con tecla Escape
+  // Cerrar modal con tecla Escape pa que sea accesible jijijiji
   document.addEventListener("keydown", (e) => {
     if (e.key === "Escape" && !searchModal.classList.contains("hidden")) {
       searchModal.classList.add("hidden");

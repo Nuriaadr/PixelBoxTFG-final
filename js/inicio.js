@@ -2,7 +2,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   lucide.createIcons();
 
-  // PROTEGER PÁGINA
   let user = localStorage.getItem("usuario");
 
   if (!user) {
@@ -10,7 +9,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  // MOSTRAR USUARIO
+  //  USUARIO
   let userName = document.getElementById("userName");
   if (userName) {
     userName.textContent = user;
@@ -24,7 +23,6 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // LOGOUT
   setupLogoutHandler();
 
   // ======================
@@ -33,7 +31,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // Seleccionar juegos de tendencia de GAMES_DATA
   const tendenciasData = GAMES_DATA.slice(4, 8); // Últimos 4 juegos como tendencias
 
-  // Renderizar juegos de tendencias dinámicamente
+  // Renderizar juegos de tendencias 
   function renderTrendingGames() {
     const cardGrid = document.querySelector(".section .card-grid");
     if (!cardGrid) {

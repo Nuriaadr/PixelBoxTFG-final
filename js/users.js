@@ -1,6 +1,5 @@
 // ===================== DATOS CENTRALIZADOS DE USUARIOS =====================
 // Este archivo contiene la lista unificada de todos los usuarios de la plataforma
-
 const USERS_DATA = [
   {
     id: 1,
@@ -57,7 +56,6 @@ function initializeFollowersData() {
   });
 }
 
-// Llamar al cargar el archivo
 // Limpiar datos viejos y reinicializar
 localStorage.removeItem("siguiendo_@jugador_pro");
 localStorage.removeItem("siguiendo_@gamer_elite");
@@ -66,7 +64,7 @@ initializeFollowersData();
 
 // Obtener seguidores del usuario actual desde localStorage
 function getFollowersOfUser(username) {
-  // Retorna todos los usuarios que siguen a este usuario
+  // todos los usuarios que siguen a este usuario
   const followers = [];
   USERS_DATA.forEach(user => {
     const userFollowing = JSON.parse(localStorage.getItem(`siguiendo_${user.username}`) || "[]");
@@ -77,12 +75,12 @@ function getFollowersOfUser(username) {
   return followers;
 }
 
-// Obtener usuarios que está siguiendo el usuario actual
+//obtener usuarios que sigue el usuario actual desde localStorage
 function getUserFollowing(username) {
   return JSON.parse(localStorage.getItem(`siguiendo_${username}`) || "[]");
 }
 
-// Agregar/remover seguidor
+// Agregar/ELIMINAR seguidor
 function toggleFollow(followingUser, targetUser) {
   let following = JSON.parse(localStorage.getItem(`siguiendo_${followingUser}`) || "[]");
   

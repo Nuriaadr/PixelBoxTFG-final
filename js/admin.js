@@ -1,7 +1,7 @@
 
 // ===================== ADMIN PANEL JS =====================
 
-// Datos de usuarios (puede ser reemplazado por datos del servidor)
+// Datos de usuarios 
 const USERS_DATA = [
   {
     id: 1,
@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Render initial view
+  // Render 
   renderGames();
   renderUsers();
 });
@@ -78,16 +78,12 @@ function setupTabs() {
 
   tabButtons.forEach(button => {
     button.addEventListener("click", () => {
-      // Remove active class from all tabs
       tabButtons.forEach(btn => btn.classList.remove("active"));
       
-      // Add active class to clicked tab
       button.classList.add("active");
 
-      // Get the tab name
       const tabName = button.getAttribute("data-tab");
 
-      // Show/hide content
       switchTab(tabName);
     });
   });
@@ -177,7 +173,6 @@ function renderUsers() {
 
 // ===================== MODALS =====================
 function setupModals() {
-  // Game Modal
   const gameModal = document.getElementById("gameModal");
   const gameForm = document.getElementById("gameForm");
   const closeGameModal = document.getElementById("closeGameModal");
@@ -193,7 +188,6 @@ function setupModals() {
     gameForm.addEventListener("submit", handleGameFormSubmit);
   }
 
-  // DeleteModal
   const deleteModal = document.getElementById("deleteModal");
   const cancelDeleteBtn = document.getElementById("cancelDeleteBtn");
   const confirmDeleteBtn = document.getElementById("confirmDeleteBtn");
@@ -205,7 +199,6 @@ function setupModals() {
     confirmDeleteBtn.addEventListener("click", handleDelete);
   }
 
-  // Success Modal
   const successModal = document.getElementById("successModal");
   const closeSuccessBtn = document.getElementById("closeSuccessModal");
 
@@ -213,7 +206,6 @@ function setupModals() {
     closeSuccessBtn.addEventListener("click", closeSuccessModalFunc);
   }
 
-  // Close modals when clicking outside
   if (gameModal) {
     gameModal.addEventListener("click", (e) => {
       if (e.target === gameModal) closeModal();
@@ -332,7 +324,7 @@ function handleGameFormSubmit(e) {
   const gameRating = document.getElementById("gameRating").value;
 
   if (editingGameId !== null) {
-    // Update existing game - preservar imagen existente
+    //  conservar imagen existente
     const imagenActual = GAMES_DATA[editingGameId].imagen;
     GAMES_DATA[editingGameId] = {
       ...GAMES_DATA[editingGameId],
@@ -348,7 +340,7 @@ function handleGameFormSubmit(e) {
     saveGamesToStorage();
     openSuccessModal("¡Juego Actualizado!", "Los cambios han sido guardados correctamente");
   } else {
-    // Add new game - asignar imagen aleatoria
+    //  asignar imagen aleatoria a nuevo juego
     const newGame = {
       nombre: gameName,
       año: parseInt(gameYear),
@@ -473,7 +465,6 @@ function performSearch(query) {
 
   searchResults.innerHTML = results.map(item => {
     if (item.nombre) {
-      // It's a game
       return `
         <div class="search-result-item" style="padding: 12px 16px; border-bottom: 1px solid var(--secondary); cursor: pointer;">
           <p style="margin: 0; font-weight: 500;">${item.nombre}</p>
@@ -481,7 +472,6 @@ function performSearch(query) {
         </div>
       `;
     } else {
-      // It's a user
       return `
         <div class="search-result-item" style="padding: 12px 16px; border-bottom: 1px solid var(--secondary); cursor: pointer;">
           <p style="margin: 0; font-weight: 500;">${item.username}</p>
@@ -492,16 +482,3 @@ function performSearch(query) {
   }).join("");
 }
 
-// ===================== UTILITIES =====================
-function capitalizeStatus(status) {
-  const statusMap = {
-    "jugando": "Jugando",
-    "completado": "Completado",
-    "por_jugar": "Por Jugar",
-    "abandonado": "Abandonado",
-    "Activo": "Activo",
-    "Próximamente": "Próximamente",
-    "Descontinuado": "Descontinuado"
-  };
-  return statusMap[status] || status;
-}

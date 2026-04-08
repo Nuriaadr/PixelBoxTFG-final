@@ -113,7 +113,6 @@ document.addEventListener("DOMContentLoaded", () => {
       achievementsTitle.textContent = `Logros (${logros.length}/${logros.length})`;
     }
 
-    // Limpiar los logros anteriores
     const oldCards = achievementsSection.querySelectorAll(".achievement-card");
     oldCards.forEach((card) => card.remove());
 
@@ -193,9 +192,9 @@ document.addEventListener("DOMContentLoaded", () => {
     btn.addEventListener("click", () => {
       // Si el botón está desactivado, no hacer nada
       if (btn.disabled) return;
-      // Remover clase active de todos los botones
+      // eliminar clase active de todos los botones
       statusBtns.forEach((b) => b.classList.remove("active"));
-      // Agregar clase active al botón clickeado
+      // Agregar clase active al botón clicado
       btn.classList.add("active");
 
       // Determinar el estado
@@ -255,8 +254,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
       });
 
-      // Guardar solo referencia: nombre del juego + estado
-      // Los datos completos se obtienen de GAMES_DATA para consistencia
+      
       const referencia = {
         nombreJuego: titulo,
         estado: estadoSeleccionado

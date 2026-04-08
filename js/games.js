@@ -150,13 +150,12 @@ function filterGames(query) {
   );
 }
 
-// ===================== PERSISTENCIA EN STORAGE =====================
 // Guardar juegos en localStorage
 function saveGamesToStorage() {
   localStorage.setItem("gamesData", JSON.stringify(GAMES_DATA));
 }
 
-// Cargar juegos desde localStorage (si existen cambios guardados)
+// Cargar juegos desde localStorage
 function loadGamesFromStorage() {
   const savedGames = localStorage.getItem("gamesData");
   if (savedGames) {
@@ -171,7 +170,7 @@ function loadGamesFromStorage() {
   }
 }
 
-// Cargar juegos al iniciar (apenas se carga games.js)
+// Cargar juegos al iniciar 
 loadGamesFromStorage();
 
 // Función para manejar logout con confirmación

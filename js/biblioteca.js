@@ -72,17 +72,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // DATOS
   // ======================
   // La biblioteca guarda solo: nombre del juego + estado personal
-  // Los datos completos se obtienen de GAMES_DATA para consistencia
+  // Los datos completos se obtienen de GAMES_DATA 
   
   let bibliotecaStorage = JSON.parse(localStorage.getItem("biblioteca") || "[]");
   
-  // Función para migrar datos antiguos a nueva estructura
+  // Función para migrar datos antiguos 
   function migrarBibliotecaAntigua(datos) {
     if (datos.length === 0) return [];
     
     // Verificar si están en formato antiguo (tienen 'titulo' o 'imagen')
     if (datos[0].titulo || datos[0].imagen) {
-      console.log("Migrando biblioteca antigua a nueva estructura...");
       return datos.map(juego => ({
         nombreJuego: juego.nombre || juego.titulo,
         estado: juego.estado || "pendiente"
@@ -133,7 +132,6 @@ document.addEventListener("DOMContentLoaded", () => {
       console.log("GAMES_DATA:", GAMES_DATA);
       console.log("GAMES_DATA.length:", GAMES_DATA?.length);
       
-      // Fallback: si GAMES_DATA está vacío o no existe, cargar array por defecto
       const juegosDisponibles = GAMES_DATA && GAMES_DATA.length > 0 
         ? GAMES_DATA 
         : [

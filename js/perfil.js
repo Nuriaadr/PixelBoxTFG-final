@@ -30,8 +30,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // JUEGOS Y LOGROS
   // ======================
-  // Los juegos se cargan de GAMES_DATA (centralizado)
-  // La biblioteca solo guarda referencias (nombreJuego + estado)
+  // Los juegos se cargan de GAMES_DATA 
+  // La biblioteca solo guarda referencias 
 
   // Cargar referencias de la biblioteca
   let bibliotecaReferencias = JSON.parse(localStorage.getItem("biblioteca") || "[]");
@@ -49,7 +49,7 @@ document.addEventListener("DOMContentLoaded", () => {
     return null;
   }
 
-  // Obtener todos los juegos con datos completos
+  // Obtener todos los juegos con datos 
   function obtenerTodosLosJuegos() {
     return bibliotecaReferencias
       .map(ref => obtenerJuegoCompleto(ref.nombreJuego))
@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
 
     if (logrosData.length === 0) {
-      container.innerHTML = "<p style='text-align: center; color: #999;'>No hay logros aún</p>";
+      container.innerHTML = "<p style='text-align: center; color: var(--text-muted);'>No hay logros aún</p>";
       return;
     }
 

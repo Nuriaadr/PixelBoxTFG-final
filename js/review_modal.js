@@ -51,7 +51,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // Manejo de calificación con stars
+  // Manejo del rating 
   if (reviewStarsInput) {
     reviewStarsInput.style.cursor = "pointer";
     reviewStarsInput.addEventListener("click", (e) => {
@@ -71,7 +71,6 @@ document.addEventListener("DOMContentLoaded", () => {
       reviewStarsInput.dataset.rating = rating;
     });
 
-    // Efecto hover para preview
     reviewStarsInput.addEventListener("mousemove", (e) => {
       const rect = reviewStarsInput.getBoundingClientRect();
       const clickX = e.clientX - rect.left;
