@@ -1,39 +1,7 @@
 
 // ===================== ADMIN PANEL JS =====================
 
-// Datos de usuarios 
-const USERS_DATA = [
-  {
-    id: 1,
-    username: "@jugador_pro",
-    avatar: "../img/user1.webp",
-    description: "Amante de los RPG y juegos indie. Siempre buscando la próxima aventura.",
-    games: 342,
-    followers: 1243,
-    following: 892
-  },
-  {
-    id: 2,
-    username: "@gamer_elite",
-    avatar: "../img/space.webp",
-    description: "Speedrunner profesional. Récord mundial en 3 juegos.",
-    games: 567,
-    followers: 5432,
-    following: 234
-  },
-  {
-    id: 3,
-    username: "@indie_lover",
-    avatar: "../img/user2.webp",
-    description: "Descubriendo gemas ocultas del gaming indie.",
-    games: 289,
-    followers: 2341,
-    following: 456
-  }
-];
 
-// Variables globales
-let currentPage = "games";
 let usersDatabase = [...USERS_DATA];
 let editingGameId = null;
 let deletingGameId = null;
@@ -70,6 +38,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // Render 
   renderGames();
   renderUsers();
+
+  // Actualizar estadísticas cuando se regresa a la pestaña
+  window.addEventListener("focus", () => {
+    renderGames();
+    renderUsers();
+  });
 });
 
 // ===================== TABS =====================
@@ -138,6 +112,12 @@ function renderGames() {
     </article>
   `).join("");
 
+  // Actualizar contador de juegos
+  const gamesCount = document.getElementById("gamesCount");
+  if (gamesCount) {
+    gamesCount.textContent = `(${GAMES_DATA.length})`;
+  }
+
   lucide.createIcons();
 }
 
@@ -146,7 +126,23 @@ function renderUsers() {
   const usersList = document.getElementById("usersList");
   if (!usersList) return;
 
-  usersList.innerHTML = usersDatabase.map((user, index) => `
+  usersList.innerHTML = usersDatabase.map((user, index) => {
+    // Para @jugador_pro, calcular estadísticas dinámicamente
+    let gamesCount = user.games;
+    let followersCount = user.followers;
+    let followingCount = user.following;
+
+    if (user.username === "@jugador_pro") {
+      // Juegos desde biblioteca
+      const biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+      gamesCount = biblioteca.length;
+
+      // Followers y following desde las funciones de users.js
+      followersCount = getFollowersOfUser("@jugador_pro").length;
+      followingCount = getUserFollowing("@jugador_pro").length;
+    }
+
+    return `
     <article class="user-card">
       <div class="user-avatar">
         <img src="${user.avatar}" alt="${user.username}">
@@ -155,9 +151,9 @@ function renderUsers() {
         <h2>${user.username}</h2>
         <p class="user-desc">${user.description}</p>
         <div class="user-stats">
-          <span><strong>${user.games}</strong> juegos</span>
-          <span><strong>${user.followers}</strong> seguidores</span>
-          <span><strong>${user.following}</strong> siguiendo</span>
+          <span><strong>${gamesCount}</strong> juegos</span>
+          <span><strong>${followersCount}</strong> seguidores</span>
+          <span><strong>${followingCount}</strong> siguiendo</span>
         </div>
       </div>
       <div class="user-actions">
@@ -169,7 +165,13 @@ function renderUsers() {
         </button>
       </div>
     </article>
-  `).join("");
+  `}).join("");
+
+  // Actualizar contador de usuarios
+  const usersCount = document.getElementById("usersCount");
+  if (usersCount) {
+    usersCount.textContent = `(${usersDatabase.length})`;
+  }
 
   lucide.createIcons();
 }

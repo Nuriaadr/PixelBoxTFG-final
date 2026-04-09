@@ -6,16 +6,16 @@ const USERS_DATA = [
     username: "@jugador_pro",
     avatar: "../img/user1.webp",
     description: "Amante de los RPG y juegos indie. Siempre buscando la próxima aventura.",
-    games: 342,
-    followers: 1243,
-    following: 892
+    games: 0,  // Ahora dinámico basado en biblioteca
+    followers: 6,  // Todos los demás usuarios lo siguen
+    following: 1   // Sigue a @gamer_elite
   },
   {
     id: 2,
     username: "@gamer_elite",
     avatar: "../img/space.webp",
     description: "Speedrunner profesional. Récord mundial en 3 juegos.",
-    games: 567,
+    games: 15,  // Valor estático para otros usuarios
     followers: 5432,
     following: 234
   },
@@ -24,7 +24,7 @@ const USERS_DATA = [
     username: "@indie_lover",
     avatar: "../img/user2.webp",
     description: "Descubriendo gemas ocultas del gaming indie.",
-    games: 289,
+    games: 23,  // Valor estático para otros usuarios
     followers: 2341,
     following: 456
   },
@@ -33,7 +33,7 @@ const USERS_DATA = [
     username: "@arcade_ana",
     avatar: "../img/img4.webp",
     description: "Retro gamer y coleccionista de arcades. Siempre lista para un high score.",
-    games: 198,
+    games: 8,  // Valor estático para otros usuarios
     followers: 890,
     following: 310
   },
@@ -51,7 +51,7 @@ const USERS_DATA = [
     username: "@quest_mate",
     avatar: "../img/puzzle.webp",
     description: "Explorador de mundos abiertos y cazador de misiones secundarias.",
-    games: 278,
+    games: 12,  // Valor estático para otros usuarios
     followers: 1042,
     following: 389
   },
@@ -60,7 +60,7 @@ const USERS_DATA = [
     username: "@pixel_princess",
     avatar: "../img/img2.webp",
     description: "Amante de los pixel-art y las plataformas independientes.",
-    games: 221,
+    games: 18,  // Valor estático para otros usuarios
     followers: 1305,
     following: 470
   }
@@ -77,7 +77,7 @@ function initializeFollowersData() {
   // @gamer_elite sigue a @indie_lover → @indie_lover tiene un seguidor
   
   const initialFollowerData = {
-    "@jugador_pro": ["@gamer_elite", "@pixel_princess"],
+    "@jugador_pro": ["@gamer_elite"],
     "@gamer_elite": ["@jugador_pro", "@indie_lover", "@nocturno"],
     "@indie_lover": ["@jugador_pro", "@quest_mate"],
     "@arcade_ana": ["@jugador_pro", "@pixel_princess", "@quest_mate"],
@@ -100,12 +100,21 @@ function initializeFollowersData() {
     });
 
     // Que todos sigan a jugador pro porque somos unos pros SIUUUUUUUUUUUU
+    // Forzar que todos sigan a @jugador_pro (usuario principal)
     if (user.username !== "@jugador_pro" && !mergedFollowing.includes("@jugador_pro")) {
       mergedFollowing.push("@jugador_pro");
     }
 
     localStorage.setItem(key, JSON.stringify(mergedFollowing));
   });
+
+  // Asegurar que @jugador_pro tenga al menos un seguidor (forzar consistencia)
+  const jugadorProKey = `siguiendo_@jugador_pro`;
+  const jugadorProFollowing = JSON.parse(localStorage.getItem(jugadorProKey) || "[]");
+  if (!jugadorProFollowing.includes("@gamer_elite")) {
+    jugadorProFollowing.push("@gamer_elite");
+    localStorage.setItem(jugadorProKey, JSON.stringify(jugadorProFollowing));
+  }
 }
 
 // Limpiar datos viejos y reinicializar

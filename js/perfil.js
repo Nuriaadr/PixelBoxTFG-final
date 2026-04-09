@@ -56,38 +56,62 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
-  // MODAL DE EDICIÓN DE PERFIL
+  // ESTADÍSTICAS DINÁMICAS DEL PERFIL
   // ======================
-  const editProfileBtn = document.getElementById("editProfileBtn");
-  const editProfileModal = document.getElementById("editProfileModal");
-  const closeEditModal = document.getElementById("closeEditModal");
-  const editProfileForm = document.getElementById("editProfileForm");
-  const editUsername = document.getElementById("editUsername");
-  const editBio = document.getElementById("editBio");
+  function updateGameStats() {
+    // Solo calcular dinámicamente para @jugador_pro (usuario principal)
+    if (user !== "@jugador_pro") {
+      // Para otros usuarios, usar valores por defecto o del USERS_DATA
+      const userData = USERS_DATA.find(u => u.username === user);
+      const totalGamesText = document.getElementById("totalGamesText");
+      const completedGamesText = document.getElementById("completedGamesText");
 
-  editProfileBtn.addEventListener("click", () => {
-    editUsername.value = user || "";
-    editBio.value = document.getElementById("profileBio").textContent || "";
-    editProfileModal.classList.remove("hidden");
+      if (totalGamesText && userData) {
+        totalGamesText.textContent = userData.games || 0;
+      }
+      if (completedGamesText) {
+        completedGamesText.textContent = "0"; // Por defecto 0 para otros usuarios
+      }
+      return;
+    }
+
+    // Para @jugador_pro: calcular desde la biblioteca real
+    const biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+
+    // Contar juegos totales
+    const totalGames = biblioteca.length;
+
+    // Contar juegos completados
+    const completedGames = biblioteca.filter(juego =>
+      juego.estado === "completado" || juego.estado === "terminado"
+    ).length;
+
+    // Actualizar elementos HTML
+    const totalGamesText = document.getElementById("totalGamesText");
+    const completedGamesText = document.getElementById("completedGamesText");
+
+    if (totalGamesText) {
+      totalGamesText.textContent = totalGames;
+    }
+    if (completedGamesText) {
+      completedGamesText.textContent = completedGames;
+    }
+  }
+
+  // Actualizar estadísticas iniciales
+  updateGameStats();
+
+  // Actualizar estadísticas cuando se regresa a la pestaña
+  window.addEventListener("focus", () => {
+    updateGameStats();
   });
 
-  closeEditModal.addEventListener("click", () => {
-    editProfileModal.classList.add("hidden");
-  });
-
-  editProfileForm.addEventListener("submit", (e) => {
-    e.preventDefault();
-    const updatedBio = editBio.value;
-    localStorage.setItem(`bio_${user}`, updatedBio);
-    document.getElementById("profileBio").textContent = updatedBio;
-    editProfileModal.classList.add("hidden");
-  });
-
-
+  // ======================
   // JUEGOS Y LOGROS
   // ======================
-  // Los juegos se cargan de GAMES_DATA 
-  // La biblioteca solo guarda referencias 
+  // Los juegos se cargan de GAMES_DATA
+  // La biblioteca solo guarda referencias
+ 
 
   // Cargar referencias de la biblioteca
   let bibliotecaRaw = JSON.parse(localStorage.getItem("biblioteca") || "[]");
@@ -220,8 +244,11 @@ document.addEventListener("DOMContentLoaded", () => {
     followerCountText.textContent = seguidores.length;
   }
 
-  // Mostrar contador inicial
-  updateFollowerCounter();
+  // Forzar actualización de contadores después de inicializar seguidores
+  setTimeout(() => {
+    updateFollowerCounter();
+    updateFollowingCounter();
+  }, 100);
 
   function renderFollowers() {
     followersList.innerHTML = "";
@@ -306,8 +333,10 @@ document.addEventListener("DOMContentLoaded", () => {
     followingCountText.textContent = following.length;
   }
 
-  // Mostrar contador inicial
-  updateFollowingCounter();
+  // Forzar actualización de contador después de inicializar seguidores
+  setTimeout(() => {
+    updateFollowingCounter();
+  }, 100);
 
   function renderFollowing() {
     followingList.innerHTML = "";
