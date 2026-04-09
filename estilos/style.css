@@ -248,8 +248,8 @@ input:focus {
 .nav-icons {
   display: flex;
   align-items: center;
-  gap: 15px;
-  /* Espacio entre la lupa y el avatar */
+  gap: 25px;
+  
 }
 
 /* Estilo para el icono de búsqueda */
