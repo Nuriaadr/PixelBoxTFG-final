@@ -7,6 +7,46 @@ let editingGameId = null;
 let deletingGameId = null;
 let deletingUserId = null;
 
+// Funciones para guardar/cargar usuarios
+function saveUsersToStorage() {
+  localStorage.setItem("usersData", JSON.stringify(usersDatabase));
+}
+
+function loadUsersFromStorage() {
+  const savedUsers = localStorage.getItem("usersData");
+  if (savedUsers) {
+    try {
+      usersDatabase = JSON.parse(savedUsers);
+      // Actualizar descripciones con bios guardadas
+      usersDatabase.forEach(user => {
+        const savedBio = localStorage.getItem(`bio_${user.username}`);
+        if (savedBio) {
+          user.description = savedBio;
+        }
+      });
+    } catch (error) {
+      console.error("Error cargando usuarios del storage", error);
+      usersDatabase = [...USERS_DATA];
+      // Actualizar descripciones por defecto
+      usersDatabase.forEach(user => {
+        const savedBio = localStorage.getItem(`bio_${user.username}`);
+        if (savedBio) {
+          user.description = savedBio;
+        }
+      });
+    }
+  } else {
+    usersDatabase = [...USERS_DATA];
+    // Actualizar descripciones por defecto
+    usersDatabase.forEach(user => {
+      const savedBio = localStorage.getItem(`bio_${user.username}`);
+      if (savedBio) {
+        user.description = savedBio;
+      }
+    });
+  }
+}
+
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 
@@ -36,11 +76,14 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // Render 
+  loadUsersFromStorage();
   renderGames();
   renderUsers();
 
   // Actualizar estadísticas cuando se regresa a la pestaña
   window.addEventListener("focus", () => {
+    loadGamesFromStorage();
+    loadUsersFromStorage();
     renderGames();
     renderUsers();
   });
@@ -405,28 +448,10 @@ function openEditUserModal(index) {
   editingUserId = index;
   const user = usersDatabase[index];
 
-  // Para @jugador_pro, calcular valores dinámicos
-  let gamesCount = user.games;
-  let followersCount = user.followers;
-  let followingCount = user.following;
-
-  if (user.username === "@jugador_pro") {
-    // Juegos desde biblioteca
-    const biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-    gamesCount = biblioteca.length;
-
-    // Followers y following desde las funciones de users.js
-    followersCount = getFollowersOfUser("@jugador_pro").length;
-    followingCount = getUserFollowing("@jugador_pro").length;
-  }
-
   document.getElementById("userModalTitle").textContent = "Editar Usuario";
   document.getElementById("userName").setAttribute("readonly", true);
   document.getElementById("userName").value = user.username;
   document.getElementById("userDescription").value = user.description;
-  document.getElementById("userGames").value = gamesCount;
-  document.getElementById("userFollowers").value = followersCount;
-  document.getElementById("userFollowing").value = followingCount;
 
   openModal("userModal");
 }
@@ -531,33 +556,37 @@ function handleUserFormSubmit(e) {
 
   const userName = document.getElementById("userName").value;
   const userDescription = document.getElementById("userDescription").value;
-  const userGames = document.getElementById("userGames").value;
-  const userFollowers = document.getElementById("userFollowers").value;
-  const userFollowing = document.getElementById("userFollowing").value;
 
   if (editingUserId !== null) {
     const avatarActual = usersDatabase[editingUserId].avatar;
+    const gamesActual = usersDatabase[editingUserId].games;
+    const followersActual = usersDatabase[editingUserId].followers;
+    const followingActual = usersDatabase[editingUserId].following;
     usersDatabase[editingUserId] = {
       ...usersDatabase[editingUserId],
       username: userName,
       description: userDescription,
-      games: parseInt(userGames),
-      followers: parseInt(userFollowers),
-      following: parseInt(userFollowing),
+      games: gamesActual,
+      followers: followersActual,
+      following: followingActual,
       avatar: avatarActual
     };
+    localStorage.setItem(`bio_${userName}`, userDescription);
+    saveUsersToStorage();
     openSuccessModal("¡Usuario Actualizado!", "Los cambios han sido guardados correctamente");
   } else {
     const newUser = {
       id: usersDatabase.length + 1,
       username: userName,
       description: userDescription,
-      games: parseInt(userGames),
-      followers: parseInt(userFollowers),
-      following: parseInt(userFollowing),
+      games: 0,
+      followers: 0,
+      following: 0,
       avatar: "../img/user1.webp"
     };
     usersDatabase.push(newUser);
+    localStorage.setItem(`bio_${userName}`, userDescription);
+    saveUsersToStorage();
     openSuccessModal("¡Usuario Añadido!", "El usuario ha sido añadido a la plataforma");
   }
 
@@ -604,6 +633,8 @@ function handleDelete() {
   } else if (deletingUserId !== null) {
     const userName = usersDatabase[deletingUserId].username;
     usersDatabase.splice(deletingUserId, 1);
+    localStorage.removeItem(`bio_${userName}`);
+    saveUsersToStorage();
     openSuccessModal("¡Usuario Eliminado!", `"${userName}" ha sido eliminado correctamente`);
     renderUsers();
   }

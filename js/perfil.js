@@ -36,7 +36,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // CARGA DE DATOS DEL PERFIL
   // ======================
-  const userData = USERS_DATA.find(u => u.username === user);
+  const userData = USERS_DATA.find((u) => u.username === user);
 
   if (userData) {
     document.getElementById("profileUsername").textContent = userData.username;
@@ -62,7 +62,7 @@ document.addEventListener("DOMContentLoaded", () => {
     // Solo calcular dinámicamente para @jugador_pro (usuario principal)
     if (user !== "@jugador_pro") {
       // Para otros usuarios, usar valores por defecto o del USERS_DATA
-      const userData = USERS_DATA.find(u => u.username === user);
+      const userData = USERS_DATA.find((u) => u.username === user);
       const totalGamesText = document.getElementById("totalGamesText");
       const completedGamesText = document.getElementById("completedGamesText");
 
@@ -82,8 +82,8 @@ document.addEventListener("DOMContentLoaded", () => {
     const totalGames = biblioteca.length;
 
     // Contar juegos completados
-    const completedGames = biblioteca.filter(juego =>
-      juego.estado === "completado" || juego.estado === "terminado"
+    const completedGames = biblioteca.filter(
+      (juego) => juego.estado === "completado" || juego.estado === "terminado",
     ).length;
 
     // Actualizar elementos HTML
@@ -111,50 +111,52 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // Los juegos se cargan de GAMES_DATA
   // La biblioteca solo guarda referencias
- 
 
   // Cargar referencias de la biblioteca
   let bibliotecaRaw = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-  
-  let bibliotecaReferencias = bibliotecaRaw.map(item => {
+
+  let bibliotecaReferencias = bibliotecaRaw.map((item) => {
     if (item.nombreJuego) {
       return item;
-    }
-    else if (item.nombre) {
+    } else if (item.nombre) {
       return {
         nombreJuego: item.nombre,
-        estado: item.estado || "pendiente"
+        estado: item.estado || "pendiente",
       };
     }
     // Si no tiene ninguno, asumir que es nombreJuego
     else {
       return {
         nombreJuego: item,
-        estado: "pendiente"
+        estado: "pendiente",
       };
     }
   });
-  
+
   localStorage.setItem("biblioteca", JSON.stringify(bibliotecaReferencias));
 
   // Función para obtener juego completo desde GAMES_DATA
   function obtenerJuegoCompleto(nombreJuego) {
-    const juego = GAMES_DATA.find(g => g.nombre.toLowerCase() === nombreJuego.toLowerCase());
+    const juego = GAMES_DATA.find(
+      (g) => g.nombre.toLowerCase() === nombreJuego.toLowerCase(),
+    );
     if (juego) {
-      const ref = bibliotecaReferencias.find(b => b.nombreJuego.toLowerCase() === juego.nombre.toLowerCase());
+      const ref = bibliotecaReferencias.find(
+        (b) => b.nombreJuego.toLowerCase() === juego.nombre.toLowerCase(),
+      );
       return {
         ...juego,
-        estado: ref?.estado || "pendiente"
+        estado: ref?.estado || "pendiente",
       };
     }
     return null;
   }
 
-  // Obtener todos los juegos con datos 
+  // Obtener todos los juegos con datos
   function obtenerTodosLosJuegos() {
     return bibliotecaReferencias
-      .map(ref => obtenerJuegoCompleto(ref.nombreJuego))
-      .filter(juego => juego !== null);
+      .map((ref) => obtenerJuegoCompleto(ref.nombreJuego))
+      .filter((juego) => juego !== null);
   }
 
   let gamesData = obtenerTodosLosJuegos();
@@ -175,7 +177,7 @@ document.addEventListener("DOMContentLoaded", () => {
     let juegosFiltrados = gamesData;
 
     if (filtro !== "todos") {
-      juegosFiltrados = gamesData.filter(game => {
+      juegosFiltrados = gamesData.filter((game) => {
         if (filtro === "jugando") return game.estado === "jugando";
         if (filtro === "completados") return game.estado === "completado";
         if (filtro === "pendientes") return game.estado === "pendiente";
@@ -256,11 +258,13 @@ document.addEventListener("DOMContentLoaded", () => {
     const seguidores = getFollowersOfUser(user);
 
     if (seguidores.length === 0) {
-      followersList.innerHTML = "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No tienes seguidores aún</p>";
+      followersList.innerHTML =
+        "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No tienes seguidores aún</p>";
       return;
     }
 
-    seguidores.forEach(follower => {
+    seguidores.forEach((follower) => {
+      const bio = localStorage.getItem(`bio_${follower.username}`) || follower.description;
       const isFollowingUser = isFollowing(user, follower.username);
       const buttonText = isFollowingUser ? "Dejar de seguir" : "Seguir";
       const buttonClass = "btn-secondary follow-btn";
@@ -271,7 +275,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="follower-avatar" style="background-image: url('${follower.avatar}')"></div>
         <div class="follower-info">
           <h3>${follower.username}</h3>
-          <p>${follower.description}</p>
+          <p>${bio}</p>
           <span class="follower-games">${follower.games} juegos</span>
         </div>
         <button class="${buttonClass}" data-username="${follower.username}">
@@ -282,8 +286,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Añadir event listeners a los botones
-    document.querySelectorAll('.follow-btn').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    document.querySelectorAll(".follow-btn").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         const targetUser = e.target.dataset.username;
         toggleFollow(user, targetUser);
         // Re-render para actualizar botones
@@ -318,8 +322,57 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
-  // MODAL DE SEGUIDOS
+  // MODAL DE EDICIÓN DE PERFIL
   // ======================
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  const editProfileModal = document.getElementById("editProfileModal");
+  const closeEditModal = document.getElementById("closeEditModal");
+  const editProfileForm = document.getElementById("editProfileForm");
+  const editUsername = document.getElementById("editUsername");
+  const editBio = document.getElementById("editBio");
+
+  if (editProfileBtn) {
+    editProfileBtn.addEventListener("click", () => {
+      // Cargar datos actuales
+      if (editUsername) editUsername.value = user;
+      if (editBio) {
+        const currentBio =
+          localStorage.getItem(`bio_${user}`) || userData?.description || "";
+        editBio.value = currentBio;
+      }
+      editProfileModal?.classList.remove("hidden");
+    });
+  }
+
+  if (closeEditModal) {
+    closeEditModal.addEventListener("click", () => {
+      editProfileModal?.classList.add("hidden");
+    });
+  }
+
+  if (editProfileModal) {
+    editProfileModal.addEventListener("click", (e) => {
+      if (e.target === editProfileModal) {
+        editProfileModal.classList.add("hidden");
+      }
+    });
+  }
+
+  if (editProfileForm) {
+    editProfileForm.addEventListener("submit", (e) => {
+      e.preventDefault();
+      const newBio = editBio.value.trim();
+
+      // Guardar bio en localStorage
+      localStorage.setItem(`bio_${user}`, newBio);
+
+      // Actualizar la bio en la página
+      document.getElementById("profileBio").textContent = newBio;
+
+      // Cerrar modal
+      editProfileModal?.classList.add("hidden");
+    });
+  }
   const followingCounter = document.getElementById("followingCounter");
   const followingCountText = document.getElementById("followingCountText");
   const followingModal = document.getElementById("followingModal");
@@ -344,21 +397,25 @@ document.addEventListener("DOMContentLoaded", () => {
     const following = getUserFollowing(user);
 
     if (following.length === 0) {
-      followingList.innerHTML = "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No sigues a nadie aún</p>";
+      followingList.innerHTML =
+        "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No sigues a nadie aún</p>";
       return;
     }
 
-    following.forEach(followingUsername => {
-      const followedUser = USERS_DATA.find(u => u.username === followingUsername);
-      
+    following.forEach((followingUsername) => {
+      const followedUser = USERS_DATA.find(
+        (u) => u.username === followingUsername,
+      );
+
       if (followedUser) {
+        const bio = localStorage.getItem(`bio_${followedUser.username}`) || followedUser.description;
         const followingCard = document.createElement("div");
         followingCard.className = "follower-card";
         followingCard.innerHTML = `
           <div class="follower-avatar" style="background-image: url('${followedUser.avatar}')"></div>
           <div class="follower-info">
             <h3>${followedUser.username}</h3>
-            <p>${followedUser.description}</p>
+            <p>${bio}</p>
             <span class="follower-games">${followedUser.games} juegos</span>
           </div>
           <button class="btn-secondary follow-btn-unfollow" data-username="${followedUser.username}">
@@ -370,8 +427,8 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     // Añadir event listeners a los botones de dejar de seguir
-    document.querySelectorAll('.follow-btn-unfollow').forEach(btn => {
-      btn.addEventListener('click', (e) => {
+    document.querySelectorAll(".follow-btn-unfollow").forEach((btn) => {
+      btn.addEventListener("click", (e) => {
         const targetUser = e.target.dataset.username;
         toggleFollow(user, targetUser);
         // Re-render para actualizar lista
@@ -412,7 +469,11 @@ document.addEventListener("DOMContentLoaded", () => {
     const todosLosLogros = [];
     gamesData.forEach((game) => {
       // Solo incluir logros de juegos que estén jugando o completados
-      if ((game.estado === "jugando" || game.estado === "completado") && game.logros && game.logros.length > 0) {
+      if (
+        (game.estado === "jugando" || game.estado === "completado") &&
+        game.logros &&
+        game.logros.length > 0
+      ) {
         game.logros.forEach((logro) => {
           todosLosLogros.push({
             ...logro,
@@ -433,7 +494,8 @@ document.addEventListener("DOMContentLoaded", () => {
     container.innerHTML = "";
 
     if (logrosData.length === 0) {
-      container.innerHTML = "<p style='text-align: center; color: var(--text-muted);'>No hay logros aún</p>";
+      container.innerHTML =
+        "<p style='text-align: center; color: var(--text-muted);'>No hay logros aún</p>";
       return;
     }
 
@@ -512,7 +574,9 @@ document.addEventListener("DOMContentLoaded", () => {
 
       // Ocultar todas las secciones
       gameGrid.classList.add("hidden");
-      const achievementsSection = document.getElementById("achievements-section");
+      const achievementsSection = document.getElementById(
+        "achievements-section",
+      );
       if (achievementsSection) achievementsSection.classList.add("hidden");
 
       // Mostrar sección correspondiente
