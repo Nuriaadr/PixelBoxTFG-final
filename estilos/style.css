@@ -405,10 +405,11 @@ input:focus {
 
 .avatar-large {
   width: 120px;
-  height: 120px;
+  aspect-ratio: 1;
   background: linear-gradient(45deg, var(--secondary), var(--primary));
   border-radius: 50%;
   border: 3px solid var(--bg-card);
+  flex-shrink: 0;
 }
 
 .profile-text h1 {
@@ -794,6 +795,11 @@ img {
   border-radius: 8px;
   border: 1px solid var(--secondary);
   background-color: var(--bg-main);
+  color: var(--text-main);
+}
+
+.filters select option {
+  background-color: var(--bg-card);
   color: var(--text-main);
 }
 
@@ -2414,6 +2420,16 @@ textarea::placeholder {
 
   .menu-icon {
     display: flex;
+  }
+
+  .profile-info {
+    gap: 15px;
+  }
+
+  .avatar-large {
+    width: 80px;
+    aspect-ratio: 1;
+    flex-shrink: 0;
   }
 
   .main-footer {
