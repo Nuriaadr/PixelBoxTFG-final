@@ -63,6 +63,10 @@ document.addEventListener("DOMContentLoaded", () => {
           game.descripcion
         )}&rating=${game.rating}&desarrollador=${encodeURIComponent(
           game.desarrollador || "Desarrollador Desconocido"
+        )}&genero=${encodeURIComponent(
+          game.genero || "Género Desconocido"
+        )}&plataforma=${encodeURIComponent(
+          game.plataforma || "Plataforma Desconocida"
         )}&logros=${logrosEncoded}`;
 
         return `

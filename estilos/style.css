@@ -170,10 +170,7 @@ input[type="number"]::-webkit-inner-spin-button:hover {
   filter: invert(0.6) hue-rotate(180deg);
 }
 
-/* Firefox - ocultar spinners por defecto */
-input[type="number"] {
-  -moz-appearance: textfield;
-}
+
 
 /* ===================== BOTONES ===================== */
 .btn-primary {

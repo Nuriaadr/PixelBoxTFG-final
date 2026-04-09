@@ -48,6 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
         año: game.año,
         descripcion: game.descripcion,
         rating: game.rating,
+        desarrollador: game.desarrollador || "Desarrollador Desconocido",
+        genero: game.genero || "Género Desconocido",
+        plataforma: game.plataforma || "Plataforma Desconocida",
         logros: game.logros ? JSON.stringify(game.logros) : "[]",
       }).toString();
 

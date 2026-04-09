@@ -165,7 +165,7 @@ function renderGames() {
       <img src="${game.imagen}" class="game-thumb" alt="${game.nombre}">
       <div class="game-details">
         <h2>${game.nombre}</h2>
-        <p class="developer">${game.genero}</p>
+        <p class="developer">${game.desarrollador}</p>
         <div class="tags">
           <span>${game.genero}</span>
           <span>${game.plataforma}</span>
@@ -434,6 +434,8 @@ function openEditUserModal(index) {
 function openEditGameModal(index) {
   editingGameId = index;
   const game = GAMES_DATA[index];
+
+  resetGameForm();
 
   document.getElementById("gameModalTitle").textContent = "Editar Juego";
   document.getElementById("gameName").value = game.nombre;

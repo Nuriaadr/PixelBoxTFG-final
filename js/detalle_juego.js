@@ -46,6 +46,8 @@ document.addEventListener("DOMContentLoaded", () => {
   const descripcion = urlParams.get("descripcion") || "Descripción del juego";
   const rating = urlParams.get("rating") || "4.3";
   const desarrollador = urlParams.get("desarrollador") || "Desarrollador Desconocido";
+  const genero = urlParams.get("genero") || "Género Desconocido";
+  const plataforma = urlParams.get("plataforma") || "Plataforma Desconocida";
   const logrosParam = urlParams.get("logros");
   let logros = [];
   
@@ -190,8 +192,10 @@ document.addEventListener("DOMContentLoaded", () => {
   if (descriptionP) descriptionP.textContent = descripcion;
 
   // Actualizar desarrollador
-  const developerH3 = document.querySelector(".info-card h3");
-  if (developerH3) developerH3.textContent = desarrollador;
+  const infoCards = document.querySelectorAll(".info-card h3");
+  if (infoCards[0]) infoCards[0].textContent = desarrollador;
+  if (infoCards[1]) infoCards[1].textContent = genero;
+  if (infoCards[2]) infoCards[2].textContent = plataforma;
 
   // ======================
   // MODAL

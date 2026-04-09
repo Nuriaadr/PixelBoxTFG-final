@@ -137,6 +137,10 @@ function getGameDetailsUrl(game) {
     game.descripcion
   )}&rating=${game.rating}&desarrollador=${encodeURIComponent(
     game.desarrollador
+  )}&genero=${encodeURIComponent(
+    game.genero
+  )}&plataforma=${encodeURIComponent(
+    game.plataforma
   )}&logros=${logrosEncoded}`;
 }
 
