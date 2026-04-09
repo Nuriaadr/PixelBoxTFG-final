@@ -292,6 +292,92 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // ======================
+  // MODAL DE SEGUIDOS
+  // ======================
+  const followingCounter = document.getElementById("followingCounter");
+  const followingCountText = document.getElementById("followingCountText");
+  const followingModal = document.getElementById("followingModal");
+  const closeFollowingModal = document.getElementById("closeFollowingModal");
+  const followingList = document.getElementById("followingList");
+
+  // Actualizar contador de seguidos dinámicamente
+  function updateFollowingCounter() {
+    const following = getUserFollowing(user);
+    followingCountText.textContent = following.length;
+  }
+
+  // Mostrar contador inicial
+  updateFollowingCounter();
+
+  function renderFollowing() {
+    followingList.innerHTML = "";
+
+    // Obtener usuarios que se siguen
+    const following = getUserFollowing(user);
+
+    if (following.length === 0) {
+      followingList.innerHTML = "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No sigues a nadie aún</p>";
+      return;
+    }
+
+    following.forEach(followingUsername => {
+      const followedUser = USERS_DATA.find(u => u.username === followingUsername);
+      
+      if (followedUser) {
+        const followingCard = document.createElement("div");
+        followingCard.className = "follower-card";
+        followingCard.innerHTML = `
+          <div class="follower-avatar" style="background-image: url('${followedUser.avatar}')"></div>
+          <div class="follower-info">
+            <h3>${followedUser.username}</h3>
+            <p>${followedUser.description}</p>
+            <span class="follower-games">${followedUser.games} juegos</span>
+          </div>
+          <button class="btn-secondary follow-btn-unfollow" data-username="${followedUser.username}">
+            Dejar de Seguir
+          </button>
+        `;
+        followingList.appendChild(followingCard);
+      }
+    });
+
+    // Añadir event listeners a los botones de dejar de seguir
+    document.querySelectorAll('.follow-btn-unfollow').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetUser = e.target.dataset.username;
+        toggleFollow(user, targetUser);
+        // Re-render para actualizar lista
+        renderFollowing();
+        updateFollowingCounter();
+      });
+    });
+
+    lucide.createIcons();
+  }
+
+  if (followingCounter) {
+    followingCounter.addEventListener("click", () => {
+      updateFollowingCounter();
+      renderFollowing();
+      followingModal?.classList.remove("hidden");
+    });
+  }
+
+  if (closeFollowingModal) {
+    closeFollowingModal.addEventListener("click", () => {
+      followingModal?.classList.add("hidden");
+    });
+  }
+
+  if (followingModal) {
+    followingModal.addEventListener("click", (e) => {
+      if (e.target === followingModal) {
+        followingModal.classList.add("hidden");
+      }
+    });
+  }
+
+  // ======================
   // LOGROS
   // ======================
   function obtenerTodosLosLogros() {

@@ -106,6 +106,7 @@
                         <span><i data-lucide="trophy"></i> 156 completados</span>
                         <span><i data-lucide="gamepad-2"></i> 342 jugados</span>
                         <span id="followersCounter" style="cursor: pointer;"><i data-lucide="users"></i> <span id="followerCountText">0</span> seguidores</span>
+                        <span id="followingCounter" style="cursor: pointer;"><i data-lucide="user-plus"></i> <span id="followingCountText">0</span> siguiendo</span>
                     </div>
                     <button id="editProfileBtn" class="btn-secondary" style="margin-top: 10px;">
                         <i data-lucide="edit"></i>
@@ -230,6 +231,21 @@
         <p>Hecho con <span class="heart">❤️</span> para la comunidad gamer</p>
     </div>
 </footer>
+
+<!-- Modal de siguiendo -->
+<div id="followingModal" class="modal hidden">
+    <div class="modal-content followers-modal-content">
+        <div class="modal-header">
+            <h2>Siguiendo</h2>
+            <button class="modal-close-btn" id="closeFollowingModal" title="Cerrar">
+                <i data-lucide="x"></i>
+            </button>
+        </div>
+        <div id="followingList" class="followers-list">
+            <!-- Usuarios seguidos se cargan dinámicamente -->
+        </div>
+    </div>
+</div>
 
 <div id="followersModal" class="modal hidden">
     <div class="modal-content followers-modal-content">
