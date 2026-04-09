@@ -88,7 +88,7 @@ const GAMES_DATA = [
     rating: 4.3,
     genero: "RPG",
     plataforma: "Xbox",
-    estado: "por_jugar",
+    estado: "pendiente",
     logros: [
       {nombre: "Explorador Galáctico", descripcion: "Explora 50 planetas", rarity: "EPIC"},
       {nombre: "Conquistador del Espacio", descripcion: "Completa todas las misiones", rarity: "LEGENDARY"}
@@ -103,7 +103,7 @@ const GAMES_DATA = [
     rating: 4.6,
     genero: "Aventura",
     plataforma: "PC",
-    estado: "por_jugar",
+    estado: "pendiente",
     logros: [
       {nombre: "Explorador de Castillos", descripcion: "Descubre todas las salas", rarity: "RARE"},
       {nombre: "Vencedor del Castillo", descripcion: "Derrota al jefe final", rarity: "LEGENDARY"}
@@ -118,7 +118,7 @@ const GAMES_DATA = [
     rating: 4.0,
     genero: "Acción",
     plataforma: "PC",
-    estado: "por_jugar",
+    estado: "pendiente",
     logros: [
       {nombre: "Guerrero Pixel", descripcion: "Vence 100 enemigos", rarity: "RARE"},
       {nombre: "Campeón de Batallas", descripcion: "Gana 50 batallas", rarity: "EPIC"}

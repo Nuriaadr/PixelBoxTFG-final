@@ -74,16 +74,34 @@ document.addEventListener("DOMContentLoaded", () => {
   // La biblioteca guarda solo: nombre del juego + estado personal
   // Los datos completos se obtienen de GAMES_DATA 
   
+  // Verificar que GAMES_DATA está disponible
+  if (typeof GAMES_DATA === "undefined" || !Array.isArray(GAMES_DATA)) {
+    console.error("GAMES_DATA no está disponible. Recarga la página.");
+    alert("Error: No se pudieron cargar los datos de juegos. Por favor recarga la página.");
+    window.location.reload();
+  }
+  
   let bibliotecaStorage = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+  
+  // Asegurar que bibliotecaStorage sea un array
+  if (!Array.isArray(bibliotecaStorage)) {
+    console.warn("bibliotecaStorage no es un array válido, usando array vacío");
+    bibliotecaStorage = [];
+  }
   
   // Función para migrar datos antiguos 
   function migrarBibliotecaAntigua(datos) {
+    if (!Array.isArray(datos)) {
+      console.warn("Datos de migración no son un array válido");
+      return [];
+    }
+    
     if (datos.length === 0) return [];
     
     // Verificar si están en formato antiguo (tienen 'titulo' o 'imagen')
-    if (datos[0].titulo || datos[0].imagen) {
+    if (datos[0] && (datos[0].titulo || datos[0].imagen)) {
       return datos.map(juego => ({
-        nombreJuego: juego.nombre || juego.titulo,
+        nombreJuego: juego.nombre || juego.titulo || "Juego sin nombre",
         estado: juego.estado || "pendiente"
       }));
     }
@@ -94,20 +112,77 @@ document.addEventListener("DOMContentLoaded", () => {
   // Estructura: [{ nombreJuego: "...", estado: "completado/jugando/pendiente/abandonado" }]
   let biblioteca = migrarBibliotecaAntigua(bibliotecaStorage);
   
+  // Asegurar que biblioteca sea un array
+  if (!Array.isArray(biblioteca)) {
+    console.warn("Biblioteca no es un array válido, inicializando vacío");
+    biblioteca = [];
+  }
+  
   // Guardar la migración
   if (biblioteca.length > 0) {
     localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
   }
 
+  // Validar que los nombres coincidan con GAMES_DATA
+  function validarNombresBiblioteca() {
+    if (!Array.isArray(GAMES_DATA)) {
+      console.warn("GAMES_DATA no es un array válido, saltando validación");
+      return;
+    }
+
+    let actualizada = false;
+
+    biblioteca = biblioteca.map(item => {
+      if (!item || !item.nombreJuego) {
+        console.warn("Item de biblioteca inválido:", item);
+        return item;
+      }
+
+      const juegoEnGAMES = GAMES_DATA.find(g =>
+        g && g.nombre && typeof g.nombre === 'string' &&
+        g.nombre.toLowerCase() === item.nombreJuego.toLowerCase()
+      );
+
+      if (juegoEnGAMES && juegoEnGAMES.nombre !== item.nombreJuego) {
+        console.log("Corrigiendo nombre:", item.nombreJuego, "->", juegoEnGAMES.nombre);
+        actualizada = true;
+        return {
+          nombreJuego: juegoEnGAMES.nombre,
+          estado: item.estado
+        };
+      }
+      return item;
+    });
+
+    if (actualizada) {
+      localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
+      console.log("Nombres de biblioteca validados y guardados");
+    }
+  }
+  
+  // Ejecutar validación
+  if (biblioteca.length > 0 && Array.isArray(GAMES_DATA) && GAMES_DATA.length > 0) {
+    validarNombresBiblioteca();
+  }
+
   // Función para obtener juego completo desde GAMES_DATA
   function obtenerJuegoCompleto(nombreJuego) {
-    const juego = GAMES_DATA.find(g => g.nombre.toLowerCase() === nombreJuego.toLowerCase());
+    if (!nombreJuego) return null;
+    
+    const juego = GAMES_DATA.find(g => g && g.nombre && g.nombre.toLowerCase() === nombreJuego.toLowerCase());
     if (juego) {
-      return {
-        ...juego,
-        estado: biblioteca.find(b => b.nombreJuego === juego.nombre)?.estado || "pendiente"
-      };
+      return { ...juego };
     } else {
+      // Intentar encontrar por búsqueda parcial si no hay coincidencia exacta
+      const juegoAproximado = GAMES_DATA.find(g => 
+        g && g.nombre && 
+        (g.nombre.toLowerCase().includes(nombreJuego.toLowerCase()) ||
+        nombreJuego.toLowerCase().includes(g.nombre.toLowerCase()))
+      );
+      if (juegoAproximado) {
+        console.warn("Coincidencia aproximada para:", nombreJuego, "->", juegoAproximado.nombre);
+        return { ...juegoAproximado };
+      }
       console.warn("No encontrado en GAMES_DATA:", nombreJuego);
     }
     return null;
@@ -116,7 +191,15 @@ document.addEventListener("DOMContentLoaded", () => {
   // Función para obtener todos los juegos de la biblioteca con datos completos
   function obtenerJuegosConDatos() {
     return biblioteca
-      .map(item => obtenerJuegoCompleto(item.nombreJuego))
+      .map(item => {
+        const juegoCompleto = obtenerJuegoCompleto(item.nombreJuego);
+        if (!juegoCompleto) return null;
+        return { 
+          ...juegoCompleto, 
+          nombreBiblioteca: item.nombreJuego,
+          estado: item.estado 
+        };
+      })
       .filter(juego => juego !== null);
   }
 
@@ -127,30 +210,18 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Si la biblioteca está vacía, cargar juegos iniciales de GAMES_DATA
   function inicializarBibliotecaConDatosDefecto() {
-    if (biblioteca.length === 0) {
-      console.log("Biblioteca vacía, verificando GAMES_DATA...");
-      console.log("GAMES_DATA:", GAMES_DATA);
-      console.log("GAMES_DATA.length:", GAMES_DATA?.length);
+    if (biblioteca.length === 0 && GAMES_DATA && GAMES_DATA.length > 0) {
+      console.log("Inicializando biblioteca con GAMES_DATA...", GAMES_DATA.length, "juegos");
       
-      const juegosDisponibles = GAMES_DATA && GAMES_DATA.length > 0 
-        ? GAMES_DATA 
-        : [
-            { nombre: "Legends of Eldoria" },
-            { nombre: "Dragon Quest Online" },
-            { nombre: "Velocity Racing" },
-            { nombre: "Cyberpunk Chronicles" },
-            { nombre: "Nightmare Manor" },
-            { nombre: "Stellar Odyssey" },
-            { nombre: "Shadow Castle" },
-            { nombre: "Pixel Warriors" }
-          ];
-      
-      biblioteca = juegosDisponibles.map(juego => ({
+      biblioteca = GAMES_DATA.map(juego => ({
         nombreJuego: juego.nombre,
-        estado: "pendiente"
+        estado: juego.estado || "pendiente"
       }));
+      
       guardarBiblioteca();
       console.log("Biblioteca inicializada con", biblioteca.length, "juegos");
+    } else if (biblioteca.length === 0) {
+      console.warn("Biblioteca vacía y GAMES_DATA no disponible");
     } else {
       console.log("Biblioteca ya tiene", biblioteca.length, "juegos");
     }
@@ -181,7 +252,7 @@ document.addEventListener("DOMContentLoaded", () => {
     juegosConDatos.forEach((juego) => {
       const card = document.createElement("div");
       card.className = "game-card";
-      card.dataset.nombreJuego = juego.nombre;
+      card.dataset.nombreJuego = juego.nombreBiblioteca || juego.nombre;
 
       const logrosJSON = juego.logros ? JSON.stringify(juego.logros) : "[]";
       const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.nombre)}&imagen=${encodeURIComponent(juego.imagen)}&año=${juego.año}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&logros=${encodeURIComponent(logrosJSON)}`;
@@ -244,15 +315,7 @@ document.addEventListener("DOMContentLoaded", () => {
         .forEach((b) => b.classList.remove("active"));
       btn.classList.add("active");
 
-      if (btn.textContent.includes("Jugando")) filtroActual = "jugando";
-      else if (btn.textContent.includes("Completados"))
-        filtroActual = "completado";
-      else if (btn.textContent.includes("Pendientes"))
-        filtroActual = "pendiente";
-      else if (btn.textContent.includes("Abandonados"))
-        filtroActual = "abandonado";
-      else filtroActual = "todos";
-
+      filtroActual = btn.dataset.filter || "todos";
       aplicarFiltro();
     });
   });
