@@ -55,15 +55,15 @@ document.addEventListener("DOMContentLoaded", () => {
   setupModals();
 
   // Add Game/User buttons
-  const addGameBtn = document.getElementById("addGameBtn");
-  const addUserBtn = document.getElementById("addUserBtn");
+  const addBtn = document.getElementById("addBtn");
   
-  if (addGameBtn) {
-    addGameBtn.addEventListener("click", openAddGameModal);
-  }
-  if (addUserBtn) {
-    addUserBtn.addEventListener("click", () => {
-      alert("Funcionalidad para añadir usuarios próximamente");
+  if (addBtn) {
+    addBtn.addEventListener("click", () => {
+      if (currentPage === "games") {
+        openAddGameModal();
+      } else if (currentPage === "users") {
+        openAddUserModal();
+      }
     });
   }
 
@@ -94,13 +94,16 @@ function switchTab(tabName) {
 
   const gamesList = document.getElementById("gamesList");
   const usersList = document.getElementById("usersList");
+  const addBtnText = document.getElementById("addBtnText");
 
   if (tabName === "games") {
     gamesList?.classList.remove("hidden");
     usersList?.classList.add("hidden");
+    if (addBtnText) addBtnText.textContent = "Añadir Juego";
   } else if (tabName === "users") {
     gamesList?.classList.add("hidden");
     usersList?.classList.remove("hidden");
+    if (addBtnText) addBtnText.textContent = "Añadir Usuario";
   }
 }
 
@@ -158,7 +161,7 @@ function renderUsers() {
         </div>
       </div>
       <div class="user-actions">
-        <button class="edit" aria-label="boton" onclick="alert('Funcionalidad próximamente')" title="Editar">
+        <button class="edit" aria-label="boton" onclick="openEditUserModal(${index})" title="Editar">
           <i data-lucide="pencil"></i>
         </button>
         <button class="delete" aria-label="boton" onclick="openDeleteUserModal(${index})" title="Eliminar">
@@ -186,6 +189,28 @@ function setupModals() {
   }
   if (gameForm) {
     gameForm.addEventListener("submit", handleGameFormSubmit);
+  }
+
+  // User Modal
+  const userModal = document.getElementById("userModal");
+  const userForm = document.getElementById("userForm");
+  const closeUserModalBtn = document.getElementById("closeUserModal");
+  const cancelUserBtn = document.getElementById("cancelUserBtn");
+
+  if (closeUserModalBtn) {
+    closeUserModalBtn.addEventListener("click", closeUserModal);
+  }
+  if (cancelUserBtn) {
+    cancelUserBtn.addEventListener("click", closeUserModal);
+  }
+  if (userForm) {
+    userForm.addEventListener("submit", handleUserFormSubmit);
+  }
+
+  if (userModal) {
+    userModal.addEventListener("click", (e) => {
+      if (e.target === userModal) closeUserModal();
+    });
   }
 
   const deleteModal = document.getElementById("deleteModal");
@@ -282,11 +307,36 @@ function getRandomImage() {
 }
 
 // ===================== ADD / EDIT GAME =====================
+let editingUserId = null;
+
 function openAddGameModal() {
   editingGameId = null;
   resetGameForm();
   document.getElementById("gameModalTitle").textContent = "Añadir Juego";
   openModal("gameModal");
+}
+
+function openAddUserModal() {
+  editingUserId = null;
+  resetUserForm();
+  document.getElementById("userModalTitle").textContent = "Añadir Usuario";
+  document.getElementById("userName").removeAttribute("readonly");
+  openModal("userModal");
+}
+
+function openEditUserModal(index) {
+  editingUserId = index;
+  const user = usersDatabase[index];
+
+  document.getElementById("userModalTitle").textContent = "Editar Usuario";
+  document.getElementById("userName").setAttribute("readonly", true);
+  document.getElementById("userName").value = user.username;
+  document.getElementById("userDescription").value = user.description;
+  document.getElementById("userGames").value = user.games;
+  document.getElementById("userFollowers").value = user.followers;
+  document.getElementById("userFollowing").value = user.following;
+
+  openModal("userModal");
 }
 
 function openEditGameModal(index) {
@@ -309,6 +359,13 @@ function resetGameForm() {
   const gameForm = document.getElementById("gameForm");
   if (gameForm) {
     gameForm.reset();
+  }
+}
+
+function resetUserForm() {
+  const userForm = document.getElementById("userForm");
+  if (userForm) {
+    userForm.reset();
   }
 }
 
@@ -364,12 +421,63 @@ function handleGameFormSubmit(e) {
   }, 1500);
 }
 
+function handleUserFormSubmit(e) {
+  e.preventDefault();
+
+  const userName = document.getElementById("userName").value;
+  const userDescription = document.getElementById("userDescription").value;
+  const userGames = document.getElementById("userGames").value;
+  const userFollowers = document.getElementById("userFollowers").value;
+  const userFollowing = document.getElementById("userFollowing").value;
+
+  if (editingUserId !== null) {
+    const avatarActual = usersDatabase[editingUserId].avatar;
+    usersDatabase[editingUserId] = {
+      ...usersDatabase[editingUserId],
+      username: userName,
+      description: userDescription,
+      games: parseInt(userGames),
+      followers: parseInt(userFollowers),
+      following: parseInt(userFollowing),
+      avatar: avatarActual
+    };
+    openSuccessModal("¡Usuario Actualizado!", "Los cambios han sido guardados correctamente");
+  } else {
+    const newUser = {
+      id: usersDatabase.length + 1,
+      username: userName,
+      description: userDescription,
+      games: parseInt(userGames),
+      followers: parseInt(userFollowers),
+      following: parseInt(userFollowing),
+      avatar: "../img/user1.webp"
+    };
+    usersDatabase.push(newUser);
+    openSuccessModal("¡Usuario Añadido!", "El usuario ha sido añadido a la plataforma");
+  }
+
+  closeUserModal();
+  setTimeout(() => {
+    renderUsers();
+    closeSuccessModalFunc();
+  }, 1500);
+}
+
+function closeUserModal() {
+  const userModal = document.getElementById("userModal");
+  if (userModal) {
+    userModal.classList.add("hidden");
+  }
+  editingUserId = null;
+  resetUserForm();
+}
+
 // ===================== DELETE GAME / USER =====================
 function openDeleteGameModal(index) {
   deletingGameId = index;
   const game = GAMES_DATA[index];
 
-  document.getElementById("deleteGameName").textContent = game.nombre;
+  document.getElementById("deleteItemName").textContent = game.nombre;
   openModal("deleteModal");
 }
 
@@ -377,7 +485,7 @@ function openDeleteUserModal(index) {
   deletingUserId = index;
   const user = usersDatabase[index];
 
-  document.getElementById("deleteUserName").textContent = user.username;
+  document.getElementById("deleteItemName").textContent = user.username;
   openModal("deleteModal");
 }
 

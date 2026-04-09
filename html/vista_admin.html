@@ -46,9 +46,9 @@
             <button class="search-icon-btn" id="openSearchModalBtn" title="Buscar">
                 <i data-lucide="search"></i>
             </button>
-            <button class="btn-add-flat" id="addGameBtn">
+            <button class="btn-add-flat" id="addBtn">
                 <i data-lucide="plus"></i>
-                <span>Añadir Juego</span>
+                <span id="addBtnText">Añadir Juego</span>
             </button>
         </div>
     </div>
@@ -70,6 +70,46 @@
             <div id="searchResults" class="search-results">
                 <p class="search-placeholder">Escribe para buscar juegos...</p>
             </div>
+        </div>
+    </div>
+
+    <!-- Modal para Añadir/Editar Usuario -->
+    <div id="userModal" class="modal hidden">
+        <div class="modal-content game-modal-content">
+            <div class="modal-header">
+                <h2 id="userModalTitle">Añadir Usuario</h2>
+                <button class="modal-close-btn" id="closeUserModal" title="Cerrar">
+                    <i data-lucide="x"></i>
+                </button>
+            </div>
+            <form id="userForm">
+                <div class="form-group">
+                    <label for="userName">Nombre de usuario</label>
+                    <input type="text" id="userName" placeholder="@usuario" required>
+                </div>
+                <div class="form-group">
+                    <label for="userDescription">Descripción</label>
+                    <textarea id="userDescription" rows="3" placeholder="Descripción del usuario..." required></textarea>
+                </div>
+                <div class="form-row">
+                    <div class="form-group">
+                        <label for="userGames">Juegos Jugados</label>
+                        <input type="number" id="userGames" min="0" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="userFollowers">Seguidores</label>
+                        <input type="number" id="userFollowers" min="0" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="userFollowing">Siguiendo</label>
+                    <input type="number" id="userFollowing" min="0" required>
+                </div>
+                <div class="form-actions">
+                    <button type="button" class="btn-secondary" id="cancelUserBtn">Cancelar</button>
+                    <button type="submit" class="btn-primary">Guardar Usuario</button>
+                </div>
+            </form>
         </div>
     </div>
 
@@ -130,7 +170,7 @@
                 <h2>Confirmar Eliminación</h2>
             </div>
             <div class="modal-body">
-                <p>¿Estás seguro de que deseas eliminar <strong id="deleteGameName"></strong>?</p>
+                <p>¿Estás seguro de que deseas eliminar <strong id="deleteItemName"></strong>?</p>
                 <p class="text-muted">Esta acción no se puede deshacer.</p>
             </div>
             <div class="modal-actions">
