@@ -61,7 +61,9 @@ document.addEventListener("DOMContentLoaded", () => {
           game.imagen
         )}&año=${game.año}&descripcion=${encodeURIComponent(
           game.descripcion
-        )}&rating=${game.rating}&logros=${logrosEncoded}`;
+        )}&rating=${game.rating}&desarrollador=${encodeURIComponent(
+          game.desarrollador || "Desarrollador Desconocido"
+        )}&logros=${logrosEncoded}`;
 
         return `
           <div class="search-result-item" onclick="window.location.href='${gameUrl}'">

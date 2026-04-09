@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const año = urlParams.get("año");
   const descripcion = urlParams.get("descripcion") || "Descripción del juego";
   const rating = urlParams.get("rating") || "4.3";
+  const desarrollador = urlParams.get("desarrollador") || "Desarrollador Desconocido";
   const logrosParam = urlParams.get("logros");
   let logros = [];
   
@@ -187,6 +188,10 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const descriptionP = document.querySelector(".game-info .description");
   if (descriptionP) descriptionP.textContent = descripcion;
+
+  // Actualizar desarrollador
+  const developerH3 = document.querySelector(".info-card h3");
+  if (developerH3) developerH3.textContent = desarrollador;
 
   // ======================
   // MODAL

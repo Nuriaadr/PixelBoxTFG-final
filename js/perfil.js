@@ -116,13 +116,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // Cargar referencias de la biblioteca
   let bibliotecaRaw = JSON.parse(localStorage.getItem("biblioteca") || "[]");
   
-  // Migrar datos antiguos al nuevo formato si es necesario
   let bibliotecaReferencias = bibliotecaRaw.map(item => {
-    // Si tiene nombreJuego, ya está en nuevo formato
     if (item.nombreJuego) {
       return item;
     }
-    // Si tiene nombre, es formato antiguo, migrar
     else if (item.nombre) {
       return {
         nombreJuego: item.nombre,
@@ -138,7 +135,6 @@ document.addEventListener("DOMContentLoaded", () => {
     }
   });
   
-  // Guardar la versión migrada
   localStorage.setItem("biblioteca", JSON.stringify(bibliotecaReferencias));
 
   // Función para obtener juego completo desde GAMES_DATA

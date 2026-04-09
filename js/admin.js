@@ -44,7 +44,81 @@ document.addEventListener("DOMContentLoaded", () => {
     renderGames();
     renderUsers();
   });
+
+  // Achievements management
+  setupAchievements();
 });
+
+// ===================== ACHIEVEMENTS MANAGEMENT =====================
+function setupAchievements() {
+  const addAchievementBtn = document.getElementById("addAchievementBtn");
+  if (addAchievementBtn) {
+    addAchievementBtn.addEventListener("click", addAchievement);
+  }
+}
+
+function addAchievement(achievementData = null) {
+  const container = document.getElementById("achievementsContainer");
+  if (!container) return;
+
+  const achievementItem = document.createElement("div");
+  achievementItem.className = "achievement-item";
+
+  achievementItem.innerHTML = `
+    <div class="achievement-inputs">
+      <input type="text" placeholder="Nombre del logro" value="${achievementData?.nombre || ''}" required>
+      <input type="text" placeholder="Descripción del logro" value="${achievementData?.descripcion || ''}" required>
+      <select required>
+        <option value="">Rareza</option>
+        <option value="COMMON" ${achievementData?.rarity === 'COMMON' ? 'selected' : ''}>Common</option>
+        <option value="RARE" ${achievementData?.rarity === 'RARE' ? 'selected' : ''}>Rare</option>
+        <option value="EPIC" ${achievementData?.rarity === 'EPIC' ? 'selected' : ''}>Epic</option>
+        <option value="LEGENDARY" ${achievementData?.rarity === 'LEGENDARY' ? 'selected' : ''}>Legendary</option>
+      </select>
+    </div>
+    <button type="button" class="btn-remove-achievement" title="Eliminar Logro">
+      <i data-lucide="trash-2"></i>
+    </button>
+  `;
+
+  // Add remove functionality
+  const removeBtn = achievementItem.querySelector(".btn-remove-achievement");
+  removeBtn.addEventListener("click", () => {
+    achievementItem.remove();
+  });
+
+  container.appendChild(achievementItem);
+  lucide.createIcons();
+}
+
+function clearAchievements() {
+  const container = document.getElementById("achievementsContainer");
+  if (container) {
+    container.innerHTML = "";
+  }
+}
+
+function getAchievementsFromForm() {
+  const achievementItems = document.querySelectorAll(".achievement-item");
+  const achievements = [];
+
+  achievementItems.forEach(item => {
+    const inputs = item.querySelectorAll("input, select");
+    const nombre = inputs[0].value.trim();
+    const descripcion = inputs[1].value.trim();
+    const rarity = inputs[2].value;
+
+    if (nombre && descripcion && rarity) {
+      achievements.push({
+        nombre,
+        descripcion,
+        rarity
+      });
+    }
+  });
+
+  return achievements;
+}
 
 // ===================== TABS =====================
 function setupTabs() {
@@ -314,6 +388,7 @@ let editingUserId = null;
 function openAddGameModal() {
   editingGameId = null;
   resetGameForm();
+  clearAchievements();
   document.getElementById("gameModalTitle").textContent = "Añadir Juego";
   openModal("gameModal");
 }
@@ -330,13 +405,28 @@ function openEditUserModal(index) {
   editingUserId = index;
   const user = usersDatabase[index];
 
+  // Para @jugador_pro, calcular valores dinámicos
+  let gamesCount = user.games;
+  let followersCount = user.followers;
+  let followingCount = user.following;
+
+  if (user.username === "@jugador_pro") {
+    // Juegos desde biblioteca
+    const biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+    gamesCount = biblioteca.length;
+
+    // Followers y following desde las funciones de users.js
+    followersCount = getFollowersOfUser("@jugador_pro").length;
+    followingCount = getUserFollowing("@jugador_pro").length;
+  }
+
   document.getElementById("userModalTitle").textContent = "Editar Usuario";
   document.getElementById("userName").setAttribute("readonly", true);
   document.getElementById("userName").value = user.username;
   document.getElementById("userDescription").value = user.description;
-  document.getElementById("userGames").value = user.games;
-  document.getElementById("userFollowers").value = user.followers;
-  document.getElementById("userFollowing").value = user.following;
+  document.getElementById("userGames").value = gamesCount;
+  document.getElementById("userFollowers").value = followersCount;
+  document.getElementById("userFollowing").value = followingCount;
 
   openModal("userModal");
 }
@@ -354,6 +444,13 @@ function openEditGameModal(index) {
   document.getElementById("gamePlatform").value = game.plataforma;
   document.getElementById("gameRating").value = game.rating;
 
+  clearAchievements();
+  if (Array.isArray(game.logros) && game.logros.length > 0) {
+    game.logros.forEach(logro => addAchievement(logro));
+  } else {
+    addAchievement();
+  }
+
   openModal("gameModal");
 }
 
@@ -362,6 +459,7 @@ function resetGameForm() {
   if (gameForm) {
     gameForm.reset();
   }
+  clearAchievements();
 }
 
 function resetUserForm() {
@@ -382,8 +480,10 @@ function handleGameFormSubmit(e) {
   const gamePlatform = document.getElementById("gamePlatform").value;
   const gameRating = document.getElementById("gameRating").value;
 
+  const gameAchievements = getAchievementsFromForm();
+
   if (editingGameId !== null) {
-    //  conservar imagen existente
+    // conservar imagen existente
     const imagenActual = GAMES_DATA[editingGameId].imagen;
     GAMES_DATA[editingGameId] = {
       ...GAMES_DATA[editingGameId],
@@ -394,12 +494,13 @@ function handleGameFormSubmit(e) {
       descripcion: gameDescription,
       plataforma: gamePlatform,
       rating: parseFloat(gameRating),
-      imagen: imagenActual
+      imagen: imagenActual,
+      logros: gameAchievements
     };
     saveGamesToStorage();
     openSuccessModal("¡Juego Actualizado!", "Los cambios han sido guardados correctamente");
   } else {
-    //  asignar imagen aleatoria a nuevo juego
+    // asignar imagen aleatoria a nuevo juego
     const newGame = {
       nombre: gameName,
       año: parseInt(gameYear),
@@ -409,7 +510,7 @@ function handleGameFormSubmit(e) {
       plataforma: gamePlatform,
       rating: parseFloat(gameRating),
       imagen: getRandomImage(),
-      logros: []
+      logros: gameAchievements
     };
     GAMES_DATA.push(newGame);
     saveGamesToStorage();

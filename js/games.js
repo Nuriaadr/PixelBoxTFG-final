@@ -135,7 +135,9 @@ function getGameDetailsUrl(game) {
     game.imagen
   )}&año=${game.año}&descripcion=${encodeURIComponent(
     game.descripcion
-  )}&rating=${game.rating}&logros=${logrosEncoded}`;
+  )}&rating=${game.rating}&desarrollador=${encodeURIComponent(
+    game.desarrollador
+  )}&logros=${logrosEncoded}`;
 }
 
 // Función auxiliar para buscar un juego por nombre

@@ -153,6 +153,28 @@ input:focus {
   border-color: var(--primary);
 }
 
+/* Input number spinners (flechas up/down) oscuros */
+input[type="number"]::-webkit-outer-spin-button,
+input[type="number"]::-webkit-inner-spin-button {
+  background: var(--bg-card);
+  border: 1px solid var(--secondary);
+  border-radius: 4px;
+  opacity: 0.8;
+  filter: invert(0.8) hue-rotate(180deg);
+}
+
+input[type="number"]::-webkit-outer-spin-button:hover,
+input[type="number"]::-webkit-inner-spin-button:hover {
+  background: var(--secondary);
+  opacity: 1;
+  filter: invert(0.6) hue-rotate(180deg);
+}
+
+/* Firefox - ocultar spinners por defecto */
+input[type="number"] {
+  -moz-appearance: textfield;
+}
+
 /* ===================== BOTONES ===================== */
 .btn-primary {
   width: 100%;
@@ -2991,6 +3013,118 @@ textarea::placeholder {
   font-size: 14px;
   cursor: pointer;
   transition: all 0.2s ease;
+}
+
+/* ===================== ACHIEVEMENTS SECTION ===================== */
+.achievements-section {
+  border-top: 1px solid var(--secondary);
+  padding-top: 20px;
+  margin-top: 8px;
+}
+
+.achievements-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 16px;
+}
+
+.achievements-header label {
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-white);
+  margin: 0;
+}
+
+.btn-add-achievement {
+  background: var(--primary);
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  color: var(--text-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+}
+
+.btn-add-achievement:hover {
+  background: #2563eb;
+  transform: translateY(-1px);
+}
+
+.btn-add-achievement i {
+  width: 16px;
+  height: 16px;
+}
+
+.achievements-container {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.achievement-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px;
+  background: var(--bg-card);
+  border: 1px solid var(--secondary);
+  border-radius: 8px;
+}
+
+.achievement-inputs {
+  flex: 1;
+  display: grid;
+  grid-template-columns: 2fr 3fr 1fr;
+  gap: 8px;
+}
+
+.achievement-inputs input,
+.achievement-inputs select {
+  padding: 8px 10px;
+  background-color: var(--secondary);
+  border: 1px solid var(--secondary);
+  border-radius: 6px;
+  color: var(--text-white);
+  font-size: 13px;
+  transition: border-color 0.2s ease;
+}
+
+.achievement-inputs input:focus,
+.achievement-inputs select:focus {
+  outline: none;
+  border-color: var(--primary);
+}
+
+.achievement-inputs input::placeholder {
+  color: var(--text-muted);
+}
+
+.btn-remove-achievement {
+  background: var(--danger);
+  border: none;
+  border-radius: 6px;
+  padding: 8px;
+  color: var(--text-white);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.btn-remove-achievement:hover {
+  background: #dc2626;
+  transform: translateY(-1px);
+}
+
+.btn-remove-achievement i {
+  width: 14px;
+  height: 14px;
 }
 
 /* ===================== BUTTONS ===================== */
