@@ -34,7 +34,7 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
       usuario.value === "jugador_pro" &&
       password.value === "password"
     ) {
-      localStorage.setItem("usuario", "jugador_pro");
+      localStorage.setItem("usuario", "@jugador_pro");
       localStorage.setItem("rol", "jugador");
       window.location.href = "html/inicio.html";
     } else {

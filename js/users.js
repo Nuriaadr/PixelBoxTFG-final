@@ -57,9 +57,9 @@ function initializeFollowersData() {
 }
 
 // Limpiar datos viejos y reinicializar
-localStorage.removeItem("siguiendo_@jugador_pro");
-localStorage.removeItem("siguiendo_@gamer_elite");
-localStorage.removeItem("siguiendo_@indie_lover");
+// localStorage.removeItem("siguiendo_@jugador_pro");
+// localStorage.removeItem("siguiendo_@gamer_elite");
+// localStorage.removeItem("siguiendo_@indie_lover");
 initializeFollowersData();
 
 // Obtener seguidores del usuario actual desde localStorage

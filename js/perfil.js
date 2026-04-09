@@ -6,6 +6,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   let user = localStorage.getItem("usuario");
 
+  // Migrar usuario sin @ a con @
+  if (user && !user.startsWith("@")) {
+    user = "@" + user;
+    localStorage.setItem("usuario", user);
+  }
+
   if (!user) {
     window.location.href = "../index.html";
     return;
@@ -26,6 +32,56 @@ document.addEventListener("DOMContentLoaded", () => {
   if (logoutBtn) {
     setupLogoutHandler();
   }
+
+  // ======================
+  // CARGA DE DATOS DEL PERFIL
+  // ======================
+  const userData = USERS_DATA.find(u => u.username === user);
+
+  if (userData) {
+    document.getElementById("profileUsername").textContent = userData.username;
+    document.getElementById("profileBio").textContent = userData.description;
+
+    // Cargar avatar
+    const avatarLarge = document.querySelector(".avatar-large");
+    if (avatarLarge && userData.avatar) {
+      avatarLarge.style.backgroundImage = `url(${userData.avatar})`;
+    }
+  }
+
+  // Verificar si hay bio guardada en localStorage
+  const savedBio = localStorage.getItem(`bio_${user}`);
+  if (savedBio) {
+    document.getElementById("profileBio").textContent = savedBio;
+  }
+
+  // ======================
+  // MODAL DE EDICIÓN DE PERFIL
+  // ======================
+  const editProfileBtn = document.getElementById("editProfileBtn");
+  const editProfileModal = document.getElementById("editProfileModal");
+  const closeEditModal = document.getElementById("closeEditModal");
+  const editProfileForm = document.getElementById("editProfileForm");
+  const editUsername = document.getElementById("editUsername");
+  const editBio = document.getElementById("editBio");
+
+  editProfileBtn.addEventListener("click", () => {
+    editUsername.value = user || "";
+    editBio.value = document.getElementById("profileBio").textContent || "";
+    editProfileModal.classList.remove("hidden");
+  });
+
+  closeEditModal.addEventListener("click", () => {
+    editProfileModal.classList.add("hidden");
+  });
+
+  editProfileForm.addEventListener("submit", (e) => {
+    e.preventDefault();
+    const updatedBio = editBio.value;
+    localStorage.setItem(`bio_${user}`, updatedBio);
+    document.getElementById("profileBio").textContent = updatedBio;
+    editProfileModal.classList.add("hidden");
+  });
 
 
   // JUEGOS Y LOGROS
@@ -179,6 +235,10 @@ document.addEventListener("DOMContentLoaded", () => {
     }
 
     seguidores.forEach(follower => {
+      const isFollowingUser = isFollowing(user, follower.username);
+      const buttonText = isFollowingUser ? "Dejar de seguir" : "Seguir";
+      const buttonClass = isFollowingUser ? "btn-secondary" : "btn-primary";
+
       const followerCard = document.createElement("div");
       followerCard.className = "follower-card";
       followerCard.innerHTML = `
@@ -188,11 +248,26 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${follower.description}</p>
           <span class="follower-games">${follower.games} juegos</span>
         </div>
-        <button class="btn-view-profile" onclick="window.location.href='user-profile.html?user=${encodeURIComponent(follower.username)}'">
-          Ver Perfil
+        <button class="${buttonClass} follow-btn" data-username="${follower.username}" data-action="${isFollowingUser ? 'unfollow' : 'follow'}">
+          ${buttonText}
         </button>
       `;
       followersList.appendChild(followerCard);
+    });
+
+    // Añadir event listeners a los botones
+    document.querySelectorAll('.follow-btn').forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        const targetUser = e.target.dataset.username;
+        const action = e.target.dataset.action;
+        toggleFollow(user, targetUser);
+        const message = action === 'follow' ? `Has empezado a seguir a ${targetUser}` : `Has dejado de seguir a ${targetUser}`;
+        document.getElementById('followMessage').textContent = message;
+        document.getElementById('followModal').classList.remove('hidden');
+        // Re-render para actualizar botones
+        renderFollowers();
+        updateFollowerCounter(); // Aunque no cambia el contador de seguidores, por si acaso
+      });
     });
 
     lucide.createIcons();
@@ -216,6 +291,24 @@ document.addEventListener("DOMContentLoaded", () => {
     followersModal.addEventListener("click", (e) => {
       if (e.target === followersModal) {
         followersModal.classList.add("hidden");
+      }
+    });
+  }
+
+  // Modal informativo de follow
+  const followModal = document.getElementById("followModal");
+  const closeFollowModal = document.getElementById("closeFollowModal");
+
+  if (closeFollowModal) {
+    closeFollowModal.addEventListener("click", () => {
+      followModal.classList.add("hidden");
+    });
+  }
+
+  if (followModal) {
+    followModal.addEventListener("click", (e) => {
+      if (e.target === followModal) {
+        followModal.classList.add("hidden");
       }
     });
   }
