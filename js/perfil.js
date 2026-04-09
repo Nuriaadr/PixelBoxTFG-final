@@ -34,13 +34,38 @@ document.addEventListener("DOMContentLoaded", () => {
   // La biblioteca solo guarda referencias 
 
   // Cargar referencias de la biblioteca
-  let bibliotecaReferencias = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+  let bibliotecaRaw = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+  
+  // Migrar datos antiguos al nuevo formato si es necesario
+  let bibliotecaReferencias = bibliotecaRaw.map(item => {
+    // Si tiene nombreJuego, ya está en nuevo formato
+    if (item.nombreJuego) {
+      return item;
+    }
+    // Si tiene nombre, es formato antiguo, migrar
+    else if (item.nombre) {
+      return {
+        nombreJuego: item.nombre,
+        estado: item.estado || "pendiente"
+      };
+    }
+    // Si no tiene ninguno, asumir que es nombreJuego
+    else {
+      return {
+        nombreJuego: item,
+        estado: "pendiente"
+      };
+    }
+  });
+  
+  // Guardar la versión migrada
+  localStorage.setItem("biblioteca", JSON.stringify(bibliotecaReferencias));
 
   // Función para obtener juego completo desde GAMES_DATA
   function obtenerJuegoCompleto(nombreJuego) {
     const juego = GAMES_DATA.find(g => g.nombre.toLowerCase() === nombreJuego.toLowerCase());
     if (juego) {
-      const ref = bibliotecaReferencias.find(b => b.nombreJuego === juego.nombre);
+      const ref = bibliotecaReferencias.find(b => b.nombreJuego.toLowerCase() === juego.nombre.toLowerCase());
       return {
         ...juego,
         estado: ref?.estado || "pendiente"
@@ -68,10 +93,32 @@ document.addEventListener("DOMContentLoaded", () => {
   mensaje.classList.add("hidden");
 
   // Generar tarjetas de juegos dinámicamente con logros
-  function renderGameCards() {
+  function renderGameCards(filtro = "todos") {
     gameGrid.innerHTML = "";
 
-    gamesData.forEach((game) => {
+    let juegosFiltrados = gamesData;
+
+    if (filtro !== "todos") {
+      juegosFiltrados = gamesData.filter(game => {
+        if (filtro === "jugando") return game.estado === "jugando";
+        if (filtro === "completados") return game.estado === "completado";
+        if (filtro === "pendientes") return game.estado === "pendiente";
+        if (filtro === "abandonados") return game.estado === "abandonado";
+        return true;
+      });
+    }
+
+    if (juegosFiltrados.length === 0) {
+      mensaje.classList.remove("hidden");
+      gameGrid.appendChild(mensaje);
+      return;
+    } else {
+      mensaje.classList.add("hidden");
+    }
+
+    const fragment = document.createDocumentFragment();
+
+    juegosFiltrados.forEach((game) => {
       const params = new URLSearchParams({
         titulo: game.nombre,
         imagen: game.imagen,
@@ -92,51 +139,14 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${game.año}</p>
         </a>
       `;
-      gameGrid.appendChild(gameCard);
+      fragment.appendChild(gameCard);
     });
 
-    gameGrid.appendChild(mensaje);
+    gameGrid.appendChild(fragment);
   }
 
-  // Renderizar juegos al cargar
-  renderGameCards();
-  
-  // Aplicar filtro inicial
-  filtrarPor("jugando");
-
-  function filtrarPor(tab) {
-    let visibles = 0;
-    const cards = document.querySelectorAll(".game-card");
-
-    cards.forEach((card) => {
-      if (card.id === "noGamesMessage") return;
-
-      const titulo = card.querySelector("h3").textContent.trim();
-      const juego = gamesData.find((j) => j.nombre === titulo);
-
-      let mostrar = false;
-
-      if (tab === "jugando" && juego?.estado === "jugando") mostrar = true;
-      if (tab === "completados" && juego?.estado === "completado")
-        mostrar = true;
-      if (tab === "pendientes" && juego?.estado === "pendiente") mostrar = true;
-      if (tab === "abandonado" && juego?.estado === "abandonado") mostrar = true;
-      if (tab === "todos") mostrar = true;
-
-      if (mostrar) {
-        card.style.display = "block";
-        visibles++;
-      } else {
-        card.style.display = "none";
-      }
-    });
-
-    if (visibles === 0) {
-      mensaje.classList.remove("hidden");
-    } else {
-      mensaje.classList.add("hidden");
-    }
-  }
+  // Renderizar juegos al cargar con filtro inicial
+  renderGameCards("jugando");
 
   // ======================
   // MODAL DE SEGUIDORES
@@ -322,19 +332,16 @@ document.addEventListener("DOMContentLoaded", () => {
       // Mostrar sección correspondiente
       if (tab.id === "tab-jugando") {
         gameGrid.classList.remove("hidden");
-        filtrarPor("jugando");
+        renderGameCards("jugando");
       } else if (tab.id === "tab-completados") {
         gameGrid.classList.remove("hidden");
-        filtrarPor("completados");
+        renderGameCards("completados");
       } else if (tab.id === "tab-pendientes") {
         gameGrid.classList.remove("hidden");
-        filtrarPor("pendientes");
+        renderGameCards("pendientes");
       } else if (tab.id === "tab-abandonados") {
         gameGrid.classList.remove("hidden");
-        filtrarPor("abandonado");
-      } else if (tab.id === "tab-favoritos") {
-        gameGrid.classList.remove("hidden");
-        filtrarPor("favoritos");
+        renderGameCards("abandonados");
       } else if (tab.id === "tab-logros") {
         if (achievementsSection) achievementsSection.classList.remove("hidden");
       }

@@ -104,11 +104,25 @@ document.addEventListener("DOMContentLoaded", () => {
   if (addGameBtn) {
     addGameBtn.addEventListener("click", () => {
 
-      let juegos = JSON.parse(localStorage.getItem("biblioteca")) || [];
+      let biblioteca = JSON.parse(localStorage.getItem("biblioteca")) || [];
 
-      juegos.push("Cyberpunk Chronicles");
+      // Verificar si ya está en biblioteca
+      const existe = biblioteca.some(item => 
+        (item.nombreJuego || item.nombre || item) === "Cyberpunk Chronicles"
+      );
 
-      localStorage.setItem("biblioteca", JSON.stringify(juegos));
+      if (existe) {
+        showModal("Ya en biblioteca", "Este juego ya está en tu biblioteca");
+        return;
+      }
+
+      // Agregar en nuevo formato
+      biblioteca.push({
+        nombreJuego: "Cyberpunk Chronicles",
+        estado: "jugando"
+      });
+
+      localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
 
       showModal("¡Genial!", "Juego añadido a tu biblioteca");
     });
