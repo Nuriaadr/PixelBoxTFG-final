@@ -29,6 +29,7 @@
   --achievement-special: #3b82f6;
   --achievement-rare: #f97316;
   --achievement-common: #6b7280;
+  --achievement-legendary: #ff0000;
 }
 
 /* ===================== RESET ===================== */
@@ -540,7 +541,7 @@ input:focus {
   top: 10px;
   right: 10px;
   background: var(--primary);
-  color: white;
+  color: var(--text-white);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 11px;
@@ -551,7 +552,7 @@ input:focus {
   top: 10px;
   right: 10px;
   background: var(--primary);
-  color: white;
+  color:var(--text-white);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 11px;
@@ -949,7 +950,6 @@ img {
   box-shadow: 0 4px 12px var(--status-abandoned);
 }
 
-/* Ajuste específico para el icono dentro del botón */
 .btn-delete i {
   width: 18px;
   height: 18px;
@@ -1578,45 +1578,44 @@ img {
 
 /* === ACHIEVEMENT RARITIES === */
 .achievement-card.rarity-common {
-  background: linear-gradient(90deg, #4a5568, #2d3748);
-  border-left-color: #718096;
+  background: linear-gradient(90deg, var(--bg-card), var(--achievement-common));
+  border-left-color: var(--achievement-common);
 }
 
 .achievement-card.rarity-rare {
-  background: linear-gradient(90deg, #0ea5e9, #0284c7);
-  border-left-color: #0284c7;
+  background: linear-gradient(90deg, var(--bg-card), var(--achievement-rare));
+  border-left-color: var(--achievement-rare);
 }
 
 .achievement-card.rarity-epic {
-  background: linear-gradient(90deg, #a855f7, #7c3aed);
-  border-left-color: #7c3aed;
+  background: linear-gradient(90deg, var(--bg-card), var(--achievement-epic));
+  border-left-color: var(--achievement-epic);
 }
 
 .achievement-card.rarity-legendary {
-  background: linear-gradient(90deg, #f59e0b, #dc2626);
-  border-left-color: #dc2626;
-  box-shadow: 0 0 20px rgba(220, 38, 38, 0.3);
+  background: linear-gradient(90deg, var(--bg-card), var(--achievement-legendary));
+  border-left-color: var(--achievement-legendary);
 }
 
 /* === RARITY BADGE COLORS === */
 .rarity-badge-common {
-  background: #4a5568;
-  color: #e2e8f0;
+  background: var(--achievement-common);
+  color: var(--text-white);
 }
 
 .rarity-badge-rare {
-  background: #0284c7;
-  color: #ffffff;
+  background: var(--achievement-rare);
+  color: var(--text-white);
 }
 
 .rarity-badge-epic {
-  background: #7c3aed;
-  color: #ffffff;
+  background: var(--achievement-epic);
+  color: var(--text-white);
 }
 
 .rarity-badge-legendary {
-  background: #dc2626;
-  color: #fef2f2;
+  background: var(--achievement-legendary);
+  color: var(--text-white);
 }
 
 /* === DETALLES === */
