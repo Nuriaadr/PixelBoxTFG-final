@@ -237,7 +237,7 @@ document.addEventListener("DOMContentLoaded", () => {
     seguidores.forEach(follower => {
       const isFollowingUser = isFollowing(user, follower.username);
       const buttonText = isFollowingUser ? "Dejar de seguir" : "Seguir";
-      const buttonClass = isFollowingUser ? "btn-secondary" : "btn-primary";
+      const buttonClass = "btn-secondary follow-btn";
 
       const followerCard = document.createElement("div");
       followerCard.className = "follower-card";
@@ -248,7 +248,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <p>${follower.description}</p>
           <span class="follower-games">${follower.games} juegos</span>
         </div>
-        <button class="${buttonClass} follow-btn" data-username="${follower.username}" data-action="${isFollowingUser ? 'unfollow' : 'follow'}">
+        <button class="${buttonClass}" data-username="${follower.username}">
           ${buttonText}
         </button>
       `;
@@ -259,14 +259,10 @@ document.addEventListener("DOMContentLoaded", () => {
     document.querySelectorAll('.follow-btn').forEach(btn => {
       btn.addEventListener('click', (e) => {
         const targetUser = e.target.dataset.username;
-        const action = e.target.dataset.action;
         toggleFollow(user, targetUser);
-        const message = action === 'follow' ? `Has empezado a seguir a ${targetUser}` : `Has dejado de seguir a ${targetUser}`;
-        document.getElementById('followMessage').textContent = message;
-        document.getElementById('followModal').classList.remove('hidden');
         // Re-render para actualizar botones
         renderFollowers();
-        updateFollowerCounter(); // Aunque no cambia el contador de seguidores, por si acaso
+        updateFollowerCounter();
       });
     });
 
@@ -291,24 +287,6 @@ document.addEventListener("DOMContentLoaded", () => {
     followersModal.addEventListener("click", (e) => {
       if (e.target === followersModal) {
         followersModal.classList.add("hidden");
-      }
-    });
-  }
-
-  // Modal informativo de follow
-  const followModal = document.getElementById("followModal");
-  const closeFollowModal = document.getElementById("closeFollowModal");
-
-  if (closeFollowModal) {
-    closeFollowModal.addEventListener("click", () => {
-      followModal.classList.add("hidden");
-    });
-  }
-
-  if (followModal) {
-    followModal.addEventListener("click", (e) => {
-      if (e.target === followModal) {
-        followModal.classList.add("hidden");
       }
     });
   }
