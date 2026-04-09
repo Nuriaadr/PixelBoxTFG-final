@@ -76,8 +76,6 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Verificar que GAMES_DATA está disponible
   if (typeof GAMES_DATA === "undefined" || !Array.isArray(GAMES_DATA)) {
-    console.error("GAMES_DATA no está disponible. Recarga la página.");
-    alert("Error: No se pudieron cargar los datos de juegos. Por favor recarga la página.");
     window.location.reload();
   }
   
@@ -85,14 +83,12 @@ document.addEventListener("DOMContentLoaded", () => {
   
   // Asegurar que bibliotecaStorage sea un array
   if (!Array.isArray(bibliotecaStorage)) {
-    console.warn("bibliotecaStorage no es un array válido, usando array vacío");
     bibliotecaStorage = [];
   }
   
   // Función para migrar datos antiguos 
   function migrarBibliotecaAntigua(datos) {
     if (!Array.isArray(datos)) {
-      console.warn("Datos de migración no son un array válido");
       return [];
     }
     
@@ -109,12 +105,10 @@ document.addEventListener("DOMContentLoaded", () => {
     return datos;
   }
   
-  // Estructura: [{ nombreJuego: "...", estado: "completado/jugando/pendiente/abandonado" }]
   let biblioteca = migrarBibliotecaAntigua(bibliotecaStorage);
   
   // Asegurar que biblioteca sea un array
   if (!Array.isArray(biblioteca)) {
-    console.warn("Biblioteca no es un array válido, inicializando vacío");
     biblioteca = [];
   }
   
@@ -126,7 +120,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Validar que los nombres coincidan con GAMES_DATA
   function validarNombresBiblioteca() {
     if (!Array.isArray(GAMES_DATA)) {
-      console.warn("GAMES_DATA no es un array válido, saltando validación");
       return;
     }
 
@@ -134,7 +127,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     biblioteca = biblioteca.map(item => {
       if (!item || !item.nombreJuego) {
-        console.warn("Item de biblioteca inválido:", item);
         return item;
       }
 
@@ -178,7 +170,6 @@ document.addEventListener("DOMContentLoaded", () => {
         nombreJuego.toLowerCase().includes(g.nombre.toLowerCase()))
       );
       if (juegoAproximado) {
-        console.warn("Coincidencia aproximada para:", nombreJuego, "->", juegoAproximado.nombre);
         return { ...juegoAproximado };
       }
       console.warn("No encontrado en GAMES_DATA:", nombreJuego);
@@ -216,12 +207,10 @@ document.addEventListener("DOMContentLoaded", () => {
       }));
       
       guardarBiblioteca();
-    } else if (biblioteca.length === 0) {
-      console.warn("Biblioteca vacía y GAMES_DATA no disponible");
-    }
+    } 
   }
 
-  // Inicializar si es necesario
+  //Inicializar si es necesario
   inicializarBibliotecaConDatosDefecto();
 
   // ======================
@@ -237,9 +226,7 @@ document.addEventListener("DOMContentLoaded", () => {
     container.querySelectorAll(".game-card").forEach((card) => card.remove());
 
     const juegosConDatos = obtenerJuegosConDatos();
-    if (juegosConDatos.length === 0) {
-      console.warn("No hay juegos para mostrar. Biblioteca:", biblioteca);
-    }
+    
 
     juegosConDatos.forEach((juego) => {
       const card = document.createElement("div");

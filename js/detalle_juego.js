@@ -217,7 +217,7 @@ document.addEventListener("DOMContentLoaded", () => {
         showModal("Estado actualizado", `El estado de ${titulo} ha sido cambiado a ${estado}`);
       } else {
         // Si no está en biblioteca, informar al usuario
-        showModal("No en biblioteca", "Debes agregar el juego a tu biblioteca primero");
+        showModal("Este juego no está en tu biblioteca", "Debes agregar el juego a tu biblioteca primero");
       }
     });
   });

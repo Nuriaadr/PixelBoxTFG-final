@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // JUEGOS DE TENDENCIAS
   // ======================
   // Seleccionar juegos de tendencia de GAMES_DATA
-  const tendenciasData = GAMES_DATA.slice(4, 8); // Últimos 4 juegos como tendencias
+  const tendenciasData = GAMES_DATA.slice(4, 8); // Últimos 4 juegos como tendencias puedes cambiarlo como te de la gana xd
 
   // Renderizar juegos de tendencias 
   function renderTrendingGames() {
@@ -126,8 +126,5 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showModal("¡Genial!", "Juego añadido a tu biblioteca");
     });
-  } else {
-    console.error("No existe el botón addGameBtn en esta página");
-  }
-
+  } 
 });

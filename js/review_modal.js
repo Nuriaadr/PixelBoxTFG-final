@@ -196,6 +196,10 @@ document.addEventListener("DOMContentLoaded", () => {
     resenasjuego.forEach((resena) => {
       const stars = "★".repeat(resena.calificacion) + "☆".repeat(5 - resena.calificacion);
       
+      // Generar número aleatorio de likes entre 0 y 100
+      const likes = Math.floor(Math.random() * 101);
+      const likesText = likes === 1 ? "1 persona encontró útil esta reseña" : `${likes} personas encontraron útil esta reseña`;
+      
       const reviewCard = document.createElement("div");
       reviewCard.className = "review-card";
       reviewCard.innerHTML = `
@@ -207,7 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
           <h3>${resena.juego}</h3>
           <span class="review-meta">@${resena.usuario} · ${resena.fecha}</span>
           <p>${resena.comentario}</p>
-          <span class="review-likes">0 personas encontraron útil esta reseña</span>
+          <span class="review-likes">${likesText}</span>
         </div>
 
         <div class="review-rating">

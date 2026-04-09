@@ -247,6 +247,17 @@
     <script src="../js/games.js"></script>
     <script src="../js/search.js"></script>
     <script src="../js/inicio.js"></script>
+    <script>
+        // Hacer aleatorios los likes de reseñas estáticas
+        document.addEventListener("DOMContentLoaded", () => {
+            const reviewLikes = document.querySelectorAll(".review-likes");
+            reviewLikes.forEach(span => {
+                const likes = Math.floor(Math.random() * 101);
+                const likesText = likes === 1 ? "1 persona encontró útil esta reseña" : `${likes} personas encontraron útil esta reseña`;
+                span.textContent = likesText;
+            });
+        });
+    </script>
 
 </body>
 
