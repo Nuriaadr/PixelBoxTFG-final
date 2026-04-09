@@ -22,9 +22,19 @@ document.addEventListener("DOMContentLoaded", () => {
   if (reviewGameName) reviewGameName.textContent = titulo || "Juego";
   if (reviewUserName) reviewUserName.textContent = `${user}`;
 
+  // Función para verificar si el juego está en la biblioteca
+  function estaEnBiblioteca(titulo) {
+    const biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
+    return biblioteca.some(juego => juego.nombreJuego === titulo);
+  }
+
   // Abrir modal
   if (reviewBtn) {
     reviewBtn.addEventListener("click", () => {
+      if (!estaEnBiblioteca(titulo)) {
+        mostrarMensaje("Error", "Debes añadir el juego a tu biblioteca antes de poder escribir una reseña.");
+        return;
+      }
       if (reviewModal) {
         reviewModal.classList.remove("hidden");
       }
