@@ -170,8 +170,6 @@ input[type="number"]::-webkit-inner-spin-button:hover {
   filter: invert(0.6) hue-rotate(180deg);
 }
 
-
-
 /* ===================== BOTONES ===================== */
 .btn-primary {
   width: 100%;
@@ -293,7 +291,6 @@ input[type="number"]::-webkit-inner-spin-button:hover {
   display: flex;
   align-items: center;
   gap: 25px;
-  
 }
 
 /* Estilo para el icono de búsqueda */
@@ -596,7 +593,7 @@ input[type="number"]::-webkit-inner-spin-button:hover {
   top: 10px;
   right: 10px;
   background: var(--primary);
-  color:var(--text-white);
+  color: var(--text-white);
   padding: 4px 10px;
   border-radius: 6px;
   font-size: 11px;
@@ -718,7 +715,9 @@ img {
   border-radius: 12px;
   overflow: hidden;
   width: calc(25% - 15px);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition:
+    transform 0.15s ease,
+    box-shadow 0.15s ease;
   cursor: pointer;
 }
 
@@ -1725,7 +1724,11 @@ img {
 }
 
 .achievement-card.rarity-legendary {
-  background: linear-gradient(90deg, var(--bg-card), var(--achievement-legendary));
+  background: linear-gradient(
+    90deg,
+    var(--bg-card),
+    var(--achievement-legendary)
+  );
   border-left-color: var(--achievement-legendary);
 }
 
