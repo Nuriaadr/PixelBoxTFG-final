@@ -683,8 +683,18 @@ img {
 }
 
 .game-img {
+  position: relative;
+  width: 100%;
   aspect-ratio: 1;
   background: var(--secondary);
+  overflow: hidden;
+}
+
+.game-img img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition: opacity 0.3s ease;
 }
 
 .game-card h3 {

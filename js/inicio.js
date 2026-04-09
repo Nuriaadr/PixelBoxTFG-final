@@ -55,8 +55,8 @@ document.addEventListener("DOMContentLoaded", () => {
       gameCard.className = "game-card";
       gameCard.innerHTML = `
         <a href="detalles_juego.html?${params}">
-          <div class="game-img" style="background-image: url('${game.imagen}')">
-            <img src="${game.imagen}" alt="${game.nombre}" style="display: none;">
+          <div class="game-img">
+            <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
           </div>
           <h3>${game.nombre}</h3>
           <p>${game.año}</p>

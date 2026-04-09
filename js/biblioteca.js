@@ -261,7 +261,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <i class="delete-game" data-lucide="x"></i>
         <a href="${href}">
           <div class="game-img">
-            <img src="${juego.imagen}" alt="${juego.nombre}">
+            <img src="${juego.imagen}" alt="${juego.nombre}" loading="lazy">
           </div>
           <h3>${juego.nombre}</h3>
           <span>${juego.año}</span>

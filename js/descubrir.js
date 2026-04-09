@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
         <div class="game-card">
           <a href="detalles_juego.html?${params}">
             <div class="game-img">
-              <img src="${game.imagen}" alt="${game.nombre}">
+              <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
             </div>
             <h3>${game.nombre}</h3>
             <span>${game.año}</span>
