@@ -199,6 +199,15 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (resenasjuego.length === 0) {
       reviewsContainer.innerHTML = '<div class="empty-reviews">Aún no hay reseñas. ¡Sé el primero en escribir una!</div>';
+      // Actualizar valoración a 0 si no hay reseñas
+      const ratingSpan = document.querySelector(".meta .rating");
+      if (ratingSpan) {
+        ratingSpan.textContent = `⭐ 0.0 / 5`;
+      }
+      const starsDiv = document.querySelector(".stars");
+      if (starsDiv) {
+        starsDiv.textContent = "☆☆☆☆☆";
+      }
       return;
     }
 
@@ -231,6 +240,20 @@ document.addEventListener("DOMContentLoaded", () => {
       
       reviewsContainer.appendChild(reviewCard);
     });
+
+    // Calcular y actualizar la valoración promedio
+    if (resenasjuego.length > 0) {
+      const average = resenasjuego.reduce((sum, r) => sum + r.calificacion, 0) / resenasjuego.length;
+      const ratingSpan = document.querySelector(".meta .rating");
+      if (ratingSpan) {
+        ratingSpan.textContent = `⭐ ${average.toFixed(1)} / 5`;
+      }
+      const starsDiv = document.querySelector(".stars");
+      if (starsDiv) {
+        const filledStars = Math.round(average);
+        starsDiv.textContent = "★".repeat(filledStars) + "☆".repeat(5 - filledStars);
+      }
+    }
   }
 
   // Inicializar renderización de reseñas al cargar
