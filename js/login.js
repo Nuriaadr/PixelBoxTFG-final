@@ -45,9 +45,3 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 });
 
 let rol = localStorage.getItem("rol");
-
-if (rol === "admin") {
-  console.log("Es administrador");
-} else if (rol === "jugador") {
-  console.log("Es jugador");
-}

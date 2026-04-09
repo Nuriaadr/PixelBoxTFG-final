@@ -144,7 +144,6 @@ document.addEventListener("DOMContentLoaded", () => {
       );
 
       if (juegoEnGAMES && juegoEnGAMES.nombre !== item.nombreJuego) {
-        console.log("Corrigiendo nombre:", item.nombreJuego, "->", juegoEnGAMES.nombre);
         actualizada = true;
         return {
           nombreJuego: juegoEnGAMES.nombre,
@@ -156,7 +155,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     if (actualizada) {
       localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
-      console.log("Nombres de biblioteca validados y guardados");
     }
   }
   
@@ -211,7 +209,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Si la biblioteca está vacía, cargar juegos iniciales de GAMES_DATA
   function inicializarBibliotecaConDatosDefecto() {
     if (biblioteca.length === 0 && GAMES_DATA && GAMES_DATA.length > 0) {
-      console.log("Inicializando biblioteca con GAMES_DATA...", GAMES_DATA.length, "juegos");
       
       biblioteca = GAMES_DATA.map(juego => ({
         nombreJuego: juego.nombre,
@@ -219,11 +216,8 @@ document.addEventListener("DOMContentLoaded", () => {
       }));
       
       guardarBiblioteca();
-      console.log("Biblioteca inicializada con", biblioteca.length, "juegos");
     } else if (biblioteca.length === 0) {
       console.warn("Biblioteca vacía y GAMES_DATA no disponible");
-    } else {
-      console.log("Biblioteca ya tiene", biblioteca.length, "juegos");
     }
   }
 
@@ -243,8 +237,6 @@ document.addEventListener("DOMContentLoaded", () => {
     container.querySelectorAll(".game-card").forEach((card) => card.remove());
 
     const juegosConDatos = obtenerJuegosConDatos();
-    console.log("Renderizando", juegosConDatos.length, "juegos");
-
     if (juegosConDatos.length === 0) {
       console.warn("No hay juegos para mostrar. Biblioteca:", biblioteca);
     }
@@ -370,14 +362,6 @@ document.addEventListener("DOMContentLoaded", () => {
       filterBtns[3].querySelector(".count").textContent = pendientes;
     if (filterBtns[4])
       filterBtns[4].querySelector(".count").textContent = abandonados;
-
-    console.log("Contadores actualizados:", {
-      total,
-      jugando,
-      completados,
-      pendientes,
-      abandonados,
-    });
   }
 
 
