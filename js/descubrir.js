@@ -45,6 +45,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderGames(list) {
     container.innerHTML = "";
+    const usuario = localStorage.getItem("usuario");
 
     list.forEach((game) => {
       const params = new URLSearchParams({
@@ -58,19 +59,24 @@ document.addEventListener("DOMContentLoaded", () => {
 
       container.innerHTML += `
         <div class="game-card">
-          <a href="detalles_juego.html?${params}">
-            <div class="game-img">
-              <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
-            </div>
-            <h3>${game.nombre}</h3>
-            <span>${game.año}</span>
-          </a>
+          <div class="game-card-header">
+            <a href="detalles_juego.html?${params}" class="game-card-link">
+              <div class="game-img">
+                <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
+              </div>
+              <h3>${game.nombre}</h3>
+              <span>${game.año}</span>
+            </a>
+          </div>
         </div>
       `;
     });
+    
     if (gamesCount) {
       gamesCount.textContent = `${list.length} juegos`;
     }
+
+    lucide.createIcons();
   }
 
   function filtrar() {

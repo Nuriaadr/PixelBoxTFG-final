@@ -302,13 +302,21 @@ document.addEventListener("DOMContentLoaded", () => {
   function aplicarFiltro() {
     const cards = document.querySelectorAll(".game-card");
     let visibles = 0;
+    const favoritos = getFavoritos(user);
 
     cards.forEach((card) => {
       const nombreJuego = card.dataset.nombreJuego;
       const item = biblioteca.find((b) => b.nombreJuego === nombreJuego);
 
-      let mostrar =
-        filtroActual === "todos" || (item && item.estado === filtroActual);
+      let mostrar = false;
+
+      if (filtroActual === "todos") {
+        mostrar = true;
+      } else if (filtroActual === "favoritos") {
+        mostrar = favoritos.includes(nombreJuego);
+      } else {
+        mostrar = item && item.estado === filtroActual;
+      }
 
       card.style.display = mostrar ? "block" : "none";
 
@@ -330,6 +338,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const completados = biblioteca.filter((j) => j.estado === "completado").length;
     const pendientes = biblioteca.filter((j) => j.estado === "pendiente").length;
     const abandonados = biblioteca.filter((j) => j.estado === "abandonado").length;
+    const favoritos = getFavoritos(user).filter(fav => 
+      biblioteca.some(b => b.nombreJuego === fav)
+    ).length;
 
     // Actualizar tarjetas de stats
     document.querySelector(".card-blue .number").textContent = total;
@@ -349,6 +360,8 @@ document.addEventListener("DOMContentLoaded", () => {
       filterBtns[3].querySelector(".count").textContent = pendientes;
     if (filterBtns[4])
       filterBtns[4].querySelector(".count").textContent = abandonados;
+    if (filterBtns[5])
+      filterBtns[5].querySelector(".count").textContent = favoritos;
   }
 
 

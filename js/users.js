@@ -27,6 +27,42 @@ const USERS_DATA = [
     games: 289,
     followers: 2341,
     following: 456
+  },
+  {
+    id: 4,
+    username: "@arcade_ana",
+    avatar: "../img/img4.webp",
+    description: "Retro gamer y coleccionista de arcades. Siempre lista para un high score.",
+    games: 198,
+    followers: 890,
+    following: 310
+  },
+  {
+    id: 5,
+    username: "@nocturno",
+    avatar: "../img/img5.webp",
+    description: "Noctámbulo del gaming, con preferencia por aventuras oscuras y narrativas intensas.",
+    games: 412,
+    followers: 1650,
+    following: 520
+  },
+  {
+    id: 6,
+    username: "@quest_mate",
+    avatar: "../img/puzzle.webp",
+    description: "Explorador de mundos abiertos y cazador de misiones secundarias.",
+    games: 278,
+    followers: 1042,
+    following: 389
+  },
+  {
+    id: 7,
+    username: "@pixel_princess",
+    avatar: "../img/img2.webp",
+    description: "Amante de los pixel-art y las plataformas independientes.",
+    games: 221,
+    followers: 1305,
+    following: 470
   }
 ];
 
@@ -41,18 +77,34 @@ function initializeFollowersData() {
   // @gamer_elite sigue a @indie_lover → @indie_lover tiene un seguidor
   
   const initialFollowerData = {
-    "@jugador_pro": ["@gamer_elite"],  // @jugador_pro sigue a @gamer_elite
-    "@gamer_elite": ["@jugador_pro", "@indie_lover"],  // @gamer_elite sigue a @jugador_pro e @indie_lover
-    "@indie_lover": ["@jugador_pro"]  // @indie_lover sigue a @jugador_pro
+    "@jugador_pro": ["@gamer_elite", "@pixel_princess"],
+    "@gamer_elite": ["@jugador_pro", "@indie_lover", "@nocturno"],
+    "@indie_lover": ["@jugador_pro", "@quest_mate"],
+    "@arcade_ana": ["@jugador_pro", "@pixel_princess", "@quest_mate"],
+    "@nocturno": ["@jugador_pro", "@gamer_elite", "@arcade_ana"],
+    "@quest_mate": ["@jugador_pro"],
+    "@pixel_princess": ["@jugador_pro", "@arcade_ana", "@nocturno"]
   };
 
-  // Inicializar cada usuario si no tiene datos
+  // Inicializar o actualizar relaciones de seguimiento
   USERS_DATA.forEach(user => {
     const key = `siguiendo_${user.username}`;
-    if (!localStorage.getItem(key)) {
-      const following = initialFollowerData[user.username] || [];
-      localStorage.setItem(key, JSON.stringify(following));
+    const savedFollowing = JSON.parse(localStorage.getItem(key) || "[]");
+    const defaultFollowing = initialFollowerData[user.username] || [];
+
+    const mergedFollowing = Array.isArray(savedFollowing) ? [...savedFollowing] : [];
+    defaultFollowing.forEach((followUser) => {
+      if (!mergedFollowing.includes(followUser)) {
+        mergedFollowing.push(followUser);
+      }
+    });
+
+    // Que todos sigan a jugador pro porque somos unos pros SIUUUUUUUUUUUU
+    if (user.username !== "@jugador_pro" && !mergedFollowing.includes("@jugador_pro")) {
+      mergedFollowing.push("@jugador_pro");
     }
+
+    localStorage.setItem(key, JSON.stringify(mergedFollowing));
   });
 }
 
