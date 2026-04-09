@@ -20,7 +20,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   // Actualizar nombre del juego y usuario en el modal
   if (reviewGameName) reviewGameName.textContent = titulo || "Juego";
-  if (reviewUserName) reviewUserName.textContent = `@${user}`;
+  if (reviewUserName) reviewUserName.textContent = `${user}`;
 
   // Abrir modal
   if (reviewBtn) {
@@ -209,7 +209,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
         <div class="review-content">
           <h3>${resena.juego}</h3>
-          <span class="review-meta">@${resena.usuario} · ${resena.fecha}</span>
+          <span class="review-meta">${resena.usuario} · ${resena.fecha}</span>
           <p>${resena.comentario}</p>
           <span class="review-likes">${likesText}</span>
         </div>
