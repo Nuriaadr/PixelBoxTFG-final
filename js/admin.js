@@ -1,6 +1,16 @@
 
 // ===================== ADMIN PANEL JS =====================
-
+// TODO: MIGRACIÓN AL BACKEND REQUERIDA
+// Este archivo necesita refactorización significativa para trabajar con la API PHP backend
+// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// - CREATE: POST /api/admin/users (crear usuario)
+// - READ: GET /api/admin/users (obtener usuarios)
+// - UPDATE: PUT /api/admin/users/{id} (actualizar usuario)
+// - DELETE: DELETE /api/admin/users/{id} (eliminar usuario)
+// - CREATE: POST /api/games (crear juego)
+// - READ: GET /api/games (obtener juegos)
+// - UPDATE: PUT /api/games/{id} (actualizar juego)
+// - DELETE: DELETE /api/games/{id} (eliminar juego)
 
 let usersDatabase = [...USERS_DATA];
 let editingGameId = null;
@@ -8,10 +18,18 @@ let deletingGameId = null;
 let deletingUserId = null;
 
 // Funciones para guardar/cargar usuarios
+/**
+ * TODO: ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
+ * Reemplazar con API POST /api/admin/users para crear/actualizar usuarios
+ */
 function saveUsersToStorage() {
   localStorage.setItem("usersData", JSON.stringify(usersDatabase));
 }
 
+/**
+ * TODO: ELIMINAR - CRUD READ: Implementar en PHP
+ * Reemplazar con API GET /api/admin/users para obtener usuarios
+ */
 function loadUsersFromStorage() {
   const savedUsers = localStorage.getItem("usersData");
   if (savedUsers) {

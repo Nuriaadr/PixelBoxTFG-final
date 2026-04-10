@@ -1,4 +1,10 @@
 // ===================== DATOS CENTRALIZADOS DE USUARIOS =====================
+// TODO: ELIMINAR DATOS HARDCODEADOS - Reemplazar con API PHP
+// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// - CREATE: POST /api/users (crear usuario)
+// - READ: GET /api/users (obtener usuarios)
+// - UPDATE: PUT /api/users/{id} (actualizar usuario)
+// - DELETE: DELETE /api/users/{id} (eliminar usuario)
 // Este archivo contiene la lista unificada de todos los usuarios de la plataforma
 const USERS_DATA = [
   {

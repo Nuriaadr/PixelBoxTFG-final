@@ -1,18 +1,36 @@
 // ===================== SISTEMA DE FAVORITOS =====================
+// TODO: PRIORIDAD: ALTA - Todas las funciones necesitan migración al backend
+// Este archivo entero necesita refactorización para usar API PHP
+// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// - CREATE: POST /api/user/{userId}/favorites/{gameId} (agregar favorito)
+// - READ: GET /api/user/{userId}/favorites (obtener favoritos)
+// - DELETE: DELETE /api/user/{userId}/favorites/{gameId} (eliminar favorito)
 
 // Obtener favoritos del usuario
+/**
+ * TODO: ELIMINAR - CRUD READ: Implementar en PHP
+ * Reemplazar con API GET /api/user/{userId}/favorites
+ */
 function getFavoritos(usuario) {
   const key = `favoritos_${usuario}`;
   return JSON.parse(localStorage.getItem(key) || "[]");
 }
 
 // Guardar favoritos del usuario
+/**
+ * TODO: ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
+ * Reemplazar con API POST /api/user/{userId}/favorites
+ */
 function saveFavoritos(usuario, favoritos) {
   const key = `favoritos_${usuario}`;
   localStorage.setItem(key, JSON.stringify(favoritos));
 }
 
 // Añadir juego a favoritos
+/**
+ * TODO: REFACTORIZAR - CRUD CREATE: Implementar en PHP
+ * Reemplazar con API POST /api/user/{userId}/favorites/{gameId}
+ */
 function addFavorito(usuario, nombreJuego) {
   const favoritos = getFavoritos(usuario);
   if (!favoritos.includes(nombreJuego)) {
@@ -24,6 +42,10 @@ function addFavorito(usuario, nombreJuego) {
 }
 
 // Eliminar juego de favoritos
+/**
+ * TODO: REFACTORIZAR - CRUD DELETE: Implementar en PHP
+ * Reemplazar con API DELETE /api/user/{userId}/favorites/{gameId}
+ */
 function removeFavorito(usuario, nombreJuego) {
   const favoritos = getFavoritos(usuario);
   const index = favoritos.indexOf(nombreJuego);
@@ -36,6 +58,10 @@ function removeFavorito(usuario, nombreJuego) {
 }
 
 // Alternar favorito
+/**
+ * TODO: REFACTORIZAR - CRUD CREATE/DELETE: Implementar en PHP
+ * Reemplazar con API POST/DELETE /api/user/{userId}/favorites/{gameId}/toggle
+ */
 function toggleFavorito(usuario, nombreJuego) {
   const favoritos = getFavoritos(usuario);
   const index = favoritos.indexOf(nombreJuego);

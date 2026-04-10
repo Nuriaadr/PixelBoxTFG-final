@@ -1,3 +1,9 @@
+// ===================== BIBLIOTECA =====================
+// TODO: MIGRACIÓN MAYOR AL BACKEND - Este archivo depende mucho de localStorage
+// Cambios clave necesarios:
+// - Reemplazar todas las operaciones de localStorage con llamadas API
+// - Mover la persistencia de datos al backend PHP con base de datos
+// - Mantener la lógica de renderizado UI y manejo de eventos
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 
@@ -86,6 +92,10 @@ document.addEventListener("DOMContentLoaded", () => {
     bibliotecaStorage = [];
   }
   
+  /**
+   * TODO: ELIMINAR - Esta función de migración no será necesaria con el backend
+   * Razón: El backend manejará la compatibilidad de formatos de datos
+   */
   // Función para migrar datos antiguos 
   function migrarBibliotecaAntigua(datos) {
     if (!Array.isArray(datos)) {
@@ -117,6 +127,10 @@ document.addEventListener("DOMContentLoaded", () => {
     localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
   }
 
+  /**
+   * TODO: ELIMINAR - La validación backend no es necesaria en el frontend
+   * Razón: La consistencia de datos será manejada por la API del backend
+   */
   // Validar que los nombres coincidan con GAMES_DATA
   function validarNombresBiblioteca() {
     if (!Array.isArray(GAMES_DATA)) {
@@ -192,11 +206,22 @@ document.addEventListener("DOMContentLoaded", () => {
       .filter(juego => juego !== null);
   }
 
+  /**
+   * TODO: ELIMINAR - Mover al backend PHP
+   * Razón: Los datos de la biblioteca deben persistir en la base de datos
+   * Endpoint backend: POST /api/user/{userId}/biblioteca/games
+   * Actual: localStorage.setItem("biblioteca", ...)
+   * Después: Eliminar esta función completamente, reemplazar con llamadas API
+   */
   // Guardar en localStorage solo las referencias
   function guardarBiblioteca() {
     localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
   }
 
+  /**
+   * TODO: ELIMINAR - El backend no necesita inicialización de datos por defecto
+   * Razón: El servidor proporcionará datos vía API
+   */
   // Si la biblioteca está vacía, cargar juegos iniciales de GAMES_DATA
   function inicializarBibliotecaConDatosDefecto() {
     if (biblioteca.length === 0 && GAMES_DATA && GAMES_DATA.length > 0) {
@@ -216,6 +241,11 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // RENDER
   // ======================
+  /**
+   * MANTENER ESTO - Lógica de renderizado UI pura, sin persistencia de datos
+   * Adaptar para trabajar con datos del backend API
+   * No se necesitan cambios en el backend, solo cambiar la fuente de datos
+   */
   function renderizarJuegos() {
     const container = document.querySelector(".card-grid");
     if (!container) {
@@ -259,6 +289,12 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // ELIMINAR
   // ======================
+  /**
+   * MANTENER ESTO - Manejador de eventos puro para UI
+   * Integración backend necesaria: El manejador DELETE debe llamar a la API DELETE
+   * Actual: biblioteca.filter() y guardarBiblioteca()
+   * Después: Llamar DELETE /api/user/{userId}/biblioteca/games/{gameId}
+   */
   function agregarEventosEliminar() {
     document.querySelectorAll(".delete-game").forEach((btn) => {
       btn.addEventListener("click", (e) => {
@@ -299,6 +335,10 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   });
 
+  /**
+   * MANTENER ESTO - Lógica de filtro UI pura
+   * No se necesitan cambios en el backend
+   */
   function aplicarFiltro() {
     const cards = document.querySelectorAll(".game-card");
     let visibles = 0;
@@ -332,6 +372,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // CONTADORES
   // ======================
+  /**
+   * MANTENER ESTO - Solo actualiza las visualizaciones de contadores
+   * Backend: Los contadores deben calcularse desde los datos de la API
+   */
   function actualizarContadores() {
     const total = biblioteca.length;
     const jugando = biblioteca.filter((j) => j.estado === "jugando").length;

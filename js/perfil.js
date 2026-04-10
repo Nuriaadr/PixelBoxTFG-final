@@ -1,3 +1,9 @@
+// ===================== PERFIL (USER PROFILE) =====================
+// CRUD OPERATIONS: Operaciones CRUD deben implementarse en PHP con Slim
+// - READ: GET /api/user/{userId}/profile (obtener perfil)
+// - UPDATE: PUT /api/user/{userId}/profile (actualizar bio, etc.)
+// - READ: GET /api/user/{userId}/biblioteca (obtener biblioteca para stats)
+// - READ: GET /api/user/{userId}/followers (obtener seguidores)
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 

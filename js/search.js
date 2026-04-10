@@ -1,5 +1,7 @@
+// ===================== BÚSQUEDA =====================
+// CRUD OPERATIONS: Operaciones CRUD deben implementarse en PHP con Slim
+// - READ: GET /api/games/search?q={query} (buscar juegos)
 // Modal de búsqueda - Utiliza GAMES_DATA de games.js
-
 document.addEventListener("DOMContentLoaded", () => {
   const searchIcon = document.querySelector('i[data-lucide="search"]');
   const searchModal = document.getElementById("searchModal");

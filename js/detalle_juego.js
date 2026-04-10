@@ -1,3 +1,12 @@
+// ===================== DETALLE JUEGO (GAME DETAILS) =====================
+// TODO: MIGRACIÓN MAYOR AL BACKEND - Contiene múltiples operaciones CRUD
+// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// - CREATE: POST /api/user/{userId}/biblioteca/{gameId} (agregar a biblioteca)
+// - READ: GET /api/user/{userId}/biblioteca (obtener biblioteca)
+// - UPDATE: PUT /api/user/{userId}/biblioteca/{gameId}/status (actualizar estado)
+// - DELETE: DELETE /api/user/{userId}/biblioteca/{gameId} (eliminar de biblioteca)
+// - CREATE: POST /api/user/{userId}/favorites/{gameId} (agregar favorito)
+// - DELETE: DELETE /api/user/{userId}/favorites/{gameId} (eliminar favorito)
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 
@@ -65,15 +74,27 @@ document.addEventListener("DOMContentLoaded", () => {
 
   const LIBRARY_STORAGE_KEY = "biblioteca";
 
+  /**
+   * TODO: ELIMINAR - CRUD READ: Implementar en PHP
+   * Reemplazar con API GET /api/user/{userId}/biblioteca
+   */
   function obtenerBiblioteca() {
     const biblioteca = JSON.parse(localStorage.getItem(LIBRARY_STORAGE_KEY) || "[]");
     return Array.isArray(biblioteca) ? biblioteca : [];
   }
 
+  /**
+   * TODO: ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
+   * Reemplazar con API POST/PUT /api/user/{userId}/biblioteca/{gameId}
+   */
   function guardarBiblioteca(biblioteca) {
     localStorage.setItem(LIBRARY_STORAGE_KEY, JSON.stringify(biblioteca));
   }
 
+  /**
+   * TODO: MODIFICAR - CRUD READ: Implementar en PHP
+   * Reemplazar con API GET /api/user/{userId}/biblioteca/{gameId}
+   */
   function estaEnBiblioteca(titulo) {
     const biblioteca = obtenerBiblioteca();
     return biblioteca.some(juego => juego.nombreJuego === titulo);

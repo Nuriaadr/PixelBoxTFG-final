@@ -1,3 +1,7 @@
+// ===================== INICIO (HOME PAGE) =====================
+// CRUD OPERATIONS: Operaciones CRUD deben implementarse en PHP con Slim
+// - CREATE: POST /api/user/{userId}/biblioteca/{gameId} (agregar juego a biblioteca)
+// - READ: GET /api/games/trending (obtener juegos trending)
 document.addEventListener("DOMContentLoaded", () => {
 
   lucide.createIcons();
