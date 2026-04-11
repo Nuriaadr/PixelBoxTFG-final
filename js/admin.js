@@ -1,6 +1,5 @@
 
 // ===================== ADMIN PANEL JS =====================
-// TODO: MIGRACIÓN AL BACKEND REQUERIDA
 // Este archivo necesita refactorización significativa para trabajar con la API PHP backend
 // CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/admin/users (crear usuario)

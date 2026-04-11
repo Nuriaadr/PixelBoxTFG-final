@@ -1,5 +1,4 @@
 // ===================== SISTEMA DE FAVORITOS =====================
-// TODO: PRIORIDAD: ALTA - Todas las funciones necesitan migración al backend
 // Este archivo entero necesita refactorización para usar API PHP
 // CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/user/{userId}/favorites/{gameId} (agregar favorito)

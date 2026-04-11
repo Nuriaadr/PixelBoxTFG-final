@@ -1,5 +1,4 @@
 // ===================== DETALLE JUEGO (GAME DETAILS) =====================
-// TODO: MIGRACIÓN MAYOR AL BACKEND - Contiene múltiples operaciones CRUD
 // CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/user/{userId}/biblioteca/{gameId} (agregar a biblioteca)
 // - READ: GET /api/user/{userId}/biblioteca (obtener biblioteca)

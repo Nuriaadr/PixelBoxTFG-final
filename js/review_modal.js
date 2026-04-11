@@ -2,8 +2,6 @@
 // CRUD OPERATIONS: Operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/games/{gameId}/reviews (crear reseña)
 // - READ: GET /api/games/{gameId}/reviews (obtener reseñas)
-// - UPDATE: PUT /api/games/{gameId}/reviews/{reviewId} (actualizar reseña)
-// - DELETE: DELETE /api/games/{gameId}/reviews/{reviewId} (eliminar reseña)
 // Código para manejar el modal de reseñas
 document.addEventListener("DOMContentLoaded", () => {
   // Obtener usuario del localStorage

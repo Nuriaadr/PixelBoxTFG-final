@@ -1,9 +1,8 @@
 // ===================== BIBLIOTECA =====================
-// TODO: MIGRACIÓN MAYOR AL BACKEND - Este archivo depende mucho de localStorage
 // Cambios clave necesarios:
 // - Reemplazar todas las operaciones de localStorage con llamadas API
 // - Mover la persistencia de datos al backend PHP con base de datos
-// - Mantener la lógica de renderizado UI y manejo de eventos
+// - Mantener la lógica de renderizado y manejo de eventos
 document.addEventListener("DOMContentLoaded", () => {
   lucide.createIcons();
 

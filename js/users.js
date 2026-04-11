@@ -1,5 +1,4 @@
 // ===================== DATOS CENTRALIZADOS DE USUARIOS =====================
-// TODO: ELIMINAR DATOS HARDCODEADOS - Reemplazar con API PHP
 // CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/users (crear usuario)
 // - READ: GET /api/users (obtener usuarios)
@@ -81,7 +80,7 @@ function initializeFollowersData() {
   // @indie_lover sigue a @jugador_pro → @jugador_pro tiene otro seguidor
   // @jugador_pro sigue a @gamer_elite → @gamer_elite tiene un seguidor
   // @gamer_elite sigue a @indie_lover → @indie_lover tiene un seguidor
-  
+
   const initialFollowerData = {
     "@jugador_pro": ["@gamer_elite"],
     "@gamer_elite": ["@jugador_pro", "@indie_lover", "@nocturno"],
@@ -123,10 +122,7 @@ function initializeFollowersData() {
   }
 }
 
-// Limpiar datos viejos y reinicializar
-// localStorage.removeItem("siguiendo_@jugador_pro");
-// localStorage.removeItem("siguiendo_@gamer_elite");
-// localStorage.removeItem("siguiendo_@indie_lover");
+
 initializeFollowersData();
 
 // Obtener seguidores del usuario actual desde localStorage
@@ -150,13 +146,13 @@ function getUserFollowing(username) {
 // Agregar/ELIMINAR seguidor
 function toggleFollow(followingUser, targetUser) {
   let following = JSON.parse(localStorage.getItem(`siguiendo_${followingUser}`) || "[]");
-  
+
   if (following.includes(targetUser)) {
     following = following.filter(u => u !== targetUser);
   } else {
     following.push(targetUser);
   }
-  
+
   localStorage.setItem(`siguiendo_${followingUser}`, JSON.stringify(following));
 }
 

@@ -6,12 +6,12 @@
 
 /**
  * TODO: ELIMINAR/REEMPLAZAR - No hardcodear datos de juegos
- * Razón: Los datos de juegos deben venir de la base de datos vía API
+ * Razón: Los datos de juegos deben venir de la base de datos 
  * API backend: GET /api/games/all
  *
  * Actual: const GAMES_DATA = [ { ... } ];
- * Después: Crear variable global pero poblarla desde API:
- *
+ * Después: Crear variable global pero rellenarla desde API:
+ * Sería algo así: 
  *   let GAMES_DATA = [];
  *
  *   async function initializeGamesData() {

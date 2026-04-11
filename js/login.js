@@ -1,6 +1,4 @@
 // ===================== LOGIN =====================
-// TODO: MIGRACIÓN CRÍTICA AL BACKEND - Reemplazar autenticación hardcodeada con API
-// PRIORIDAD: ALTA - Debe implementar autenticación backend apropiada
 // Cambios clave: Reemplazar credenciales hardcodeadas con llamadas API a /api/auth/login
 
 lucide.createIcons();

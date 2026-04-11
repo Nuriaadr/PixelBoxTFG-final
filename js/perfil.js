@@ -251,7 +251,7 @@ document.addEventListener("DOMContentLoaded", () => {
     followerCountText.textContent = seguidores.length;
   }
 
-  // Forzar actualización de contadores después de inicializar seguidores
+  // actualización de contadores después de inicializar seguidores
   setTimeout(() => {
     updateFollowerCounter();
     updateFollowingCounter();
@@ -296,7 +296,7 @@ document.addEventListener("DOMContentLoaded", () => {
       btn.addEventListener("click", (e) => {
         const targetUser = e.target.dataset.username;
         toggleFollow(user, targetUser);
-        // Re-render para actualizar botones
+        // actualizar botones
         renderFollowers();
         updateFollowerCounter();
       });
