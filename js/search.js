@@ -48,15 +48,9 @@ document.addEventListener("DOMContentLoaded", () => {
       game.nombre.toLowerCase().includes(query)
     );
 
-    if (filtered.length === 0) {
-      searchResults.innerHTML = '<p class="search-empty">No se encontraron juegos</p>';
-      return;
-    }
-
     // Renderizar resultados
     searchResults.innerHTML = filtered
       .map((game) => {
-        const logrosEncoded = encodeURIComponent(JSON.stringify(game.logros));
         const gameUrl = `detalles_juego.html?titulo=${encodeURIComponent(
           game.nombre
         )}&imagen=${encodeURIComponent(
@@ -69,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
           game.genero || "Género Desconocido"
         )}&plataforma=${encodeURIComponent(
           game.plataforma || "Plataforma Desconocida"
-        )}&logros=${logrosEncoded}`;
+        )}`;
 
         return `
           <div class="search-result-item" onclick="window.location.href='${gameUrl}'">

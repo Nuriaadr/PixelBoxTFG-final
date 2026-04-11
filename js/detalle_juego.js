@@ -56,20 +56,6 @@ document.addEventListener("DOMContentLoaded", () => {
   const desarrollador = urlParams.get("desarrollador") || "Desarrollador Desconocido";
   const genero = urlParams.get("genero") || "Género Desconocido";
   const plataforma = urlParams.get("plataforma") || "Plataforma Desconocida";
-  const logrosParam = urlParams.get("logros");
-  let logros = [];
-  
-
-  
-  try {
-    if (logrosParam) {
-      logros = JSON.parse(decodeURIComponent(logrosParam));
-    } else {
-      console.warn("No se encontró parámetro logros en la URL");
-    }
-  } catch (e) {
-    console.error("Error al parsear logros:", e);
-  }
 
   const LIBRARY_STORAGE_KEY = "biblioteca";
 
@@ -245,53 +231,6 @@ document.addEventListener("DOMContentLoaded", () => {
     modal.addEventListener("click", (e) => {
       if (e.target === modal) hideModal();
     });
-  }
-
-  // ======================
-  // RENDERIZAR LOGROS DINÁMICOS
-  // ======================
-  const achievementsSection = document.querySelector(".achievements-section");
-  if (achievementsSection) {
-    // Actualizar el título con el conteo de logros
-    const achievementsTitle = achievementsSection.querySelector(".achievements-title");
-    if (achievementsTitle) {
-      achievementsTitle.textContent = `Logros (${logros.length}/${logros.length})`;
-    }
-
-    const oldCards = achievementsSection.querySelectorAll(".achievement-card");
-    oldCards.forEach((card) => card.remove());
-
-    // Renderizar los nuevos logros
-    if (logros.length === 0) {
-      const emptyMsg = document.createElement("p");
-      emptyMsg.textContent = "No hay logros para este juego aún";
-      emptyMsg.style.textAlign = "center";
-      emptyMsg.style.color = "#999";
-      achievementsSection.appendChild(emptyMsg);
-    } else {
-      logros.forEach((logro) => {
-        const card = document.createElement("div");
-        const rarityClass = `rarity-${(logro.rarity || "COMMON").toLowerCase()}`;
-        card.className = `achievement-card ${rarityClass}`;
-        const hoy = new Date().toISOString().split("T")[0];
-        card.innerHTML = `
-          <img src="${logro.imagen || "../img/img1.webp"}" alt="logro" class="achievement-img">
-
-          <div class="achievement-info">
-            <h3>${logro.nombre}</h3>
-            <p>${logro.descripcion}</p>
-            <span class="rarity rarity-badge-${(logro.rarity || "COMMON").toLowerCase()}">${logro.rarity || "COMMON"}</span>
-          </div>
-
-          <div class="achievement-meta">
-            <i data-lucide="award" class="trophy"></i>
-            <span class="date">${logro.fecha || hoy}</span>
-          </div>
-        `;
-        achievementsSection.appendChild(card);
-      });
-      lucide.createIcons();
-    }
   }
 
   // ======================

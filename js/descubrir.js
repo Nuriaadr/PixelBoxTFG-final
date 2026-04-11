@@ -56,8 +56,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rating: game.rating || 4.0,
         desarrollador: game.desarrollador || "Desarrollador Desconocido",
         genero: game.genero || "Género Desconocido",
-        plataforma: game.plataforma || "Plataforma Desconocida",
-        logros: game.logros ? JSON.stringify(game.logros) : "[]",
+        plataforma: game.plataforma || "Plataforma Desconocida"
       }).toString();
 
       container.innerHTML += `

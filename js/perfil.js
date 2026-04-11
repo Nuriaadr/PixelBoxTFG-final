@@ -211,8 +211,7 @@ document.addEventListener("DOMContentLoaded", () => {
         rating: game.rating,
         desarrollador: game.desarrollador || "Desarrollador Desconocido",
         genero: game.genero || "Género Desconocido",
-        plataforma: game.plataforma || "Plataforma Desconocida",
-        logros: game.logros ? JSON.stringify(game.logros) : "[]",
+        plataforma: game.plataforma || "Plataforma Desconocida"
       }).toString();
 
       const gameCard = document.createElement("div");
@@ -468,75 +467,11 @@ document.addEventListener("DOMContentLoaded", () => {
     });
   }
 
-  // ======================
-  // LOGROS
-  // ======================
-  function obtenerTodosLosLogros() {
-    const todosLosLogros = [];
-    gamesData.forEach((game) => {
-      // Solo incluir logros de juegos que estén jugando o completados
-      if (
-        (game.estado === "jugando" || game.estado === "completado") &&
-        game.logros &&
-        game.logros.length > 0
-      ) {
-        game.logros.forEach((logro) => {
-          todosLosLogros.push({
-            ...logro,
-            juego: game.nombre,
-            fecha: new Date().toISOString().split("T")[0],
-            imagen: "../img/img1.webp",
-          });
-        });
-      }
-    });
-    return todosLosLogros;
-  }
-
-  const logrosData = obtenerTodosLosLogros();
-
-  function renderAchievements() {
-    const container = document.getElementById("achievementsContainer");
-    container.innerHTML = "";
-
-    if (logrosData.length === 0) {
-      container.innerHTML =
-        "<p style='text-align: center; color: var(--text-muted);'>No hay logros aún</p>";
-      return;
-    }
-
-    logrosData.forEach((logro) => {
-      const rarityClass = `rarity-${logro.rarity.toLowerCase()}`;
-      const card = document.createElement("div");
-      card.className = `achievement-card ${rarityClass}`;
-      card.innerHTML = `
-        <img src="${logro.imagen}" alt="logro" class="achievement-img">
-
-        <div class="achievement-info">
-          <h3>${logro.nombre}</h3>
-          <p>${logro.descripcion}</p>
-          <span class="rarity rarity-badge-${logro.rarity.toLowerCase()}">${logro.rarity}</span>
-        </div>
-
-        <div class="achievement-meta">
-          <i data-lucide="award" class="trophy"></i>
-          <span class="date">${logro.fecha}</span>
-        </div>
-      `;
-      container.appendChild(card);
-    });
-    lucide.createIcons();
-  }
-
-  // Renderizar logros al cargar
-  renderAchievements();
-
   function actualizarTabs() {
     let jugando = gamesData.filter((g) => g.estado === "jugando").length;
     let completados = gamesData.filter((g) => g.estado === "completado").length;
     let pendientes = gamesData.filter((g) => g.estado === "pendiente").length;
     let abandonados = gamesData.filter((g) => g.estado === "abandonado").length;
-    let logros = logrosData.length;
 
     document.getElementById("tab-jugando").textContent = `Jugando (${jugando})`;
     document.getElementById("tab-completados").textContent =
@@ -546,7 +481,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
     document.getElementById("tab-abandonados").textContent =
       `Abandonados (${abandonados})`;
-    document.getElementById("tab-logros").textContent = `Logros (${logros})`;
   }
 
   function actualizarStats() {
@@ -578,28 +512,15 @@ document.addEventListener("DOMContentLoaded", () => {
       tabs.forEach((t) => t.classList.remove("active"));
       tab.classList.add("active");
 
-      // Ocultar todas las secciones
-      gameGrid.classList.add("hidden");
-      const achievementsSection = document.getElementById(
-        "achievements-section",
-      );
-      if (achievementsSection) achievementsSection.classList.add("hidden");
-
       // Mostrar sección correspondiente
       if (tab.id === "tab-jugando") {
-        gameGrid.classList.remove("hidden");
         renderGameCards("jugando");
       } else if (tab.id === "tab-completados") {
-        gameGrid.classList.remove("hidden");
         renderGameCards("completados");
       } else if (tab.id === "tab-pendientes") {
-        gameGrid.classList.remove("hidden");
         renderGameCards("pendientes");
       } else if (tab.id === "tab-abandonados") {
-        gameGrid.classList.remove("hidden");
         renderGameCards("abandonados");
-      } else if (tab.id === "tab-logros") {
-        if (achievementsSection) achievementsSection.classList.remove("hidden");
       }
     });
   });

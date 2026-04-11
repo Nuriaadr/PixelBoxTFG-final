@@ -32,12 +32,7 @@ const GAMES_DATA = [
     rating: 4.8,
     genero: "RPG",
     plataforma: "PC",
-    estado: "completado",
-    logros: [
-      {nombre: "Aventurero Principiante", descripcion: "Completa el primer territorio", rarity: "COMMON"},
-      {nombre: "Explorador del Mundo", descripcion: "Descubre todos los lugares secretos", rarity: "EPIC"},
-      {nombre: "Maestro de Combate", descripcion: "Vence 100 enemigos", rarity: "LEGENDARY"}
-    ]
+    estado: "completado"
   },
   {
     nombre: "Dragon Quest Online",
@@ -48,11 +43,7 @@ const GAMES_DATA = [
     rating: 4.5,
     genero: "RPG",
     plataforma: "PC",
-    estado: "completado",
-    logros: [
-      {nombre: "Cazador de Dragones", descripcion: "Derrota 50 dragones", rarity: "EPIC"},
-      {nombre: "Héroe del Reino", descripcion: "Completa la historia principal", rarity: "LEGENDARY"}
-    ]
+    estado: "completado"
   },
   {
     nombre: "Velocity Racing",
@@ -63,11 +54,7 @@ const GAMES_DATA = [
     rating: 4.3,
     genero: "Acción",
     plataforma: "PlayStation",
-    estado: "jugando",
-    logros: [
-      {nombre: "Piloto Velocista", descripcion: "Completa 10 carreras", rarity: "RARE"},
-      {nombre: "Campeón de Circuitos", descripcion: "Gana un campeonato", rarity: "EPIC"}
-    ]
+    estado: "jugando"
   },
   {
     nombre: "Cyberpunk Chronicles",
@@ -78,11 +65,7 @@ const GAMES_DATA = [
     rating: 4.5,
     genero: "Acción",
     plataforma: "PC",
-    estado: "jugando",
-    logros: [
-      {nombre: "Hacker Maestro", descripcion: "Hackea 20 terminales", rarity: "EPIC"},
-      {nombre: "Nómada Urbano", descripcion: "Visita todos los distritos", rarity: "EPIC"}
-    ]
+    estado: "jugando"
   },
   {
     nombre: "Nightmare Manor",
@@ -93,11 +76,7 @@ const GAMES_DATA = [
     rating: 4.2,
     genero: "Aventura",
     plataforma: "PC",
-    estado: "completado",
-    logros: [
-      {nombre: "Superviviente", descripcion: "Sobrevive la noche completa", rarity: "RARE"},
-      {nombre: "Desvelador de Secretos", descripcion: "Descubre todos los misterios", rarity: "LEGENDARY"}
-    ]
+    estado: "completado"
   },
   {
     nombre: "Stellar Odyssey",
@@ -108,11 +87,7 @@ const GAMES_DATA = [
     rating: 4.3,
     genero: "RPG",
     plataforma: "Xbox",
-    estado: "pendiente",
-    logros: [
-      {nombre: "Explorador Galáctico", descripcion: "Explora 50 planetas", rarity: "EPIC"},
-      {nombre: "Conquistador del Espacio", descripcion: "Completa todas las misiones", rarity: "LEGENDARY"}
-    ]
+    estado: "pendiente"
   },
   {
     nombre: "Shadow Castle",
@@ -123,11 +98,7 @@ const GAMES_DATA = [
     rating: 4.6,
     genero: "Aventura",
     plataforma: "PC",
-    estado: "pendiente",
-    logros: [
-      {nombre: "Explorador de Castillos", descripcion: "Descubre todas las salas", rarity: "RARE"},
-      {nombre: "Vencedor del Castillo", descripcion: "Derrota al jefe final", rarity: "LEGENDARY"}
-    ]
+    estado: "pendiente"
   },
   {
     nombre: "Pixel Warriors",
@@ -138,17 +109,12 @@ const GAMES_DATA = [
     rating: 4.0,
     genero: "Acción",
     plataforma: "PC",
-    estado: "pendiente",
-    logros: [
-      {nombre: "Guerrero Pixel", descripcion: "Vence 100 enemigos", rarity: "RARE"},
-      {nombre: "Campeón de Batallas", descripcion: "Gana 50 batallas", rarity: "EPIC"}
-    ]
+    estado: "pendiente"
   }
 ];
 
 // Función auxiliar para obtener la URL de detalles de un juego
 function getGameDetailsUrl(game) {
-  const logrosEncoded = encodeURIComponent(JSON.stringify(game.logros));
   return `detalles_juego.html?titulo=${encodeURIComponent(
     game.nombre
   )}&imagen=${encodeURIComponent(
@@ -161,7 +127,7 @@ function getGameDetailsUrl(game) {
     game.genero
   )}&plataforma=${encodeURIComponent(
     game.plataforma
-  )}&logros=${logrosEncoded}`;
+  )}`;
 }
 
 // Función auxiliar para buscar un juego por nombre

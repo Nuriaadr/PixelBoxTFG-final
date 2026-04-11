@@ -262,8 +262,7 @@ document.addEventListener("DOMContentLoaded", () => {
       card.className = "game-card";
       card.dataset.nombreJuego = juego.nombreBiblioteca || juego.nombre;
 
-      const logrosJSON = juego.logros ? JSON.stringify(juego.logros) : "[]";
-      const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.nombre)}&imagen=${encodeURIComponent(juego.imagen)}&año=${juego.año}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&desarrollador=${encodeURIComponent(juego.desarrollador || "Desarrollador Desconocido")}&genero=${encodeURIComponent(juego.genero || "Género Desconocido")}&plataforma=${encodeURIComponent(juego.plataforma || "Plataforma Desconocida")}&logros=${encodeURIComponent(logrosJSON)}`;
+      const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.nombre)}&imagen=${encodeURIComponent(juego.imagen)}&año=${juego.año}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&desarrollador=${encodeURIComponent(juego.desarrollador || "Desarrollador Desconocido")}&genero=${encodeURIComponent(juego.genero || "Género Desconocido")}&plataforma=${encodeURIComponent(juego.plataforma || "Plataforma Desconocida")}`;
 
       card.innerHTML = `
         <i class="delete-game" data-lucide="x"></i>
