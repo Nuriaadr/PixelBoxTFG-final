@@ -1,27 +1,9 @@
 // ===================== DATOS CENTRALIZADOS DE JUEGOS =====================
-// TODO: MIGRACIÓN CRÍTICA AL BACKEND - Reemplazar datos hardcodeados con API
+// Reemplazar datos hardcodeados con API
 // Este archivo contiene la lista unificada de todos los juegos de la plataforma
 // Se importa en: search.js, descubrir.js, y cualquier otra página que necesite juegos
-// Cambios clave: Reemplazar la constante GAMES_DATA con llamadas API a /api/games/all
+// Reemplazar la constante GAMES_DATA con llamadas API a /api/games/all
 
-/**
- * TODO: ELIMINAR/REEMPLAZAR - No hardcodear datos de juegos
- * Razón: Los datos de juegos deben venir de la base de datos 
- * API backend: GET /api/games/all
- *
- * Actual: const GAMES_DATA = [ { ... } ];
- * Después: Crear variable global pero rellenarla desde API:
- * Sería algo así: 
- *   let GAMES_DATA = [];
- *
- *   async function initializeGamesData() {
- *     const response = await fetch('/api/games/all');
- *     GAMES_DATA = await response.json();
- *   }
- *
- *   // Llamar durante la inicialización de la app
- *   initializeGamesData();
- */
 const GAMES_DATA = [
   {
     nombre: "Legends of Eldoria",
@@ -143,32 +125,27 @@ function filterGames(query) {
 }
 
 /**
- * TODO: ELIMINAR - Mover al backend PHP
- * Razón: La persistencia de juegos debe usar base de datos, no localStorage
+ *  Mover al backend PHP
  * API backend: POST /api/games/save
- *
- * Actual: localStorage.setItem("gamesData", ...)
  * Después: Eliminar esta función, los endpoints API manejan la persistencia
  */
- // Guardar juegos en localStorage
+
+// Guardar juegos en localStorage
 function saveGamesToStorage() {
   localStorage.setItem("gamesData", JSON.stringify(GAMES_DATA));
 }
 
 /**
- * TODO: DEPRECAR - Reemplazar con llamada API
- * Razón: Cargar juegos desde la base de datos del backend, no localStorage
+ * Reemplazar con llamada API
+ * Cargar juegos desde la base de datos del backend, no localStorage
  * API backend: GET /api/games/all
- *
- * Enfoque actual: Intentar localStorage primero, fallback a datos estáticos
- * Después: Siempre cargar desde API en la inicialización de la app
- *
  * Estrategia de depreciación:
  * 1. Eliminar esta función
  * 2. Crear initializeGamesData() que llame al backend
  * 3. Llamar durante la configuración de la app antes de renderizar páginas
  */
- // Cargar juegos desde localStorage
+
+// Cargar juegos desde localStorage
 function loadGamesFromStorage() {
   const savedGames = localStorage.getItem("gamesData");
   if (savedGames) {
@@ -184,7 +161,7 @@ function loadGamesFromStorage() {
 }
 
 /**
- * TODO: ELIMINAR ESTA LLAMADA al cargar la página
+ *ELIMINAR ESTA LLAMADA al cargar la página
  * loadGamesFromStorage();
  * Reemplazar con: await initializeGamesData();
  */
@@ -193,11 +170,10 @@ function loadGamesFromStorage() {
 loadGamesFromStorage();
 
 /**
- * MANTENER ESTO - Manejador de eventos para logout
- * Sin persistencia de datos, solo interacción UI
- * Backend: La sesión será invalidada en el servidor
+ * HAY QUE MANTENER ESTO Manejador de eventos para logout
  */
- // Función para manejar logout con confirmación
+
+// Función para manejar logout con confirmación
 function setupLogoutHandler(buttonId = "logoutBtn") {
   const logoutBtn = document.getElementById(buttonId);
   if (logoutBtn) {
@@ -213,7 +189,8 @@ function setupLogoutHandler(buttonId = "logoutBtn") {
  * Puramente frontend - no se necesitan cambios en el backend
  * Backend: localStorage.removeItem() debe reemplazarse con llamada API a /logout
  */
- // Función para mostrar modal de confirmación de logout
+
+// Función para mostrar modal de confirmación de logout
 function showLogoutConfirmation() {
   const modal = document.createElement("div");
   modal.className = "modal";
@@ -228,19 +205,19 @@ function showLogoutConfirmation() {
       </div>
     </div>
   `;
-  
+
   document.body.appendChild(modal);
-  
+
   document.getElementById("cancelLogoutBtn").addEventListener("click", () => {
     modal.remove();
   });
-  
+
   document.getElementById("confirmLogoutBtn").addEventListener("click", () => {
     localStorage.removeItem("usuario");
     localStorage.removeItem("rol");
     window.location.href = "../index.html";
   });
-  
+
   // Cerrar modal al hacer clic fuera
   modal.addEventListener("click", (e) => {
     if (e.target === modal) {

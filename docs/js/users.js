@@ -1,5 +1,5 @@
 // ===================== DATOS CENTRALIZADOS DE USUARIOS =====================
-// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP
 // - CREATE: POST /api/users (crear usuario)
 // - READ: GET /api/users (obtener usuarios)
 // - UPDATE: PUT /api/users/{id} (actualizar usuario)

@@ -45,8 +45,6 @@ document.addEventListener("DOMContentLoaded", () => {
 
   function renderGames(list) {
     container.innerHTML = "";
-    const usuario = localStorage.getItem("usuario");
-
     list.forEach((game) => {
       const params = new URLSearchParams({
         titulo: game.nombre,

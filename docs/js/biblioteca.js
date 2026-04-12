@@ -1,5 +1,4 @@
 // ===================== BIBLIOTECA =====================
-// Cambios clave necesarios:
 // - Reemplazar todas las operaciones de localStorage con llamadas API
 // - Mover la persistencia de datos al backend PHP con base de datos
 // - Mantener la lógica de renderizado y manejo de eventos
@@ -78,31 +77,32 @@ document.addEventListener("DOMContentLoaded", () => {
   // ======================
   // La biblioteca guarda solo: nombre del juego + estado personal
   // Los datos completos se obtienen de GAMES_DATA 
-  
+
   // Verificar que GAMES_DATA está disponible
   if (typeof GAMES_DATA === "undefined" || !Array.isArray(GAMES_DATA)) {
     window.location.reload();
   }
-  
+
   let bibliotecaStorage = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-  
+
   // Asegurar que bibliotecaStorage sea un array
   if (!Array.isArray(bibliotecaStorage)) {
     bibliotecaStorage = [];
   }
-  
+
   /**
-   * TODO: ELIMINAR - Esta función de migración no será necesaria con el backend
-   * Razón: El backend manejará la compatibilidad de formatos de datos
+  * ELIMINAR - Esta función de migración no será necesaria con el backend
+   * 
    */
+
   // Función para migrar datos antiguos 
   function migrarBibliotecaAntigua(datos) {
     if (!Array.isArray(datos)) {
       return [];
     }
-    
+
     if (datos.length === 0) return [];
-    
+
     // Verificar si están en formato antiguo (tienen 'titulo' o 'imagen')
     if (datos[0] && (datos[0].titulo || datos[0].imagen)) {
       return datos.map(juego => ({
@@ -110,25 +110,25 @@ document.addEventListener("DOMContentLoaded", () => {
         estado: juego.estado || "pendiente"
       }));
     }
-    
+
     return datos;
   }
-  
+
   let biblioteca = migrarBibliotecaAntigua(bibliotecaStorage);
-  
+
   // Asegurar que biblioteca sea un array
   if (!Array.isArray(biblioteca)) {
     biblioteca = [];
   }
-  
+
   // Guardar la migración
   if (biblioteca.length > 0) {
     localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
   }
 
   /**
-   * TODO: ELIMINAR - La validación backend no es necesaria en el frontend
-   * Razón: La consistencia de datos será manejada por la API del backend
+   * ELIMINAR - La validación backend no es necesaria en el frontend
+   * 
    */
   // Validar que los nombres coincidan con GAMES_DATA
   function validarNombresBiblioteca() {
@@ -162,7 +162,7 @@ document.addEventListener("DOMContentLoaded", () => {
       localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
     }
   }
-  
+
   // Ejecutar validación
   if (biblioteca.length > 0 && Array.isArray(GAMES_DATA) && GAMES_DATA.length > 0) {
     validarNombresBiblioteca();
@@ -171,16 +171,16 @@ document.addEventListener("DOMContentLoaded", () => {
   // Función para obtener juego completo desde GAMES_DATA
   function obtenerJuegoCompleto(nombreJuego) {
     if (!nombreJuego) return null;
-    
+
     const juego = GAMES_DATA.find(g => g && g.nombre && g.nombre.toLowerCase() === nombreJuego.toLowerCase());
     if (juego) {
       return { ...juego };
     } else {
       // Intentar encontrar por búsqueda parcial si no hay coincidencia exacta
-      const juegoAproximado = GAMES_DATA.find(g => 
-        g && g.nombre && 
+      const juegoAproximado = GAMES_DATA.find(g =>
+        g && g.nombre &&
         (g.nombre.toLowerCase().includes(nombreJuego.toLowerCase()) ||
-        nombreJuego.toLowerCase().includes(g.nombre.toLowerCase()))
+          nombreJuego.toLowerCase().includes(g.nombre.toLowerCase()))
       );
       if (juegoAproximado) {
         return { ...juegoAproximado };
@@ -196,21 +196,20 @@ document.addEventListener("DOMContentLoaded", () => {
       .map(item => {
         const juegoCompleto = obtenerJuegoCompleto(item.nombreJuego);
         if (!juegoCompleto) return null;
-        return { 
-          ...juegoCompleto, 
+        return {
+          ...juegoCompleto,
           nombreBiblioteca: item.nombreJuego,
-          estado: item.estado 
+          estado: item.estado
         };
       })
       .filter(juego => juego !== null);
   }
 
   /**
-   * TODO: ELIMINAR - Mover al backend PHP
-   * Razón: Los datos de la biblioteca deben persistir en la base de datos
+   * ELIMINAR - Mover al backend PHP
+   * Los datos de la biblioteca deben persistir en la base de datos
    * Endpoint backend: POST /api/user/{userId}/biblioteca/games
-   * Actual: localStorage.setItem("biblioteca", ...)
-   * Después: Eliminar esta función completamente, reemplazar con llamadas API
+  * Eliminar esta función completamente, reemplazar con llamadas API
    */
   // Guardar en localStorage solo las referencias
   function guardarBiblioteca() {
@@ -218,20 +217,20 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * TODO: ELIMINAR - El backend no necesita inicialización de datos por defecto
-   * Razón: El servidor proporcionará datos vía API
+   * ELIMINAR - El backend no necesita inicialización de datos por defecto
+   * 
    */
   // Si la biblioteca está vacía, cargar juegos iniciales de GAMES_DATA
   function inicializarBibliotecaConDatosDefecto() {
     if (biblioteca.length === 0 && GAMES_DATA && GAMES_DATA.length > 0) {
-      
+
       biblioteca = GAMES_DATA.map(juego => ({
         nombreJuego: juego.nombre,
         estado: juego.estado || "pendiente"
       }));
-      
+
       guardarBiblioteca();
-    } 
+    }
   }
 
   //Inicializar si es necesario
@@ -245,17 +244,18 @@ document.addEventListener("DOMContentLoaded", () => {
    * Adaptar para trabajar con datos del backend API
    * No se necesitan cambios en el backend, solo cambiar la fuente de datos
    */
+
   function renderizarJuegos() {
     const container = document.querySelector(".card-grid");
     if (!container) {
       console.error("No se encontró .card-grid");
       return;
     }
-    
+
     container.querySelectorAll(".game-card").forEach((card) => card.remove());
 
     const juegosConDatos = obtenerJuegosConDatos();
-    
+
 
     juegosConDatos.forEach((juego) => {
       const card = document.createElement("div");
@@ -371,7 +371,7 @@ document.addEventListener("DOMContentLoaded", () => {
   // CONTADORES
   // ======================
   /**
-   * MANTENER ESTO - Solo actualiza las visualizaciones de contadores
+   * MANTENER ESTO - Solo actualizar las visualizaciones de contadores
    * Backend: Los contadores deben calcularse desde los datos de la API
    */
   function actualizarContadores() {
@@ -380,7 +380,7 @@ document.addEventListener("DOMContentLoaded", () => {
     const completados = biblioteca.filter((j) => j.estado === "completado").length;
     const pendientes = biblioteca.filter((j) => j.estado === "pendiente").length;
     const abandonados = biblioteca.filter((j) => j.estado === "abandonado").length;
-    const favoritos = getFavoritos(user).filter(fav => 
+    const favoritos = getFavoritos(user).filter(fav =>
       biblioteca.some(b => b.nombreJuego === fav)
     ).length;
 
@@ -407,10 +407,10 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
 
-  
+
   // Intentar inicializar la biblioteca si está vacía
   inicializarBibliotecaConDatosDefecto();
-  
+
   renderizarJuegos();
   aplicarFiltro();
   actualizarContadores();

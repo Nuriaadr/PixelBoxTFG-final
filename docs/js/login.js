@@ -1,5 +1,5 @@
 // ===================== LOGIN =====================
-// Cambios clave: Reemplazar credenciales hardcodeadas con llamadas API a /api/auth/login
+// Reemplazar credenciales hardcodeadas con llamadas API a /api/auth/login
 
 lucide.createIcons();
 
@@ -30,36 +30,12 @@ document.getElementById("loginForm").addEventListener("submit", function (e) {
 
   if (valido) {
     /**
-     * TODO: REFACTORIZAR - Reemplazar autenticación hardcodeada con API backend
-     * Razón: Las credenciales deben validarse de forma segura por el servidor
+     *  Reemplazar autenticación hardcodeada con API backend
+     *
      * API backend: POST /api/auth/login
      *
-     * Implementación actual (ELIMINAR/REEMPLAZAR):
-     *   if (usuario.value === "admin" && password.value === "admin123") {
-     *     localStorage.setItem("usuario", "admin");
-     *     localStorage.setItem("rol", "admin");
-     *   }
-     *
-     * Después (NUEVO):
-     *   const response = await fetch('/api/auth/login', {
-     *     method: 'POST',
-     *     headers: { 'Content-Type': 'application/json' },
-     *     body: JSON.stringify({
-     *       username: usuario.value,
-     *       password: password.value
-     *     })
-     *   });
-     *
-     *   if (response.ok) {
-     *     const data = await response.json();
-     *     localStorage.setItem("token", data.token);  // JWT o token de sesión
-     *     localStorage.setItem("usuario", data.username);
-     *     localStorage.setItem("rol", data.role);
-     *     window.location.href = data.redirect_url;
-     *   } else {
-     *     errorPassword.textContent = "Usuario o contraseña incorrecta";
-     *   }
      */
+    
     if (usuario.value === "admin" && password.value === "admin123") {
       localStorage.setItem("usuario", "admin");
       localStorage.setItem("rol", "admin");

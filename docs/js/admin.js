@@ -1,7 +1,7 @@
 
 // ===================== ADMIN PANEL JS =====================
-// Este archivo necesita refactorización significativa para trabajar con la API PHP backend
-// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// Este archivo necesita refactorización para trabajar con la API PHP backend
+//  Todas las operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/admin/users (crear usuario)
 // - READ: GET /api/admin/users (obtener usuarios)
 // - UPDATE: PUT /api/admin/users/{id} (actualizar usuario)
@@ -18,7 +18,7 @@ let deletingUserId = null;
 
 // Funciones para guardar/cargar usuarios
 /**
- * TODO: ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
+ *  ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
  * Reemplazar con API POST /api/admin/users para crear/actualizar usuarios
  */
 function saveUsersToStorage() {
@@ -26,7 +26,7 @@ function saveUsersToStorage() {
 }
 
 /**
- * TODO: ELIMINAR - CRUD READ: Implementar en PHP
+ * ELIMINAR - CRUD READ: Implementar en PHP
  * Reemplazar con API GET /api/admin/users para obtener usuarios
  */
 function loadUsersFromStorage() {

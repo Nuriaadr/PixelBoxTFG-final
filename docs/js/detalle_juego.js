@@ -1,5 +1,5 @@
 // ===================== DETALLE JUEGO (GAME DETAILS) =====================
-// CRUD OPERATIONS: Todas las operaciones CRUD deben implementarse en PHP con Slim
+// Todas las operaciones CRUD deben implementarse en PHP con Slim
 // - CREATE: POST /api/user/{userId}/biblioteca/{gameId} (agregar a biblioteca)
 // - READ: GET /api/user/{userId}/biblioteca (obtener biblioteca)
 // - UPDATE: PUT /api/user/{userId}/biblioteca/{gameId}/status (actualizar estado)
@@ -60,7 +60,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const LIBRARY_STORAGE_KEY = "biblioteca";
 
   /**
-   * TODO: ELIMINAR - CRUD READ: Implementar en PHP
+   * ELIMINAR - CRUD READ: Implementar en PHP
    * Reemplazar con API GET /api/user/{userId}/biblioteca
    */
   function obtenerBiblioteca() {
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   /**
-   * TODO: ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
+   * ELIMINAR - CRUD CREATE/UPDATE: Implementar en PHP
    * Reemplazar con API POST/PUT /api/user/{userId}/biblioteca/{gameId}
    */
   function guardarBiblioteca(biblioteca) {

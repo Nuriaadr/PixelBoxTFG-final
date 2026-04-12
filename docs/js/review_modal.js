@@ -1,5 +1,5 @@
 // ===================== MODAL DE RESEÑAS =====================
-// CRUD OPERATIONS: Operaciones CRUD deben implementarse en PHP con Slim
+//  Operaciones CRUD deben implementarse en PHP 
 // - CREATE: POST /api/games/{gameId}/reviews (crear reseña)
 // - READ: GET /api/games/{gameId}/reviews (obtener reseñas)
 // Código para manejar el modal de reseñas
