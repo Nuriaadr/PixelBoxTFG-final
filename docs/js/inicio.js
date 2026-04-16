@@ -132,5 +132,13 @@ document.addEventListener("DOMContentLoaded", () => {
 
       showModal("¡Genial!", "Juego añadido a tu biblioteca");
     });
-  } 
+  }
+
+  // Hacer aleatorios los likes de reseñas estáticas
+  const reviewLikes = document.querySelectorAll(".review-likes");
+  reviewLikes.forEach(span => {
+    const likes = Math.floor(Math.random() * 101);
+    const likesText = likes === 1 ? "1 persona encontró útil esta reseña" : `${likes} personas encontraron útil esta reseña`;
+    span.textContent = likesText;
+  });
 });
