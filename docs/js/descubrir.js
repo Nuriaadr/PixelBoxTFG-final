@@ -14,11 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   // MOSTRAR USUARIO
-  let userName = document.getElementById("userName");
-  if (userName) {
-    userName.textContent = user;
-  }
-
+  
   // IR A PERFIL
   let userAvatar = document.getElementById("userAvatar");
   if (userAvatar) {

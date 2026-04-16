@@ -2394,7 +2394,7 @@ textarea::placeholder {
 .btn-view-profile {
   background: var(--primary);
   border: none;
-  color: white;
+  color: var(--text-white);
   padding: 6px 14px;
   border-radius: 6px;
   font-size: 12px;
@@ -2405,7 +2405,7 @@ textarea::placeholder {
 }
 
 .btn-view-profile:hover {
-  background: #2563eb;
+  background: var(--status-playing);
   transform: translateY(-2px);
   box-shadow: 0 4px 12px rgba(59, 130, 246, 0.3);
 }
@@ -2530,7 +2530,6 @@ textarea::placeholder {
     padding: 15px 20px;
   }
 
-  /* HAMBURGUESA Y LOGOUT A LA IZQUIERDA */
   .menu-icon {
     display: flex;
     order: 1;
@@ -2545,7 +2544,6 @@ textarea::placeholder {
     font-size: 11px;
   }
 
-  /* LOGO CENTRADO CON ESPACIO */
   .logo {
     position: static;
     order: 3;
@@ -2555,7 +2553,6 @@ textarea::placeholder {
     transform: none;
   }
 
-  /* ICONOS DERECHA */
   .nav-icons {
     order: 4;
     flex-shrink: 0;
@@ -2572,7 +2569,6 @@ textarea::placeholder {
     display: none;
   }
 
-  /* TABS ADAPTATIVO */
   .tabs {
     gap: 15px;
     overflow-x: auto;
@@ -2676,7 +2672,6 @@ textarea::placeholder {
     padding: 20px;
   }
 
-  /* NAVBAR CON HAMBURGUESA Y LOGOUT */
   .navbar {
     padding: 15px 15px;
   }
@@ -2712,7 +2707,6 @@ textarea::placeholder {
     margin-left: auto;
   }
 
-  /* TABS EN MÓVIL */
   .tabs {
     gap: 10px;
     overflow-x: auto;
@@ -2781,7 +2775,7 @@ textarea::placeholder {
   }
 }
 
-/* ===================== ADMIN ACTION BAR ===================== */
+/* ===================== ADMIN  ===================== */
 .action-bar {
   display: flex;
   align-items: center;

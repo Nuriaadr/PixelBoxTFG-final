@@ -15,9 +15,6 @@ document.addEventListener("DOMContentLoaded", () => {
     return;
   }
 
-  const userName = document.getElementById("userName");
-  if (userName) userName.textContent = user;
-
   const userAvatar = document.getElementById("userAvatar");
   if (userAvatar) {
     userAvatar.style.cursor = "pointer";

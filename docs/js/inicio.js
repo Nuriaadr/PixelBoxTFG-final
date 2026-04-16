@@ -14,10 +14,6 @@ document.addEventListener("DOMContentLoaded", () => {
   }
 
   //  USUARIO
-  let userName = document.getElementById("userName");
-  if (userName) {
-    userName.textContent = user;
-  }
 
   let userAvatar = document.getElementById("userAvatar");
   if (userAvatar) {
