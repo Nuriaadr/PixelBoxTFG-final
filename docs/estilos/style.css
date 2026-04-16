@@ -1632,53 +1632,6 @@ img {
   border-radius: 10px;
 }
 
-.achievements-section {
-  margin-top: 40px;
-}
-
-.achievements-title {
-  font-size: 22px;
-  margin-bottom: 15px;
-}
-
-.achievement-card {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  background: linear-gradient(
-    90deg,
-    var(--achievement-rare),
-    var(--status-pending)
-  );
-  padding: 15px;
-  border-radius: 12px;
-  color: var(--text-white);
-  gap: 15px;
-  margin-bottom: 20px;
-  border-left: 5px solid var(--achievement-rare);
-}
-
-.achievement-img {
-  width: 60px;
-  height: 60px;
-  border-radius: 10px;
-  object-fit: cover;
-}
-
-.achievement-info {
-  flex: 1;
-}
-
-.achievement-info h3 {
-  margin: 0;
-  font-size: 18px;
-}
-
-.achievement-info p {
-  margin: 5px 0;
-  font-size: 14px;
-}
-
 .rarity {
   font-size: 12px;
   font-weight: bold;
@@ -1686,11 +1639,6 @@ img {
   padding: 6px 12px;
   border-radius: 6px;
   display: inline-block;
-}
-
-.achievement-meta {
-  text-align: right;
-  font-size: 14px;
 }
 
 .trophy {
@@ -1707,52 +1655,6 @@ img {
 
 .date {
   opacity: 0.8;
-}
-
-/* === ACHIEVEMENT RARITIES === */
-.achievement-card.rarity-common {
-  background: linear-gradient(90deg, var(--bg-card), var(--achievement-common));
-  border-left-color: var(--achievement-common);
-}
-
-.achievement-card.rarity-rare {
-  background: linear-gradient(90deg, var(--bg-card), var(--achievement-rare));
-  border-left-color: var(--achievement-rare);
-}
-
-.achievement-card.rarity-epic {
-  background: linear-gradient(90deg, var(--bg-card), var(--achievement-epic));
-  border-left-color: var(--achievement-epic);
-}
-
-.achievement-card.rarity-legendary {
-  background: linear-gradient(
-    90deg,
-    var(--bg-card),
-    var(--achievement-legendary)
-  );
-  border-left-color: var(--achievement-legendary);
-}
-
-/* === RARITY BADGE COLORS === */
-.rarity-badge-common {
-  background: var(--achievement-common);
-  color: var(--text-white);
-}
-
-.rarity-badge-rare {
-  background: var(--achievement-rare);
-  color: var(--text-white);
-}
-
-.rarity-badge-epic {
-  background: var(--achievement-epic);
-  color: var(--text-white);
-}
-
-.rarity-badge-legendary {
-  background: var(--achievement-legendary);
-  color: var(--text-white);
 }
 
 /* === DETALLES === */
