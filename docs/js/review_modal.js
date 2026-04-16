@@ -206,7 +206,7 @@ document.addEventListener("DOMContentLoaded", () => {
       // Actualizar valoración a 0 si no hay reseñas
       const ratingSpan = document.querySelector(".meta .rating");
       if (ratingSpan) {
-        ratingSpan.textContent = `⭐ 0.0 / 5`;
+        ratingSpan.textContent = `★ 0.0 / 5`;
       }
       const starsDiv = document.querySelector(".stars");
       if (starsDiv) {
@@ -250,7 +250,7 @@ document.addEventListener("DOMContentLoaded", () => {
       const average = resenasjuego.reduce((sum, r) => sum + r.calificacion, 0) / resenasjuego.length;
       const ratingSpan = document.querySelector(".meta .rating");
       if (ratingSpan) {
-        ratingSpan.textContent = `⭐ ${average.toFixed(1)} / 5`;
+        ratingSpan.textContent = `★ ${average.toFixed(1)} / 5`;
       }
       const starsDiv = document.querySelector(".stars");
       if (starsDiv) {

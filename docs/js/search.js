@@ -72,7 +72,7 @@ document.addEventListener("DOMContentLoaded", () => {
             </div>
             <div class="search-result-content">
               <div class="search-result-title">${game.nombre}</div>
-              <div class="search-result-meta">⭐ ${game.rating} · ${game.año}</div>
+              <div class="search-result-meta">★ ${game.rating} · ${game.año}</div>
             </div>
           </div>
         `;

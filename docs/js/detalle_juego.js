@@ -192,7 +192,7 @@ document.addEventListener("DOMContentLoaded", () => {
   if (yearSpan) yearSpan.textContent = año || "2025";
 
   const ratingSpan = document.querySelector(".meta .rating");
-  if (ratingSpan) ratingSpan.textContent = `⭐ ${rating} / 5`;
+  if (ratingSpan) ratingSpan.textContent = `★ ${rating} / 5`;
 
   const descriptionP = document.querySelector(".game-info .description");
   if (descriptionP) descriptionP.textContent = descripcion;
