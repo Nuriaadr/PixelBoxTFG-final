@@ -1430,7 +1430,7 @@ img {
   color: var(--danger);
 }
 
-/* ===================== ADMIN HEADER REFINADO ===================== */
+/* ===================== ADMIN  ===================== */
 
 .admin-header-v2 {
   background: var(--bg-card);
@@ -2630,7 +2630,7 @@ textarea::placeholder {
 
   .footer-container {
     grid-template-columns: 1fr;
-    text-align: flex-start;
+    text-align: left;
   }
 
   .brand-col {
@@ -2638,10 +2638,13 @@ textarea::placeholder {
     gap: 20px;
     display: flex;
     flex-direction: column;
+    align-items: center;
+    text-align: center;
   }
 
   .brand-col .logo {
     order: 1;
+    justify-content: center;
   }
 
   .brand-col p {
