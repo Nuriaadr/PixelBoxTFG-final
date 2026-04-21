@@ -354,10 +354,18 @@ input[type="number"]::-webkit-inner-spin-button:hover {
   color: var(--text-muted);
   cursor: pointer;
   transition: color 0.3s ease;
+  width: 24px;
+  height: 24px;
+  padding: 6px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 4px;
 }
 
 .nav-icons i[data-lucide="search"]:hover {
   color: var(--text-white);
+  background-color: rgba(255, 255, 255, 0.1);
 }
 
 /* AVATAR */
