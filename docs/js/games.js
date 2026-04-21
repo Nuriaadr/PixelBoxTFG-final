@@ -175,9 +175,19 @@ loadGamesFromStorage();
 
 // Función para manejar logout con confirmación
 function setupLogoutHandler(buttonId = "logoutBtn") {
+  // Buscar el botón en el menú (móvil)
   const logoutBtn = document.getElementById(buttonId);
   if (logoutBtn) {
     logoutBtn.addEventListener("click", (e) => {
+      e.preventDefault();
+      showLogoutConfirmation();
+    });
+  }
+
+  // Buscar el botón en el navbar (desktop)
+  const logoutBtnDesktop = document.getElementById("logoutBtnDesktop");
+  if (logoutBtnDesktop) {
+    logoutBtnDesktop.addEventListener("click", (e) => {
       e.preventDefault();
       showLogoutConfirmation();
     });

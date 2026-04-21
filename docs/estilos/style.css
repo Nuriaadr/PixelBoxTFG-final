@@ -1932,16 +1932,51 @@ img {
   font-weight: 600;
   transition: 0.3s ease;
   margin-left: 15px;
+  display: none;
 }
 
-#logoutBtn:hover {
+#logoutBtnDesktop {
+  background-color: var(--danger);
+  color: var(--text-white);
+  border: none;
+  padding: 5px 10px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  cursor: pointer;
+  font-weight: 600;
+  transition: 0.3s ease;
+  margin-left: 15px;
+}
+
+#logoutBtn:hover,
+#logoutBtnDesktop:hover {
   background-color: var(--danger);
 }
 
-#logoutBtn i {
+#logoutBtn i,
+#logoutBtnDesktop i {
   stroke-width: 2.2;
   width: 20px;
   height: 20px;
+}
+
+/* Estilo para el botón logout en el menú móvil */
+.nav-links #logoutBtn {
+  display: none;
+  width: 100%;
+  padding: 12px;
+  margin-top: 15px;
+  margin-left: 0;
+  border-top: 1px solid var(--secondary);
+  padding-top: 20px;
+  justify-content: center;
+}
+
+.nav-links #logoutBtn span {
+  display: none;
 }
 /*USER JS*/
 #userName {
@@ -2542,12 +2577,16 @@ textarea::placeholder {
     flex-shrink: 0;
   }
 
+  #logoutBtnDesktop {
+    display: none;
+  }
+
   #logoutBtn {
-    order: 2;
-    margin-left: 20px;
-    flex-shrink: 0;
-    padding: 4px 6px;
-    font-size: 11px;
+    display: none;
+  }
+
+  .nav-links #logoutBtn {
+    display: flex;
   }
 
   .logo {
@@ -2694,12 +2733,16 @@ textarea::placeholder {
     flex-shrink: 0;
   }
 
+  #logoutBtnDesktop {
+    display: none;
+  }
+
   #logoutBtn {
-    order: 2;
-    margin-left: 15px;
-    padding: 3px 5px;
-    font-size: 10px;
-    flex-shrink: 0;
+    display: none;
+  }
+
+  .nav-links #logoutBtn {
+    display: flex;
   }
 
   .logo {
