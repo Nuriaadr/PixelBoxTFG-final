@@ -73,9 +73,6 @@ document.addEventListener("DOMContentLoaded", () => {
   // Tabs
   setupTabs();
 
-  // Search
-  setupSearch();
-
   // Modals
   setupModals();
 
@@ -575,84 +572,5 @@ function handleDelete() {
   }, 1500);
 }
 
-// ===================== SEARCH =====================
-function setupSearch() {
-  const searchIconBtn = document.getElementById("openSearchModalBtn");
-  const searchModal = document.getElementById("searchModal");
-  const closeSearchModal = document.getElementById("closeSearchModal");
-  const searchInput = document.getElementById("searchInput");
-  const searchResults = document.getElementById("searchResults");
 
-  if (searchIconBtn) {
-    searchIconBtn.addEventListener("click", () => {
-      if (searchModal) searchModal.classList.remove("hidden");
-    });
-  }
-
-  if (closeSearchModal) {
-    closeSearchModal.addEventListener("click", () => {
-      if (searchModal) searchModal.classList.add("hidden");
-    });
-  }
-
-  if (searchModal) {
-    searchModal.addEventListener("click", (e) => {
-      if (e.target === searchModal) {
-        searchModal.classList.add("hidden");
-      }
-    });
-  }
-
-  if (searchInput) {
-    searchInput.addEventListener("input", (e) => {
-      const query = e.target.value.toLowerCase();
-      performSearch(query);
-    });
-  }
-}
-
-function performSearch(query) {
-  const searchResults = document.getElementById("searchResults");
-  if (!searchResults) return;
-
-  let results = [];
-
-  if (currentPage === "games") {
-    results = GAMES_DATA.filter(game =>
-      game.nombre.toLowerCase().includes(query)
-    );
-  } else if (currentPage === "users") {
-    results = usersDatabase.filter(user =>
-      user.username.toLowerCase().includes(query)
-    );
-  }
-
-  if (query.trim() === "") {
-    searchResults.innerHTML = `<p class="search-placeholder">Escribe para buscar...</p>`;
-    return;
-  }
-
-  if (results.length === 0) {
-    searchResults.innerHTML = `<p class="search-placeholder">No se encontraron resultados</p>`;
-    return;
-  }
-
-  searchResults.innerHTML = results.map(item => {
-    if (item.nombre) {
-      return `
-        <div class="search-result-item" style="padding: 12px 16px; border-bottom: 1px solid var(--secondary); cursor: pointer;">
-          <p style="margin: 0; font-weight: 500;">${item.nombre}</p>
-          <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">${item.genero} • ${item.año}</p>
-        </div>
-      `;
-    } else {
-      return `
-        <div class="search-result-item" style="padding: 12px 16px; border-bottom: 1px solid var(--secondary); cursor: pointer;">
-          <p style="margin: 0; font-weight: 500;">${item.username}</p>
-          <p style="margin: 4px 0 0 0; font-size: 12px; color: var(--text-muted);">${item.games} juegos</p>
-        </div>
-      `;
-    }
-  }).join("");
-}
 
