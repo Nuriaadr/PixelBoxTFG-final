@@ -2620,10 +2620,7 @@ textarea::placeholder {
   }
 
   .tabs {
-    gap: 15px;
-    overflow-x: auto;
-    overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    gap: 2rem;
     padding-bottom: 8px;
   }
 
@@ -2657,7 +2654,7 @@ textarea::placeholder {
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     padding-bottom: 8px;
     gap: 10px;
   }
@@ -2802,7 +2799,7 @@ textarea::placeholder {
     gap: 10px;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     padding-bottom: 8px;
     margin-top: 30px;
     margin-bottom: 20px;
@@ -2839,7 +2836,7 @@ textarea::placeholder {
     flex-wrap: nowrap;
     overflow-x: auto;
     overflow-y: hidden;
-    -webkit-overflow-scrolling: touch;
+    overscroll-behavior: contain;
     padding-bottom: 8px;
     gap: 8px;
     margin: 15px 0;
