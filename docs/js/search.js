@@ -1,7 +1,7 @@
 // ===================== BÚSQUEDA =====================
 // Operaciones CRUD deben implementarse en PHP 
 // - READ: GET /api/games/search?q={query} (buscar juegos)
-// Modal de búsqueda - Utiliza GAMES_DATA de games.js
+// Modal de búsqueda - Utiliza GAMES_DATA de global.js
 document.addEventListener("DOMContentLoaded", () => {
   const searchIcon = document.querySelector('i[data-lucide="search"]');
   const searchModal = document.getElementById("searchModal");
