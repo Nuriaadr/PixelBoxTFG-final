@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Utils\Database;
+use Exception;
 use PDOException;
 
 class Favorite

@@ -1,7 +1,9 @@
 <?php
 
 namespace App\Models;
+
 use App\Utils\Database;
+use Exception;
 use PDOException;
 
 class Review
@@ -54,7 +56,7 @@ class Review
         }
     }
 
-  
+
     /**
      * Crear reseña
      */
@@ -89,9 +91,8 @@ class Review
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
             throw new Exception("Error creating review: " . $e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
-
 }

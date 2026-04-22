@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Utils\Database;
+use Exception;
 use PDOException;
 
 class Library
@@ -144,7 +145,7 @@ class Library
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
             throw new Exception("Error adding game to library: " . $e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -192,7 +193,7 @@ class Library
             return true;
         } catch (PDOException $e) {
             throw new Exception("Error updating game status: " . $e->getMessage());
-        } catch (\Exception $e) {
+        } catch (Exception $e) {
             throw $e;
         }
     }

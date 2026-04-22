@@ -85,9 +85,7 @@ $app->post('/api/games', [$gameController, 'create'])->add(new SimpleAuthMiddlew
 $app->put('/api/games/{id}', [$gameController, 'update'])->add(new SimpleAuthMiddleware());
 $app->delete('/api/games/{id}', [$gameController, 'delete'])->add(new SimpleAuthMiddleware());
 
-// =====================================================
-// RUTAS - BIBLIOTECA
-// =====================================================
+
 // =====================================================
 // RUTAS - BIBLIOTECA (SIMPLIFICADO)
 // =====================================================

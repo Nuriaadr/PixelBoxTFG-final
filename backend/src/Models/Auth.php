@@ -3,6 +3,7 @@
 namespace App\Models;
 
 use App\Utils\Database;
+use Exception;
 use PDOException;
 
 class Auth
@@ -15,7 +16,7 @@ class Auth
     }
 
     /**
-     * Autenticar usuario - versión simple para TFG
+     * 
      * Solo @jugador_pro y @admin pueden loguearse
      */
     public function authenticate($username, $password)
