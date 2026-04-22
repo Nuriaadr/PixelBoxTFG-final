@@ -83,7 +83,7 @@ class Library
             $stmt->execute([$userId]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Error fetching library stats: " . $e->getMessage());
+            throw new Exception("Error obteniendo estadísticas de la biblioteca: " . $e->getMessage());
         }
     }
 
@@ -103,7 +103,7 @@ class Library
             $stmt->execute([$userId, $gameId]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Error fetching library entry: " . $e->getMessage());
+            throw new Exception("Error obteniendo entrada de biblioteca: " . $e->getMessage());
         }
     }
 
@@ -144,7 +144,7 @@ class Library
 
             return $this->db->lastInsertId();
         } catch (PDOException $e) {
-            throw new Exception("Error adding game to library: " . $e->getMessage());
+            throw new Exception("Error agregando juego a la biblioteca: " . $e->getMessage());
         } catch (Exception $e) {
             throw $e;
         }
@@ -171,10 +171,6 @@ class Library
                 throw new Exception("Game not in user library");
             }
 
-            // Actualizar estado y fecha de completado si lo completó
-            $fechaCompletado = ($estado === 'completado') 
-                ? 'fecha_completado = NOW()' 
-                : '';
 
             $query = "UPDATE user_library SET estado = ?";
             $params = [$estado];
@@ -192,7 +188,7 @@ class Library
 
             return true;
         } catch (PDOException $e) {
-            throw new Exception("Error updating game status: " . $e->getMessage());
+            throw new Exception("Error actualizando estado del juego: " . $e->getMessage());
         } catch (Exception $e) {
             throw $e;
         }
@@ -206,8 +202,8 @@ class Library
     {
         try {
             // Validar rating
-            if ($rating !== null && ($rating < 1 || $rating > 10)) {
-                throw new Exception("Rating must be between 1 and 10");
+            if ($rating !== null && ($rating < 1 || $rating > 5)) {
+                throw new Exception("La calificación debe estar entre 1 y 5");
             }
 
             $conn = $this->db->getConnection();
@@ -220,8 +216,8 @@ class Library
 
             return true;
         } catch (PDOException $e) {
-            throw new Exception("Error updating game rating: " . $e->getMessage());
-        } catch (\Exception $e) {
+            throw new Exception("Error cambiando calificación del juego: " . $e->getMessage());
+        } catch (Exception $e) {
             throw $e;
         }
     }
@@ -254,7 +250,7 @@ class Library
 
             return true;
         } catch (PDOException $e) {
-            throw new Exception("Error removing game from library: " . $e->getMessage());
+            throw new Exception("Error eliminando juego de la biblioteca: " . $e->getMessage());
         }
     }
 
@@ -271,7 +267,7 @@ class Library
             $stmt->execute([$userId, $gameId]);
             return (bool)$stmt->fetch();
         } catch (PDOException $e) {
-            throw new Exception("Error checking library: " . $e->getMessage());
+            throw new Exception("Error obteniendo entrada de biblioteca: " . $e->getMessage());
         }
     }
 

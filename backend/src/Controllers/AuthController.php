@@ -16,7 +16,7 @@ class AuthController
     }
 
     /**
-     * POST /api/auth/login - Login simple
+     * POST /api/auth/login 
      * Solo @jugador_pro y @admin pueden loguearse
      */
     public function login(Request $request, Response $response)
