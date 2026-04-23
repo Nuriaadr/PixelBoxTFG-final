@@ -15,94 +15,51 @@ class ReviewController
         $this->reviewModel = new Review();
     }
 
-
-
-
-    /**
-     * GET /api/users/:userId/reviews - Obtener todas las reseñas del usuario
-     */
-    public function getByUser(Request $request, Response $response, array $args)
+    private function json(Response $response, array $data, int $status = 200): Response
     {
-        try {
-            $userId = $args['userId'];
-            $reviews = $this->reviewModel->getByUser($userId);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $reviews,
-                    'count' => count($reviews)
-                ]));
-        } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
-        }
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
     }
 
-    /**
-     * POST /api/games/:gameId/reviews - Crear reseña
-     */
-    public function create(Request $request, Response $response, array $args)
+  
+    // POST /api/games/:gameId/reviews
+    public function create(Request $request, Response $response, array $args): Response
     {
         try {
             $gameId = $args['gameId'];
-            $userId = $request->getAttribute('userId'); // Del JWT middleware
-            $body = $request->getParsedBody();
+            $userId = $request->getAttribute('userId');
+            $body   = $request->getParsedBody();
 
-            // Validar campos requeridos
             if (!isset($body['rating']) || $body['rating'] === '') {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'La calificación es requerida'
-                    ]));
+                return $this->json($response, [
+                    'success' => false,
+                    'message' => 'La calificación es requerida',
+                ], 400);
             }
 
             $rating = intval($body['rating']);
             if ($rating < 1 || $rating > 5) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'La calificación debe ser entre 1 y 5'
-                    ]));
+                return $this->json($response, [
+                    'success' => false,
+                    'message' => 'La calificación debe ser entre 1 y 5',
+                ], 400);
             }
 
-            $comentario = $body['comentario'] ?? null;
-            $es_spoiler = $body['es_spoiler'] ?? false;
+            $reviewId = $this->reviewModel->create(
+                $gameId,
+                $userId,
+                $rating,
+                $body['comentario'] ?? null,
+                $body['es_spoiler']  ?? false
+            );
 
-            $reviewId = $this->reviewModel->create($gameId, $userId, $rating, $comentario, $es_spoiler);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Review created successfully',
-                    'data' => ['id' => $reviewId]
-                ]));
+            return $this->json($response, [
+                'success' => true,
+                'message' => 'Review created successfully',
+                'data'    => ['id' => $reviewId],
+            ], 201);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(400)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }
     }
-
-
-
-
 }

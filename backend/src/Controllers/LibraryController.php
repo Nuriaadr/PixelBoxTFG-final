@@ -15,255 +15,131 @@ class LibraryController
         $this->libraryModel = new Library();
     }
 
-    /**
-     * GET /api/users/:userId/library - Obtener biblioteca completa del usuario
-     */
-    public function get(Request $request, Response $response, array $args)
+    private function json(Response $response, array $data, int $status = 200): Response
+    {
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
+    }
+
+    // GET /api/users/:userId/library
+    public function get(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
+            $userId  = $args['userId'];
             $library = $this->libraryModel->getByUser($userId);
-            $stats = $this->libraryModel->getStats($userId);
+            $stats   = $this->libraryModel->getStats($userId);
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $library,
-                    'stats' => $stats,
-                    'count' => count($library)
-                ]));
+            return $this->json($response, [
+                'success' => true,
+                'data'    => $library,
+                'stats'   => $stats,
+                'count'   => count($library),
+            ]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/users/:userId/library/:estado - Obtener juegos por estado
-     */
-    public function getByState(Request $request, Response $response, array $args)
+    // GET /api/users/:userId/library/:estado
+    public function getByState(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
-            $estado = $args['estado'];
-            $games = $this->libraryModel->getByState($userId, $estado);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $games,
-                    'count' => count($games)
-                ]));
+            $games = $this->libraryModel->getByState($args['userId'], $args['estado']);
+            return $this->json($response, ['success' => true, 'data' => $games, 'count' => count($games)]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(400)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }
     }
 
-    /**
-     * GET /api/users/:userId/library/stats - Obtener estadísticas
-     */
-    public function getStats(Request $request, Response $response, array $args)
+    // GET /api/users/:userId/library/stats
+    public function getStats(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
-            $stats = $this->libraryModel->getStats($userId);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $stats
-                ]));
+            $stats = $this->libraryModel->getStats($args['userId']);
+            return $this->json($response, ['success' => true, 'data' => $stats]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/users/:userId/library/:gameId - Obtener entrada específica
-     */
-    public function getEntry(Request $request, Response $response, array $args)
+    // GET /api/users/:userId/library/:gameId
+    public function getEntry(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
-            $gameId = $args['gameId'];
-            $entry = $this->libraryModel->getEntry($userId, $gameId);
+            $entry = $this->libraryModel->getEntry($args['userId'], $args['gameId']);
 
             if (!$entry) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Juego no encontrado en la biblioteca'
-                    ]));
+                return $this->json($response, [
+                    'success' => false,
+                    'message' => 'Juego no encontrado en la biblioteca',
+                ], 404);
             }
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $entry
-                ]));
+            return $this->json($response, ['success' => true, 'data' => $entry]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * POST /api/users/:userId/library/:gameId - Agregar juego a biblioteca
-     */
-    public function add(Request $request, Response $response, array $args)
+    // POST /api/users/:userId/library/:gameId
+    public function add(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
-            $gameId = $args['gameId'];
-            $body = $request->getParsedBody();
+            $body   = $request->getParsedBody();
             $estado = $body['estado'] ?? 'pendiente';
-            $this->libraryModel->add($userId, $gameId, $estado);
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Juego agregado a la biblioteca exitosamente'
-                ]));
+            $this->libraryModel->add($args['userId'], $args['gameId'], $estado);
+
+            return $this->json($response, [
+                'success' => true,
+                'message' => 'Juego agregado a la biblioteca exitosamente',
+            ], 201);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(400)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }
     }
 
-    /**
-     * PUT /api/users/:userId/library/:gameId - Actualizar entrada de biblioteca
-     */
-    public function update(Request $request, Response $response, array $args)
+    // PUT /api/users/:userId/library/:gameId
+    public function update(Request $request, Response $response, array $args): Response
     {
         try {
             $userId = $args['userId'];
             $gameId = $args['gameId'];
-            $body = $request->getParsedBody();
+            $body   = $request->getParsedBody();
 
-
-
-            // Actualizar estado si se proporciona
             if (isset($body['estado'])) {
                 $this->libraryModel->updateStatus($userId, $gameId, $body['estado']);
             }
 
-
-            // Actualizar calificación personal si se proporciona
             if (isset($body['calificacion_personal'])) {
                 $this->libraryModel->updateRating($userId, $gameId, $body['calificacion_personal']);
             }
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Library entry updated successfully'
-                ]));
+            return $this->json($response, ['success' => true, 'message' => 'Library entry updated successfully']);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(400)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }
     }
 
-    /**
-     * DELETE /api/users/:userId/library/:gameId - Eliminar juego de biblioteca
-     */
-    public function remove(Request $request, Response $response, array $args)
+    // DELETE /api/users/:userId/library/:gameId
+    public function remove(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
-            $gameId = $args['gameId'];
-
-            $this->libraryModel->remove($userId, $gameId);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Game removed from library successfully'
-                ]));
+            $this->libraryModel->remove($args['userId'], $args['gameId']);
+            return $this->json($response, ['success' => true, 'message' => 'Game removed from library successfully']);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(400)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }
     }
 
-    /**
-     * GET /api/users/:userId/library/has/:gameId - Verificar si tiene juego en biblioteca
-     */
-    public function hasGame(Request $request, Response $response, array $args)
+    // GET /api/users/:userId/library/has/:gameId
+    public function hasGame(Request $request, Response $response, array $args): Response
     {
         try {
-            $userId = $args['userId'];
-            $gameId = $args['gameId'];
-            $has = $this->libraryModel->hasGame($userId, $gameId);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => ['has_game' => $has]
-                ]));
+            $has = $this->libraryModel->hasGame($args['userId'], $args['gameId']);
+            return $this->json($response, ['success' => true, 'data' => ['has_game' => $has]]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 }

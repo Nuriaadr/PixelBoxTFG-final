@@ -15,257 +15,123 @@ class GameController
         $this->gameModel = new Game();
     }
 
-    /**
-     * GET /api/games - Obtener todos los juegos
-     */
-    public function getAll(Request $request, Response $response)
+    private function json(Response $response, array $data, int $status = 200): Response
+    {
+        $response->getBody()->write(json_encode($data));
+        return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
+    }
+
+    // GET /api/games
+    public function getAll(Request $request, Response $response): Response
     {
         try {
             $games = $this->gameModel->getAll();
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Juegos recuperados exitosamente',
-                    'data' => $games,
-                    'count' => count($games)
-                ]));
+            return $this->json($response, [
+                'success' => true,
+                'message' => 'Juegos recuperados exitosamente',
+                'data'    => $games,
+                'count'   => count($games),
+            ]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/games/:id - Obtener juego específico
-     */
-    public function getById(Request $request, Response $response, array $args)
+    // GET /api/games/:id
+    public function getById(Request $request, Response $response, array $args): Response
     {
         try {
-            $gameId = $args['id'];
-            $game = $this->gameModel->getById($gameId);
+            $game = $this->gameModel->getById($args['id']);
 
             if (!$game) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Juego no encontrado'
-                    ]));
+                return $this->json($response, ['success' => false, 'message' => 'Juego no encontrado'], 404);
             }
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $game
-                ]));
+            return $this->json($response, ['success' => true, 'data' => $game]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/games/search/:query - Buscar juegos
-     */
-    public function search(Request $request, Response $response, array $args)
+    // GET /api/games/search/:query
+    public function search(Request $request, Response $response, array $args): Response
     {
         try {
-            $query = $args['query'] ?? '';
-
-
-
-            $games = $this->gameModel->search($query);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $games,
-                    'count' => count($games)
-                ]));
+            $games = $this->gameModel->search($args['query'] ?? '');
+            return $this->json($response, ['success' => true, 'data' => $games, 'count' => count($games)]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/games/genre/:genre - Obtener juegos por género
-     */
-    public function getByGenre(Request $request, Response $response, array $args)
+    // GET /api/games/genre/:genre
+    public function getByGenre(Request $request, Response $response, array $args): Response
     {
         try {
-            $genre = $args['genre'];
-            $games = $this->gameModel->getByGenre($genre);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $games,
-                    'count' => count($games)
-                ]));
+            $games = $this->gameModel->getByGenre($args['genre']);
+            return $this->json($response, ['success' => true, 'data' => $games, 'count' => count($games)]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/games/platform/:platform - Obtener juegos por plataforma
-     */
-    public function getByPlatform(Request $request, Response $response, array $args)
+    // GET /api/games/platform/:platform
+    public function getByPlatform(Request $request, Response $response, array $args): Response
     {
         try {
-            $platform = $args['platform'];
-            $games = $this->gameModel->getByPlatform($platform);
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $games,
-                    'count' => count($games)
-                ]));
+            $games = $this->gameModel->getByPlatform($args['platform']);
+            return $this->json($response, ['success' => true, 'data' => $games, 'count' => count($games)]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/games/genres - Obtener todos los géneros disponibles
-     */
-    public function getGenres(Request $request, Response $response)
+    // GET /api/games/genres
+    public function getGenres(Request $request, Response $response): Response
     {
         try {
-            $genres = $this->gameModel->getGenres();
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $genres
-                ]));
+            return $this->json($response, ['success' => true, 'data' => $this->gameModel->getGenres()]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * GET /api/games/platforms - Obtener todas las plataformas disponibles
-     */
-    public function getPlatforms(Request $request, Response $response)
+    // GET /api/games/platforms
+    public function getPlatforms(Request $request, Response $response): Response
     {
         try {
-            $platforms = $this->gameModel->getPlatforms();
-
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'data' => $platforms
-                ]));
+            return $this->json($response, ['success' => true, 'data' => $this->gameModel->getPlatforms()]);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * POST /api/games - Crear nuevo juego (SOLO ADMIN)
-     */
-    public function create(Request $request, Response $response)
+    // POST /api/games
+    public function create(Request $request, Response $response): Response
     {
         try {
             $body = $request->getParsedBody();
 
-            // Validar campos requeridos
             $required = ['nombre', 'año', 'desarrollador', 'descripcion', 'genero', 'plataforma', 'rating'];
             foreach ($required as $field) {
-                if (!isset($body[$field]) || empty($body[$field])) {
-                    return $response
-                        ->withHeader('Content-Type', 'application/json')
-                        ->withStatus(400)
-                        ->write(json_encode([
-                            'success' => false,
-                            'message' => "Falta el campo requerido: $field"
-                        ]));
+                if (empty($body[$field])) {
+                    return $this->json($response, [
+                        'success' => false,
+                        'message' => "Falta el campo requerido: $field",
+                    ], 400);
                 }
             }
 
-            // Validar tipos de datos
-            $year = intval($body['año']);
+            $year   = intval($body['año']);
             $rating = floatval($body['rating']);
 
             if ($year < 1980 || $year > date('Y') + 5) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Año inválido'
-                    ]));
+                return $this->json($response, ['success' => false, 'message' => 'Año inválido'], 400);
             }
 
             if ($rating < 0 || $rating > 5) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'El rating debe ser entre 0 y 5'
-                    ]));
+                return $this->json($response, ['success' => false, 'message' => 'El rating debe ser entre 0 y 5'], 400);
             }
-
-            $imagen_url = $body['imagen_url'] ?? null;
 
             $gameId = $this->gameModel->create(
                 $body['nombre'],
@@ -275,106 +141,50 @@ class GameController
                 $body['genero'],
                 $body['plataforma'],
                 $rating,
-                $imagen_url
+                $body['imagen_url'] ?? null
             );
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(201)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Juego creado exitosamente',
-                    'data' => ['id' => $gameId]
-                ]));
+            return $this->json($response, [
+                'success' => true,
+                'message' => 'Juego creado exitosamente',
+                'data'    => ['id' => $gameId],
+            ], 201);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * PUT /api/games/:id - Actualizar juego (SOLO ADMIN)
-     */
-    public function update(Request $request, Response $response, array $args)
+    // PUT /api/games/:id
+    public function update(Request $request, Response $response, array $args): Response
     {
         try {
-            $gameId = $args['id'];
-            $body = $request->getParsedBody();
-
-            // Verificar que el juego exista
-            $game = $this->gameModel->getById($gameId);
+            $game = $this->gameModel->getById($args['id']);
             if (!$game) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Juego no encontrado'
-                    ]));
+                return $this->json($response, ['success' => false, 'message' => 'Juego no encontrado'], 404);
             }
 
-            $this->gameModel->update($gameId, $body);
+            $this->gameModel->update($args['id'], $request->getParsedBody());
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Juego actualizado exitosamente'
-                ]));
+            return $this->json($response, ['success' => true, 'message' => 'Juego actualizado exitosamente']);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 
-    /**
-     * DELETE /api/games/:id - Eliminar juego (SOLO ADMIN)
-     */
-    public function delete(Request $request, Response $response, array $args)
+    // DELETE /api/games/:id
+    public function delete(Request $request, Response $response, array $args): Response
     {
         try {
-            $gameId = $args['id'];
-
-            // Verificar que el juego exista
-            $game = $this->gameModel->getById($gameId);
+            $game = $this->gameModel->getById($args['id']);
             if (!$game) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(404)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Juego no encontrado'
-                    ]));
+                return $this->json($response, ['success' => false, 'message' => 'Juego no encontrado'], 404);
             }
 
-            $this->gameModel->delete($gameId);
+            $this->gameModel->delete($args['id']);
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Juego eliminado exitosamente'
-                ]));
+            return $this->json($response, ['success' => true, 'message' => 'Juego eliminado exitosamente']);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => $e->getMessage()
-                ]));
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
         }
     }
 }

@@ -16,132 +16,110 @@ class AuthController
     }
 
     /**
-     * POST /api/auth/login 
+     * POST /api/auth/login
      * Solo @jugador_pro y @admin pueden loguearse
      */
-    public function login(Request $request, Response $response)
+    public function login(Request $request, Response $response): Response
     {
         try {
             $body = $request->getParsedBody();
 
             if (!isset($body['username']) || !isset($body['password'])) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Nombre de usuario y contraseña requeridos'
-                    ]));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'message' => 'Nombre de usuario y contraseña requeridos',
+                ]));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
             }
 
             $username = trim($body['username']);
             $password = $body['password'];
 
-            // Solo 2 usuarios pueden loguearse
             if (!in_array($username, ['@jugador_pro', '@admin'])) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(403)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Acceso denegado'
-                    ]));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'message' => 'Acceso denegado',
+                ]));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
             }
 
-            // Verificar credenciales
             $user = $this->authModel->authenticate($username, $password);
 
             if (!$user) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(401)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Credenciales inválidas'
-                    ]));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'message' => 'Credenciales inválidas',
+                ]));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
             }
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'message' => 'Login successful',
-                    'user' => [
-                        'id' => $user['id'],
-                        'username' => $user['username'],
-                        'email' => $user['email'],
-                        'rol' => $user['rol']
-                    ]
-                ]));
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'message' => 'Login successful',
+                'user'    => [
+                    'id'       => $user['id'],
+                    'username' => $user['username'],
+                    'email'    => $user['email'],
+                    'rol'      => $user['rol'],
+                ],
+            ]));
 
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => 'Error: ' . $e->getMessage()
-                ]));
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
     }
 
     /**
      * POST /api/auth/verify - Verificar credenciales
-     * Para usar en cada request del frontend
      */
-    public function verify(Request $request, Response $response)
+    public function verify(Request $request, Response $response): Response
     {
         try {
             $body = $request->getParsedBody();
 
             if (!isset($body['username']) || !isset($body['password'])) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(400)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Usuario y contraseña requeridos'
-                    ]));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'message' => 'Usuario y contraseña requeridos',
+                ]));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(400);
             }
 
             $username = trim($body['username']);
             $password = $body['password'];
 
-            // Verificar credenciales
             $user = $this->authModel->authenticate($username, $password);
 
             if (!$user) {
-                return $response
-                    ->withHeader('Content-Type', 'application/json')
-                    ->withStatus(401)
-                    ->write(json_encode([
-                        'success' => false,
-                        'message' => 'Invalid credentials'
-                    ]));
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'message' => 'Invalid credentials',
+                ]));
+                return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
             }
 
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(200)
-                ->write(json_encode([
-                    'success' => true,
-                    'user' => [
-                        'id' => $user['id'],
-                        'username' => $user['username'],
-                        'email' => $user['email'],
-                        'rol' => $user['rol']
-                    ]
-                ]));
+            $response->getBody()->write(json_encode([
+                'success' => true,
+                'user'    => [
+                    'id'       => $user['id'],
+                    'username' => $user['username'],
+                    'email'    => $user['email'],
+                    'rol'      => $user['rol'],
+                ],
+            ]));
 
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
         } catch (\Exception $e) {
-            return $response
-                ->withHeader('Content-Type', 'application/json')
-                ->withStatus(500)
-                ->write(json_encode([
-                    'success' => false,
-                    'message' => 'Error: ' . $e->getMessage()
-                ]));
+            $response->getBody()->write(json_encode([
+                'success' => false,
+                'message' => 'Error: ' . $e->getMessage(),
+            ]));
+            return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
     }
 }
