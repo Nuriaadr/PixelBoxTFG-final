@@ -1,6 +1,6 @@
 <?php
 
-require __DIR__ . '/vendor/autoload.php';
+require __DIR__ . '/../vendor/autoload.php';
 
 use Slim\Factory\AppFactory;
 use Slim\Routing\Route;
@@ -17,11 +17,12 @@ use App\Controllers\AuthController;
 
 use App\Middleware\SimpleAuthMiddleware;
 // Cargar variables de entorno
-$dotenv = Dotenv\Dotenv::createImmutable(__DIR__);
+$dotenv = Dotenv\Dotenv::createImmutable(__DIR__ . '/..');
 $dotenv->load();
 
 // Crear aplicación Slim
 $app = AppFactory::create();
+$app->addBodyParsingMiddleware();
 
 // Instanciar controllers
 $userController = new UserController();
@@ -107,4 +108,5 @@ $app->get('/api/games/{id}/reviews', [$reviewController, 'getByGame']);
 $app->get('/api/reviews/{id}', [$reviewController, 'getById']);
 $app->post('/api/games/{id}/reviews', [$reviewController, 'create'])->add(new SimpleAuthMiddleware());
 
+$app->setBasePath('/PixelBoxTFG-master/backend/public');
 $app->run();

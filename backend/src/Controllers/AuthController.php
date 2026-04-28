@@ -35,14 +35,6 @@ class AuthController
             $username = trim($body['username']);
             $password = $body['password'];
 
-            if (!in_array($username, ['@jugador_pro', '@admin'])) {
-                $response->getBody()->write(json_encode([
-                    'success' => false,
-                    'message' => 'Acceso denegado',
-                ]));
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
-            }
-
             $user = $this->authModel->authenticate($username, $password);
 
             if (!$user) {
@@ -60,7 +52,7 @@ class AuthController
                     'id'       => $user['id'],
                     'username' => $user['username'],
                     'email'    => $user['email'],
-                    'rol'      => $user['rol'],
+                    'role'     => $user['role'], // era 'rol', corregido a 'role'
                 ],
             ]));
 
@@ -73,7 +65,6 @@ class AuthController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
     }
-
     /**
      * POST /api/auth/verify - Verificar credenciales
      */
