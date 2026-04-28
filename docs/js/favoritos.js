@@ -96,14 +96,14 @@ function updateHeartButton(btn, isFavorite) {
     lucide.createIcons();
 }
 
-// Ver si un juego es favorito (id 1 = Legends of Eldoria)
-isFavorito(1).then(r => console.log('¿Es favorito?', r));
+// // Ver si un juego es favorito (id 1 = Legends of Eldoria)
+// isFavorito(1).then(r => console.log('¿Es favorito?', r));
 
-// Añadir a favoritos
-addFavorito(1).then(r => console.log('¿Añadido?', r));
+// // Añadir a favoritos
+// addFavorito(1).then(r => console.log('¿Añadido?', r));
 
-// Ver todos los favoritos
-getFavoritosConDatos().then(r => console.log('Favoritos:', r));
+// // Ver todos los favoritos
+// getFavoritosConDatos().then(r => console.log('Favoritos:', r));
 
-// Eliminar de favoritos
-removeFavorito(1).then(r => console.log('¿Eliminado?', r));
+// // Eliminar de favoritos
+// removeFavorito(1).then(r => console.log('¿Eliminado?', r));

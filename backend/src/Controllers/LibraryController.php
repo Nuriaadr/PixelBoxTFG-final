@@ -122,7 +122,7 @@ class LibraryController
     {
         try {
             $this->libraryModel->remove($args['userId'], $args['gameId']);
-            return $this->json($response, ['success' => true, 'message' => 'Game removed from library successfully']);
+            return $this->json($response, ['success' => true, 'message' => 'Juego eliminado de la biblioteca exitosamente']);
         } catch (\Exception $e) {
             return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }

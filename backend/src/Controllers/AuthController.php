@@ -89,7 +89,7 @@ class AuthController
             if (!$user) {
                 $response->getBody()->write(json_encode([
                     'success' => false,
-                    'message' => 'Invalid credentials',
+                    'message' => 'Credenciales inválidas',
                 ]));
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
             }
@@ -100,7 +100,7 @@ class AuthController
                     'id'       => $user['id'],
                     'username' => $user['username'],
                     'email'    => $user['email'],
-                    'rol'      => $user['rol'],
+                    'role'     => $user['role'],
                 ],
             ]));
 

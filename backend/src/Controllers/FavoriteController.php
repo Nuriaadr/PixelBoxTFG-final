@@ -98,7 +98,7 @@ class FavoriteController
 
             $response->getBody()->write(json_encode([
                 'success' => true,
-                'message' => 'Game removed from favorites',
+                'message' => 'Juego eliminado de favoritos',
             ]));
 
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);
