@@ -1,4 +1,5 @@
 <?php
+
 /**
  * User Model
  * Maneja toda la lógica de usuarios
@@ -8,18 +9,21 @@ namespace App\Models;
 
 use App\Utils\Database;
 
-class User {
-    private $db;
+class User
+{
+    private \PDO $db;
 
-    public function __construct() {
+    public function __construct()
+    {
         $this->db = Database::getInstance()->getConnection();
     }
 
     /**
      * Obtener todos los usuarios
      */
-    public function getAll() {
-        $sql = "SELECT id, username, rol, avatar_url, bio, created_at FROM users WHERE is_active = true";
+    public function getAll()
+    {
+        $sql = "SELECT id, username, email, role, created_at FROM users";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -28,40 +32,79 @@ class User {
     /**
      * Obtener usuario por ID
      */
-    public function getById($id) {
-        $sql = "SELECT id, username, rol, avatar_url, bio, created_at FROM users WHERE id = ? AND is_active = true";
+    public function getById(int $id)
+    {
+        $sql = "SELECT id, username, email, role, created_at, updated_at FROM users WHERE id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$id]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
     }
 
- 
+    /**
+     * Obtener usuario por username
+     */
+    public function getByUsername(string $username)
+    {
+        $sql = "SELECT id, username, email, password, role, created_at, updated_at FROM users WHERE username = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$username]);
+        return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
     /**
      * Crear nuevo usuario
      */
-    public function create($username, $email, $passwordHash, $avatarUrl = null, $bio = null) {
-        $sql = "INSERT INTO users (username, email, password_hash, avatar_url, bio) VALUES (?, ?, ?, ?, ?)";
+    public function create(string $username, string $password)
+    {
+        //comprobar que el usuario no exista ya 
+        if ($this->getByUsername($username)) {
+            return false; //si el usuario ya existe, no se puede crear
+        }else {
+        $email = $username . "@ejemplo.com"; //Generar email de ejepmplo con el user
+        $password = "123456"; // Contraseña por defecto 
+        // Hash del password
+        $hashedPassword = password_hash($password, PASSWORD_BCRYPT);
+        $sql = "INSERT INTO users (username, email, password) VALUES (?, ?, ?)";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$username, $email, $passwordHash, $avatarUrl, $bio]);
+        return $stmt->execute([$username, $email, $hashedPassword]);
+        }
     }
 
     /**
      * Actualizar usuario
      */
-    public function update($id, $avatarUrl, $bio) {
-        $sql = "UPDATE users SET avatar_url = ?, bio = ? WHERE id = ?";
+    public function update(int $id, array $data)
+    {
+        $fields = [];
+        $values = [];
+        $allowedFields = ['description']; // en nuestro proyecto solo permitimos actualizar la descripción, pero se pueden agregar más campos si se quiere en un futuro, de ahi el array
+
+        foreach ($data as $key => $value) {
+            if (in_array($key, $allowedFields)) {
+                $fields[] = "$key = ?";
+                $values[] = $value;
+            }
+        }
+
+        if (empty($fields)) {
+            return false;
+        }
+
+        $values[] = $id;
+        $sql = "UPDATE users SET " . implode(", ", $fields) . " WHERE id = ?";
         $stmt = $this->db->prepare($sql);
-        return $stmt->execute([$avatarUrl, $bio, $id]);
+        return $stmt->execute($values);
     }
 
     /**
      * Obtener seguidores de un usuario
      */
-    public function getFollowers($userId) {
-        $sql = "SELECT u.id, u.username, u.avatar_url, u.bio 
+    public function getFollowers(int $userId)
+    {
+        $sql = "SELECT u.id, u.username, u.email, u.role 
                 FROM followers f
-                INNER JOIN users u ON f.follower_user_id = u.id
-                WHERE f.following_user_id = ? AND u.is_active = true";
+                INNER JOIN users u ON f.follower_id = u.id
+                WHERE f.following_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -70,11 +113,12 @@ class User {
     /**
      * Obtener usuarios que está siguiendo
      */
-    public function getFollowing($userId) {
-        $sql = "SELECT u.id, u.username, u.avatar_url, u.bio
+    public function getFollowing(int $userId)
+    {
+        $sql = "SELECT u.id, u.username, u.email, u.role
                 FROM followers f
-                INNER JOIN users u ON f.following_user_id = u.id
-                WHERE f.follower_user_id = ? AND u.is_active = true";
+                INNER JOIN users u ON f.following_id = u.id
+                WHERE f.follower_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);
         return $stmt->fetchAll(\PDO::FETCH_ASSOC);
@@ -83,8 +127,9 @@ class User {
     /**
      * Verificar si un usuario sigue a otro
      */
-    public function isFollowing($followerId, $followingId) {
-        $sql = "SELECT id FROM followers WHERE follower_user_id = ? AND following_user_id = ?";
+    public function isFollowing(int $followerId, int $followingId)
+    {
+        $sql = "SELECT id FROM followers WHERE follower_id = ? AND following_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$followerId, $followingId]);
         return $stmt->fetch(\PDO::FETCH_ASSOC) !== false;
@@ -93,11 +138,17 @@ class User {
     /**
      * Agregar seguidor
      */
-    public function follow($followerId, $followingId) {
+    public function follow(int $followerId, int $followingId)
+    {
+        // Validar que no se intente seguir a uno mismo
+        if ($followerId === $followingId) {
+            return false;
+        }
+
         if ($this->isFollowing($followerId, $followingId)) {
             return false;
         }
-        $sql = "INSERT INTO followers (follower_user_id, following_user_id) VALUES (?, ?)";
+        $sql = "INSERT INTO followers (follower_id, following_id) VALUES (?, ?)";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$followerId, $followingId]);
     }
@@ -105,8 +156,9 @@ class User {
     /**
      * Dejar de seguir
      */
-    public function unfollow($followerId, $followingId) {
-        $sql = "DELETE FROM followers WHERE follower_user_id = ? AND following_user_id = ?";
+    public function unfollow(int $followerId, int $followingId)
+    {
+        $sql = "DELETE FROM followers WHERE follower_id = ? AND following_id = ?";
         $stmt = $this->db->prepare($sql);
         return $stmt->execute([$followerId, $followingId]);
     }
@@ -114,16 +166,41 @@ class User {
     /**
      * Obtener estadísticas del usuario
      */
-    public function getStats($userId) {
+    public function getStats(int $userId)
+    {
         $sql = "SELECT 
-                    COUNT(DISTINCT ul.game_id) as total_games,
-                    SUM(CASE WHEN ul.estado = 'completado' THEN 1 ELSE 0 END) as completed_games,
-                    SUM(CASE WHEN ul.estado = 'jugando' THEN 1 ELSE 0 END) as playing_games,
-                    SUM(CASE WHEN ul.estado = 'pendiente' THEN 1 ELSE 0 END) as pending_games
-                FROM user_library ul
-                WHERE ul.user_id = ?";
+                    COUNT(DISTINCT ug.game_id) as total_games,
+                    SUM(CASE WHEN ug.status = 'completado' THEN 1 ELSE 0 END) as completed_games,
+                    SUM(CASE WHEN ug.status = 'jugando' THEN 1 ELSE 0 END) as playing_games,
+                    SUM(CASE WHEN ug.status = 'pendiente' THEN 1 ELSE 0 END) as pending_games
+                FROM user_games ug
+                WHERE ug.user_id = ?";
         $stmt = $this->db->prepare($sql);
         $stmt->execute([$userId]);
         return $stmt->fetch(\PDO::FETCH_ASSOC);
+    }
+
+    /**
+     * Obtener número de seguidores
+     */
+    public function getFollowersCount(int $userId)
+    {
+        $sql = "SELECT COUNT(*) as count FROM followers WHERE following_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result['count'] ?? 0;
+    }
+
+    /**
+     * Obtener número de usuarios seguidos
+     */
+    public function getFollowingCount(int $userId)
+    {
+        $sql = "SELECT COUNT(*) as count FROM followers WHERE follower_id = ?";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute([$userId]);
+        $result = $stmt->fetch(\PDO::FETCH_ASSOC);
+        return $result['count'] ?? 0;
     }
 }

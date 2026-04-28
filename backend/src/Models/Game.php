@@ -8,7 +8,7 @@ use PDOException;
 
 class Game
 {
-    private $db;
+    private Database $db;
 
     public function __construct()
     {
@@ -21,8 +21,10 @@ class Game
     public function getAll()
     {
         try {
-            $result = $this->db->query("SELECT * FROM games ORDER BY nombre ASC");
-            return $result ?: [];
+            $conn = $this->db->getConnection();
+            $stmt = $conn->prepare("SELECT * FROM games ORDER BY title ASC");
+            $stmt->execute();
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
         } catch (PDOException $e) {
             throw new Exception("Error obteniendo juegos: " . $e->getMessage());
         }
@@ -31,7 +33,7 @@ class Game
     /**
      * Obtener juego por ID
      */
-    public function getById($id)
+    public function getById(int $id)
     {
         try {
             $conn = $this->db->getConnection();
@@ -46,15 +48,15 @@ class Game
     /**
      * Buscar juegos por nombre o desarrollador
      */
-    public function search($query)
+    public function search(string $query)
     {
         try {
             $conn = $this->db->getConnection();
             $searchTerm = "%{$query}%";
             $stmt = $conn->prepare(
                 "SELECT * FROM games 
-                 WHERE nombre LIKE ? OR desarrollador LIKE ? OR genero LIKE ?
-                 ORDER BY nombre ASC"
+                 WHERE title LIKE ? OR developer LIKE ? OR genre LIKE ?
+                 ORDER BY title ASC"
             );
             $stmt->execute([$searchTerm, $searchTerm, $searchTerm]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
@@ -66,11 +68,11 @@ class Game
     /**
      * Filtrar juegos por género
      */
-    public function getByGenre($genre)
+    public function getByGenre(string $genre)
     {
         try {
             $conn = $this->db->getConnection();
-            $stmt = $conn->prepare("SELECT * FROM games WHERE genero = ? ORDER BY nombre ASC");
+            $stmt = $conn->prepare("SELECT * FROM games WHERE genre = ? ORDER BY title ASC");
             $stmt->execute([$genre]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
         } catch (PDOException $e) {
@@ -81,11 +83,11 @@ class Game
     /**
      * Filtrar juegos por plataforma
      */
-    public function getByPlatform($platform)
+    public function getByPlatform(string $platform)
     {
         try {
             $conn = $this->db->getConnection();
-            $stmt = $conn->prepare("SELECT * FROM games WHERE plataforma = ? ORDER BY nombre ASC");
+            $stmt = $conn->prepare("SELECT * FROM games WHERE platform = ? ORDER BY title ASC");
             $stmt->execute([$platform]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
         } catch (PDOException $e) {
@@ -96,17 +98,17 @@ class Game
     /**
      * Crear nuevo juego
      */
-    public function create($nombre, $año, $desarrollador, $descripcion, $genero, $plataforma, $rating, $imagen_url = null)
+    public function create(string $title, int $release_year, string $developer, string $description, string $genre, string $platform, float $average_rating, string $cover_image_url = null)
     {
         try {
             $conn = $this->db->getConnection();
             $stmt = $conn->prepare(
-                "INSERT INTO games (nombre, año, desarrollador, descripcion, genero, plataforma, rating, imagen_url, fecha_creacion)
-                 VALUES (?, ?, ?, ?, ?, ?, ?, ?, NOW())"
+                "INSERT INTO games (title, release_year, developer, description, genre, platform, average_rating, cover_image_url)
+                 VALUES (?, ?, ?, ?, ?, ?, ?, ?)"
             );
             
-            $stmt->execute([$nombre, $año, $desarrollador, $descripcion, $genero, $plataforma, $rating, $imagen_url]);
-            return $this->db->lastInsertId();
+            $stmt->execute([$title, $release_year, $developer, $description, $genre, $platform, $average_rating, $cover_image_url]);
+            return $conn->lastInsertId();
         } catch (PDOException $e) {
             throw new Exception("Error creando juego: " . $e->getMessage());
         }
@@ -115,7 +117,7 @@ class Game
     /**
      * Actualizar juego
      */
-    public function update($id, $data)
+    public function update(int $id, array $data)
     {
         try {
             $conn = $this->db->getConnection();
@@ -124,7 +126,7 @@ class Game
             $fields = [];
             $values = [];
             
-            $allowedFields = ['nombre', 'año', 'desarrollador', 'descripcion', 'genero', 'plataforma', 'rating', 'imagen_url'];
+            $allowedFields = ['title', 'release_year', 'developer', 'description', 'genre', 'platform', 'average_rating', 'cover_image_url'];
             
             foreach ($data as $key => $value) {
                 if (in_array($key, $allowedFields)) {
@@ -152,19 +154,19 @@ class Game
     /**
      * Eliminar juego
      */
-    public function delete($id)
+    public function delete(int $id)
     {
         try {
             $conn = $this->db->getConnection();
             
-            // Primero eliminar referencias en otras tablas
+            // Primero eliminar referencias en otras tablas (cascadas)
             $conn->prepare("DELETE FROM reviews WHERE game_id = ?")->execute([$id]);
             $conn->prepare("DELETE FROM favorites WHERE game_id = ?")->execute([$id]);
-            $conn->prepare("DELETE FROM user_library WHERE game_id = ?")->execute([$id]);
+            $conn->prepare("DELETE FROM user_games WHERE game_id = ?")->execute([$id]);
             
             // Luego eliminar el juego
             $stmt = $conn->prepare("DELETE FROM games WHERE id = ?");
-            $result = $stmt->execute([$id]);
+            $stmt->execute([$id]);
             
             return true;
         } catch (PDOException $e) {
@@ -179,7 +181,7 @@ class Game
     {
         try {
             $conn = $this->db->getConnection();
-            $stmt = $conn->prepare("SELECT DISTINCT genero FROM games WHERE genero IS NOT NULL ORDER BY genero ASC");
+            $stmt = $conn->prepare("SELECT DISTINCT genre FROM games WHERE genre IS NOT NULL ORDER BY genre ASC");
             $stmt->execute();
             $results = $stmt->fetchAll(\PDO::FETCH_COLUMN);
             return $results ?: [];
@@ -195,7 +197,7 @@ class Game
     {
         try {
             $conn = $this->db->getConnection();
-            $stmt = $conn->prepare("SELECT DISTINCT plataforma FROM games WHERE plataforma IS NOT NULL ORDER BY plataforma ASC");
+            $stmt = $conn->prepare("SELECT DISTINCT platform FROM games WHERE platform IS NOT NULL ORDER BY platform ASC");
             $stmt->execute();
             $results = $stmt->fetchAll(\PDO::FETCH_COLUMN);
             return $results ?: [];
@@ -203,6 +205,4 @@ class Game
             throw new Exception("Error obteniendo plataformas: " . $e->getMessage());
         }
     }
-
-  
 }

@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class FavoriteController
 {
-    private $favoriteModel;
+    private Favorite $favoriteModel;
 
     public function __construct()
     {

@@ -9,7 +9,7 @@ use PDO;
 use PDOException;
 
 class Database {
-    private $pdo;
+    private PDO $pdo;
     private static $instance = null;
 
     private function __construct() {
@@ -48,7 +48,7 @@ class Database {
     /**
      * Ejecutar query SELECT
      */
-    public function query($sql, $params = []) {
+    public function query(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
@@ -57,7 +57,7 @@ class Database {
     /**
      * Ejecutar query que retorna un resultado
      */
-    public function queryOne($sql, $params = []) {
+    public function queryOne(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetch();
@@ -66,7 +66,7 @@ class Database {
     /**
      * Ejecutar query INSERT/UPDATE/DELETE
      */
-    public function execute($sql, $params = []) {
+    public function execute(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }

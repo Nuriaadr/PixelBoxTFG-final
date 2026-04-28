@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class UserController
 {
-    private $userModel;
+    private User $userModel;
 
     public function __construct()
     {
@@ -70,18 +70,30 @@ class UserController
         }
     }
 
+    // GET /api/users/{id}/stats
+    public function getStats(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $stats = $this->userModel->getStats($args['id']);
+            return $this->json($response, ['success' => true, 'data' => $stats]);
+        } catch (\Exception $e) {
+            return $this->json($response, ['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
     // POST /api/users/{id}/follow
     public function follow(Request $request, Response $response, array $args): Response
     {
         try {
-            $data       = $request->getParsedBody();
+            $followingId = $args['id'];
+            $data = $request->getParsedBody();
             $followerId = $data['follower_id'] ?? null;
 
             if (!$followerId) {
                 return $this->json($response, ['success' => false, 'error' => 'follower_id es requerido'], 400);
             }
 
-            $result = $this->userModel->follow($followerId, $args['id']);
+            $result = $this->userModel->follow($followerId, $followingId);
 
             return $this->json($response, [
                 'success' => $result,
@@ -96,16 +108,32 @@ class UserController
     public function unfollow(Request $request, Response $response, array $args): Response
     {
         try {
-            $data       = $request->getParsedBody();
+            $followingId = $args['id'];
+            $data = $request->getParsedBody();
             $followerId = $data['follower_id'] ?? null;
 
             if (!$followerId) {
                 return $this->json($response, ['success' => false, 'error' => 'follower_id es requerido'], 400);
             }
 
-            $this->userModel->unfollow($followerId, $args['id']);
+            $this->userModel->unfollow($followerId, $followingId);
 
             return $this->json($response, ['success' => true, 'message' => 'Ya no sigues a este usuario']);
+        } catch (\Exception $e) {
+            return $this->json($response, ['success' => false, 'error' => $e->getMessage()], 500);
+        }
+    }
+
+    // PUT /api/users/{id}
+    public function update(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $userId = $args['id'];
+            $data = $request->getParsedBody();
+
+            $this->userModel->update($userId, $data);
+
+            return $this->json($response, ['success' => true, 'message' => 'Usuario actualizado exitosamente']);
         } catch (\Exception $e) {
             return $this->json($response, ['success' => false, 'error' => $e->getMessage()], 500);
         }

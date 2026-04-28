@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class ReviewController
 {
-    private $reviewModel;
+    private Review $reviewModel;
 
     public function __construct()
     {
@@ -21,8 +21,48 @@ class ReviewController
         return $response->withHeader('Content-Type', 'application/json')->withStatus($status);
     }
 
-  
-    // POST /api/games/:gameId/reviews
+    /**
+     * GET /api/games/{gameId}/reviews
+     * Obtener todas las reseñas de un juego
+     */
+    public function getByGame(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $gameId = $args['gameId'];
+            $reviews = $this->reviewModel->getByGame($gameId);
+            return $this->json($response, [
+                'success' => true,
+                'data' => $reviews,
+                'count' => count($reviews),
+            ]);
+        } catch (\Exception $e) {
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * GET /api/users/{userId}/reviews
+     * Obtener todas las reseñas de un usuario
+     */
+    public function getByUser(Request $request, Response $response, array $args): Response
+    {
+        try {
+            $userId = $args['userId'];
+            $reviews = $this->reviewModel->getByUser($userId);
+            return $this->json($response, [
+                'success' => true,
+                'data' => $reviews,
+                'count' => count($reviews),
+            ]);
+        } catch (\Exception $e) {
+            return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 500);
+        }
+    }
+
+    /**
+     * POST /api/games/{gameId}/reviews
+     * Crear una reseña
+     */
     public function create(Request $request, Response $response, array $args): Response
     {
         try {
@@ -49,13 +89,12 @@ class ReviewController
                 $gameId,
                 $userId,
                 $rating,
-                $body['comentario'] ?? null,
-                $body['es_spoiler']  ?? false
+                $body['content'] ?? null
             );
 
             return $this->json($response, [
                 'success' => true,
-                'message' => 'Review created successfully',
+                'message' => 'Reseña creada exitosamente',
                 'data'    => ['id' => $reviewId],
             ], 201);
         } catch (\Exception $e) {

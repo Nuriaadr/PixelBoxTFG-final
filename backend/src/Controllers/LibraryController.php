@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class LibraryController
 {
-    private $libraryModel;
+    private Library $libraryModel;
 
     public function __construct()
     {
@@ -40,11 +40,11 @@ class LibraryController
         }
     }
 
-    // GET /api/users/:userId/library/:estado
+    // GET /api/users/:userId/library/:status
     public function getByState(Request $request, Response $response, array $args): Response
     {
         try {
-            $games = $this->libraryModel->getByState($args['userId'], $args['estado']);
+            $games = $this->libraryModel->getByState($args['userId'], $args['status']);
             return $this->json($response, ['success' => true, 'data' => $games, 'count' => count($games)]);
         } catch (\Exception $e) {
             return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
@@ -86,9 +86,9 @@ class LibraryController
     {
         try {
             $body   = $request->getParsedBody();
-            $estado = $body['estado'] ?? 'pendiente';
+            $status = $body['status'] ?? 'pendiente';
 
-            $this->libraryModel->add($args['userId'], $args['gameId'], $estado);
+            $this->libraryModel->add($args['userId'], $args['gameId'], $status);
 
             return $this->json($response, [
                 'success' => true,
@@ -107,15 +107,11 @@ class LibraryController
             $gameId = $args['gameId'];
             $body   = $request->getParsedBody();
 
-            if (isset($body['estado'])) {
-                $this->libraryModel->updateStatus($userId, $gameId, $body['estado']);
+            if (isset($body['status'])) {
+                $this->libraryModel->updateStatus($userId, $gameId, $body['status']);
             }
 
-            if (isset($body['calificacion_personal'])) {
-                $this->libraryModel->updateRating($userId, $gameId, $body['calificacion_personal']);
-            }
-
-            return $this->json($response, ['success' => true, 'message' => 'Library entry updated successfully']);
+            return $this->json($response, ['success' => true, 'message' => 'Biblioteca actualizada exitosamente']);
         } catch (\Exception $e) {
             return $this->json($response, ['success' => false, 'message' => $e->getMessage()], 400);
         }
