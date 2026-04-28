@@ -98,7 +98,7 @@ class Game
     /**
      * Crear nuevo juego
      */
-    public function create(string $title, int $release_year, string $developer, string $description, string $genre, string $platform, float $average_rating, string $cover_image_url = null)
+    public function create(string $title, int $release_year, string $developer, string $description, string $genre, string $platform, float $average_rating, string $cover_image_url)
     {
         try {
             $conn = $this->db->getConnection();

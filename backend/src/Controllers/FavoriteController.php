@@ -46,7 +46,6 @@ class FavoriteController
             $userId     = $args['userId'];
             $gameId     = $args['gameId'];
             $isFavorite = $this->favoriteModel->isFavorite($userId, $gameId);
-
             $response->getBody()->write(json_encode([
                 'success' => true,
                 'data'    => ['is_favorite' => $isFavorite],

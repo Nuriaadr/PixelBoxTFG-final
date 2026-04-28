@@ -40,7 +40,7 @@ class Library
     /**
      * Obtener juegos en biblioteca filtrados por estado
      */
-    public function getByState(int $userId, string $estado)
+    public function getByState(int $userId, string $estado): array
     {
         try {
             if (!in_array($estado, $this->validStates)) {
@@ -77,7 +77,7 @@ class Library
                            SUM(CASE WHEN status = 'abandonado' THEN 1 ELSE 0 END) as abandoned
                            FROM user_games
                            WHERE user_id = ?";
-            
+
             $stmt = $conn->prepare($statsQuery);
             $stmt->execute([$userId]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
