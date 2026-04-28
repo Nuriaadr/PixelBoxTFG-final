@@ -14,6 +14,7 @@ class Database {
 
     private function __construct() {
         try {
+            //si no le enviamos parametros porel .env usamos estos por defecto que son los locales
             $host = $_ENV['DB_HOST'] ?? 'localhost';
             $dbname = $_ENV['DB_NAME'] ?? 'pixelbox';
             $user = $_ENV['DB_USER'] ?? 'root';
@@ -55,7 +56,7 @@ class Database {
     }
 
     /**
-     * Ejecutar query que retorna un resultado
+     * Ejecutar query que devuelve un solo resultado
      */
     public function queryOne(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
@@ -72,7 +73,7 @@ class Database {
     }
 
     /**
-     * Obtener último ID insertado
+     * Obtener último ID insertado para que se pueda usar en los insert de las tablas
      */
     public function lastInsertId() {
         return $this->pdo->lastInsertId();

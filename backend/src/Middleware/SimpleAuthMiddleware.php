@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class SimpleAuthMiddleware
 {
-    private $authModel;
+    private Auth $authModel;
 
     public function __construct()
     {
@@ -17,7 +17,7 @@ class SimpleAuthMiddleware
 
     public function __invoke(Request $request, $handler)
     {
-        // Para requests POST/PUT/DELETE, verificar credenciales
+        // Para requests POST/PUT/DELETE, verificar que eres o jugador_pro o admin
         if (in_array($request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
             $body = $request->getParsedBody();
 
@@ -25,7 +25,7 @@ class SimpleAuthMiddleware
                 $response = new \Slim\Psr7\Response();
                 $response->getBody()->write(json_encode([
                     'success' => false,
-                    'message' => 'Usuario y contraseña requeridos para esta operación'
+                    'message' => 'Usuario y contraseña requeridos para esta acción'
                 ]));
                 return $response
                     ->withHeader('Content-Type', 'application/json')

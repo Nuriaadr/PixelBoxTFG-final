@@ -45,24 +45,19 @@ $app->options('/{routes:.+}', function (Request $request, Response $response) {
 });
 
 // =====================================================
-// RUTAS - AUTENTICACIÓN (SIMPLIFICADO)
+// RUTAS - AUTENTICACIÓN 
 // =====================================================
 $app->post('/api/auth/login', [$authController, 'login']);
 $app->post('/api/auth/verify', [$authController, 'verify']);
 
 // =====================================================
-// RUTAS - USUARIOS (SIMPLIFICADO)
+// RUTAS - USUARIOS 
 // =====================================================
 $app->get('/api/users', [$userController, 'getAll']);
 $app->get('/api/users/{id}', [$userController, 'getById']);
 $app->put('/api/users/{id}', [$userController, 'update'])->add(new SimpleAuthMiddleware());
 $app->delete('/api/users/{id}', [$userController, 'delete'])->add(new SimpleAuthMiddleware());
-
-// Perfil del usuario autenticado
-$app->get('/api/me', [$userController, 'getProfile'])->add(new SimpleAuthMiddleware());
-$app->put('/api/me', [$userController, 'updateProfile'])->add(new SimpleAuthMiddleware());
-
-// Seguidores
+// Seguidores y stats
 $app->get('/api/users/{id}/followers', [$userController, 'getFollowers']);
 $app->get('/api/users/{id}/following', [$userController, 'getFollowing']);
 $app->post('/api/users/{id}/follow', [$userController, 'follow'])->add(new SimpleAuthMiddleware());
@@ -70,7 +65,7 @@ $app->delete('/api/users/{id}/follow', [$userController, 'unfollow'])->add(new S
 $app->get('/api/users/{id}/stats', [$userController, 'getStats']);
 
 // =====================================================
-// RUTAS - JUEGOS (SIMPLIFICADO)
+// RUTAS - JUEGOS
 // =====================================================
 $app->get('/api/games', [$gameController, 'getAll']);
 $app->get('/api/games/genres', [$gameController, 'getGenres']);
@@ -87,7 +82,7 @@ $app->delete('/api/games/{id}', [$gameController, 'delete'])->add(new SimpleAuth
 
 
 // =====================================================
-// RUTAS - BIBLIOTECA (SIMPLIFICADO)
+// RUTAS - BIBLIOTECA
 // =====================================================
 $app->get('/api/users/{userId}/library', [$libraryController, 'getAll']);
 $app->get('/api/users/{userId}/library/stats', [$libraryController, 'getStats']);
@@ -98,19 +93,18 @@ $app->delete('/api/users/{userId}/library/{gameId}', [$libraryController, 'remov
 $app->get('/api/users/{userId}/library/{estado}', [$libraryController, 'getByState']);
 
 // =====================================================
-// RUTAS - FAVORITOS (SIMPLIFICADO)
+// RUTAS - FAVORITOS
 // =====================================================
 $app->get('/api/users/{userId}/favorites', [$favoriteController, 'getAll']);
 $app->get('/api/users/{userId}/favorites/count', [$favoriteController, 'getCount']);
 $app->post('/api/users/{userId}/favorites/{gameId}', [$favoriteController, 'add'])->add(new SimpleAuthMiddleware());
 $app->delete('/api/users/{userId}/favorites/{gameId}', [$favoriteController, 'remove'])->add(new SimpleAuthMiddleware());
-
+$app->get('/api/users/{userId}/favorites/{gameId}', [$favoriteController, 'check'])->add(new SimpleAuthMiddleware());
 // =====================================================
-// RUTAS - RESEÑAS (SIMPLIFICADO)
+// RUTAS - RESEÑAS
 // =====================================================
 $app->get('/api/games/{id}/reviews', [$reviewController, 'getByGame']);
 $app->get('/api/reviews/{id}', [$reviewController, 'getById']);
 $app->post('/api/games/{id}/reviews', [$reviewController, 'create'])->add(new SimpleAuthMiddleware());
 
-// Ejecutar la aplicación
 $app->run();
