@@ -23,6 +23,15 @@ $dotenv->load();
 // Crear aplicación Slim
 $app = AppFactory::create();
 $app->addBodyParsingMiddleware();
+$app->add(function (Request $request, $handler) {
+    $response = $handler->handle($request);
+    return $response
+        ->withHeader('Access-Control-Allow-Origin', $_ENV['CORS_ORIGIN'] ?? '*')
+        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
+        ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
+        ->withHeader('Content-Type', 'application/json');
+});
+$app->addErrorMiddleware(true, true, true);
 
 // Instanciar controllers
 $userController = new UserController();
@@ -32,14 +41,7 @@ $libraryController = new LibraryController();
 $favoriteController = new FavoriteController();
 $authController = new AuthController();
 
-$app->add(function (Request $request, $handler) {
-    $response = $handler->handle($request);
-    return $response
-        ->withHeader('Access-Control-Allow-Origin', $_ENV['CORS_ORIGIN'] ?? '*')
-        ->withHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, PATCH, OPTIONS')
-        ->withHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization')
-        ->withHeader('Content-Type', 'application/json');
-});
+
 
 $app->options('/{routes:.+}', function (Request $request, Response $response) {
     return $response;

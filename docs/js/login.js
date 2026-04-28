@@ -55,6 +55,6 @@ document
       }
     } catch (error) {
       console.error("Error:", error);
-      errorPassword.textContent = "No se pudo conectar con el servidor";
+      errorPassword.textContent = "No se pudo conectar con el servidor, comprueba las credenciales e inténtalo de nuevo.";
     }
   });
