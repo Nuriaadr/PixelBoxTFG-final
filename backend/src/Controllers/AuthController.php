@@ -52,7 +52,7 @@ class AuthController
                     'id'       => $user['id'],
                     'username' => $user['username'],
                     'email'    => $user['email'],
-                    'role'     => $user['role'], // era 'rol', corregido a 'role'
+                    'role'     => $user['role'], 
                 ],
             ]));
 
