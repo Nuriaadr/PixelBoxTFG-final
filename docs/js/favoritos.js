@@ -1,105 +1,109 @@
 // ===================== SISTEMA DE FAVORITOS =====================
-// Este archivo entero necesita refactorización para usar API PHP
-// Todas las operaciones CRUD deben implementarse en PHP con Slim
-// - CREATE: POST /api/user/{userId}/favorites/{gameId} (agregar favorito)
-// - READ: GET /api/user/{userId}/favorites (obtener favoritos)
-// - DELETE: DELETE /api/user/{userId}/favorites/{gameId} (eliminar favorito)
 
-// Obtener favoritos del usuario
+const user = JSON.parse(localStorage.getItem("usuario"));
 
-/**
- * ELIMINAR - CRUD READ: Implementar en PHP
- * Reemplazar con API GET /api/user/{userId}/favorites
- */
-
-function getFavoritos(usuario) {
-  const key = `favoritos_${usuario}`;
-  return JSON.parse(localStorage.getItem(key) || "[]");
-}
-
-// Guardar favoritos del usuario
-/**
- * CRUD CREATE/UPDATE: Implementar en PHP
- * Reemplazar con API POST /api/user/{userId}/favorites
- */
-
-function saveFavoritos(usuario, favoritos) {
-  const key = `favoritos_${usuario}`;
-  localStorage.setItem(key, JSON.stringify(favoritos));
+// Verificar si un juego es favorito
+async function isFavorito(gameId) {
+    if (!user) return false;
+    try {
+        const response = await fetch(`${API_URL}/api/users/${user.id}/favorites/${gameId}`, {
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+        const data = await response.json();
+        return data.success ? data.data.is_favorite : false;
+    } catch (error) {
+        console.error('Error comprobando favorito:', error);
+        return false;
+    }
 }
 
 // Añadir juego a favoritos
-/**
- * REFACTORIZAR - CRUD CREATE: Implementar en PHP
- * Reemplazar con API POST /api/user/{userId}/favorites/{gameId}
- */
-function addFavorito(usuario, nombreJuego) {
-  const favoritos = getFavoritos(usuario);
-  if (!favoritos.includes(nombreJuego)) {
-    favoritos.push(nombreJuego);
-    saveFavoritos(usuario, favoritos);
-    return true;
-  }
-  return false;
+async function addFavorito(gameId) {
+    if (!user) return false;
+    try {
+        const response = await fetch(`${API_URL}/api/users/${user.id}/favorites/${gameId}`, {
+            method: 'POST',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+        const data = await response.json();
+        return data.success;
+    } catch (error) {
+        console.error('Error añadiendo favorito:', error);
+        return false;
+    }
 }
 
 // Eliminar juego de favoritos
-/**
- * REFACTORIZAR - CRUD DELETE: Implementar en PHP
- * Reemplazar con API DELETE /api/user/{userId}/favorites/{gameId}
- */
-function removeFavorito(usuario, nombreJuego) {
-  const favoritos = getFavoritos(usuario);
-  const index = favoritos.indexOf(nombreJuego);
-  if (index > -1) {
-    favoritos.splice(index, 1);
-    saveFavoritos(usuario, favoritos);
-    return true;
-  }
-  return false;
+async function removeFavorito(gameId) {
+    if (!user) return false;
+    try {
+        const response = await fetch(`${API_URL}/api/users/${user.id}/favorites/${gameId}`, {
+            method: 'DELETE',
+            headers: { 'Authorization': `Bearer ${localStorage.getItem('token')}` }
+        });
+        const data = await response.json();
+        return data.success;
+    } catch (error) {
+        console.error('Error eliminando favorito:', error);
+        return false;
+    }
 }
 
-// Alternar favorito
-/**
- * REFACTORIZAR - CRUD CREATE/DELETE: Implementar en PHP
- * Reemplazar con API POST/DELETE /api/user/{userId}/favorites/{gameId}/toggle
- */
-function toggleFavorito(usuario, nombreJuego) {
-  const favoritos = getFavoritos(usuario);
-  const index = favoritos.indexOf(nombreJuego);
-  
-  if (index > -1) {
-    favoritos.splice(index, 1);
-  } else {
-    favoritos.push(nombreJuego);
-  }
-  
-  saveFavoritos(usuario, favoritos);
-  return index === -1; // Devuelve true si fue añadido, false si fue eliminado
+//añade o elimina según estado actual
+async function toggleFavorito(gameId) {
+    const esFavorito = await isFavorito(gameId);
+    if (esFavorito) {
+        return await removeFavorito(gameId);
+    } else {
+        return await addFavorito(gameId);
+    }
 }
 
-// Verificar si un juego está en favoritos
-function isFavorito(usuario, nombreJuego) {
-  const favoritos = getFavoritos(usuario);
-  return favoritos.includes(nombreJuego);
-}
+//Obtener todos los favoritos del usuario
+async function getFavoritosConDatos() {
+    if (!user) return [];
+    try {
+        const response = await fetch(`${API_URL}/api/users/${user.id}/favorites`);
+        const data = await response.json();
+        if (!data.success) return [];
 
-// Obtener todos los juegos favoritos 
-function getFavoritosConDatos(usuario) {
-  const favoritos = getFavoritos(usuario);
-  return GAMES_DATA.filter(game => 
-    favoritos.includes(game.nombre)
-  );
+        //Mapeamos al formato que usa el frontend
+        return data.data.map(game => ({
+            id: game.id,
+            nombre: game.title,
+            imagen: game.cover_image_url,
+            año: game.release_year,
+            desarrollador: game.developer,
+            descripcion: game.description,
+            rating: game.average_rating,
+            genero: game.genre,
+            plataforma: game.platform
+        }));
+    } catch (error) {
+        console.error('Error obteniendo favoritos:', error);
+        return [];
+    }
 }
 
 // Actualizar botón de corazón según estado
 function updateHeartButton(btn, isFavorite) {
-  if (isFavorite) {
-    btn.classList.add("favorited");
+    if (isFavorite) {
+        btn.classList.add("favorited");
+    } else {
+        btn.classList.remove("favorited");
+    }
     btn.innerHTML = '<i data-lucide="heart"></i>';
-  } else {
-    btn.classList.remove("favorited");
-    btn.innerHTML = '<i data-lucide="heart"></i>';
-  }
-  lucide.createIcons();
+    lucide.createIcons();
 }
+
+// Ver si un juego es favorito (id 1 = Legends of Eldoria)
+isFavorito(1).then(r => console.log('¿Es favorito?', r));
+
+// Añadir a favoritos
+addFavorito(1).then(r => console.log('¿Añadido?', r));
+
+// Ver todos los favoritos
+getFavoritosConDatos().then(r => console.log('Favoritos:', r));
+
+// Eliminar de favoritos
+removeFavorito(1).then(r => console.log('¿Eliminado?', r));
