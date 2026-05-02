@@ -71,4 +71,4 @@ Abre `docs/index.html` con Live Server o accede directamente desde el navegador.
 
 ##  Autor
 
-Desarrollado como Trabajo de Fin de Grado ppor el equipo Penracode :)
+Desarrollado como Trabajo de Fin de Grado por el equipo Pentacode :)
