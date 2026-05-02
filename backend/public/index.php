@@ -18,7 +18,7 @@ $dotenv->load();
 
 $app = AppFactory::create();
 
-$app->setBasePath('/PixelBoxTFGPruebas/backend/public');
+$app->setBasePath('/PixelBoxTFG-master/backend/public'); //ajusta esto a tu ruta base si es diferente jiji
 $app->addBodyParsingMiddleware();//Middleware para parsear el cuerpo de las peticiones, necesario para manejar JSON en POST, PUT, etc.
 
 //Middleware para manejar CORS y establecer el tipo de contenido a JSON
