@@ -1,19 +1,74 @@
-# Proyecto HTML y CSS con funcionalidad parcial de JavaScript
+# PixelBox
+
+PixelBox es una plataforma web para gamers donde puedes organizar tu colección de videojuegos, escribir reseñas, marcar favoritos y conectar con otros jugadores.
 
 ## Descripción
-Este proyecto consiste en una página web desarrollada con HTML y CSS, además, presenta ciertas funcionalidades de JavaScript para hacer más fluida y real la experiencia de usuario. Está enfocada en el diseño responsive para adaptarse a distintos dispositivos (móvil, escritorio y tablet). Destinada a una aplicación tipo Letterboxd, pero orientada hacia la comunidad gamer, sin ánimo de lucro. 
 
----
+PixelBox permite a los usuarios:
+- Explorar y buscar videojuegos
+- Gestionar su biblioteca personal con estados (jugando, completado, pendiente, abandonado)
+- Marcar juegos como favoritos
+- Escribir y leer reseñas de la comunidad
+- Ver y editar su perfil de usuario
+- Seguir a otros jugadores
+- Panel de administración para gestionar juegos y usuarios
 
-## Instrucciones de ejecución
+## Tecnologías utilizadas
 
-Para ejecutar el proyecto en local, sigue estos pasos:
+### Backend
+- **PHP 8.0** con **Slim Framework 4**
+- **MySQL** como base de datos
+- Arquitectura **MVC** (Modelos, Controladores, Vistas)
+- **PDO** para la conexión a la base de datos
+- **vlucas/phpdotenv** para variables de entorno
 
-1. Clona este repositorio en tu máquina local:
-   ```bash
-   git clone https://github.com/Nuriaadr/PixelBoxTFG-master.git
-   
-   cd PixelBoxTFG-master
+### Frontend
+- **HTML5**, **CSS3** y **JavaScript** vanilla
+- **Lucide Icons** para los iconos
+- Comunicación con el backend mediante **Fetch API**
 
-Abre el archivo index.html en tu navegador:
-Puedes hacer doble clic en el archivo, usar una extensión como Live Server en VS Code o acceder mediante el link de GitHub Pages. 
+## Instalación y configuración local
+
+### Requisitos previos
+- **WAMP** o **XAMPP** con PHP 8.0+
+- **MySQL**
+- **Composer**
+
+### Pasos
+
+**1. Clonar el repositorio**
+```bash
+git clone https://github.com/Nuriaadr/PixelBoxTFG-final.git
+```
+
+**2. Instalar dependencias del backend**
+```bash
+cd PixelBoxTFG-final/backend
+composer install
+```
+
+**3. Configurar variables de entorno**
+
+Copia el archivo `.env.example` y renómbralo a `.env`:
+```bash
+cp .env.example .env
+```
+
+Edita el `.env` con tus datos.
+
+**4. Crear la base de datos**
+
+Abre phpMyAdmin y ejecuta el script `database.sql` incluido en el proyecto.
+
+**5. Configurar la URL del frontend**
+
+Edita `docs/js/config.js` con la ruta correcta de tu instalación local.
+
+
+**6. Abrir el frontend**
+
+Abre `docs/index.html` con Live Server o accede directamente desde el navegador.
+
+##  Autor
+
+Desarrollado como Trabajo de Fin de Grado por el equipo Pentacode :)
