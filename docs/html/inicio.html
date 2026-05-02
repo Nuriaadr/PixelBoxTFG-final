@@ -41,7 +41,7 @@
 
         <div class="nav-icons">
             <i data-lucide="search"></i>
-            
+
             <div class="user-mini-avatar" id="userAvatar">
             </div>
         </div>
@@ -73,7 +73,8 @@
             </div>
 
             <div class="hero-buttons">
-                <a href="detalles_juego.html?titulo=Cyberpunk%20Chronicles&imagen=../img/img4.webp&a%C3%B1o=2025&descripcion=Sumérgete%20en%20una%20ciudad%20futurista%20donde%20la%20tecnolog%C3%ADa%20y%20la%20humanidad%20colisionan.%20Toma%20decisiones%20que%20dar%C3%A1n%20forma%20al%20destino%20de%20Night%20City.&rating=4.5&desarrollador=Neon%20Games&genero=Acción&plataforma=PC" class="btn-primary" style="text-decoration: none; display: inline-block;">Ver detalles</a>
+                <a href="detalles_juego.html?id=4&titulo=Cyberpunk%20Chronicles&imagen=../img/img4.webp&año=2025&descripcion=Sumérgete%20en%20una%20ciudad%20futurista%20donde%20la%20tecnología%20y%20la%20humanidad%20colisionan.%20Toma%20decisiones%20que%20darán%20forma%20al%20destino%20de%20Night%20City.&rating=4.5&desarrollador=Neon%20Games&genero=Acción&plataforma=PC"
+                    class="btn-primary" style="text-decoration: none; display: inline-block;">Ver detalles</a>
                 <button class="btn-secondary" id="addGameBtn">Agregar a biblioteca</button>
             </div>
 
@@ -223,12 +224,7 @@
     <div id="searchModal" class="modal hidden">
         <div class="modal-content search-modal-content">
             <div class="search-input-wrapper">
-                <input 
-                    type="text" 
-                    id="searchInput" 
-                    placeholder="Busca un juego por nombre..."
-                    class="search-input"
-                >
+                <input type="text" id="searchInput" placeholder="Busca un juego por nombre..." class="search-input">
                 <button id="closeSearchModal" class="search-close-btn" title="modal busqueda">
                     <i data-lucide="x"></i>
                 </button>
@@ -248,6 +244,7 @@
             <button id="closeModal" class="btn-primary">Aceptar</button>
         </div>
     </div>
+    <script src="../js/config.js"></script>
     <script src="../js/global.js"></script>
     <script src="../js/search.js"></script>
     <script src="../js/favoritos.js"></script>

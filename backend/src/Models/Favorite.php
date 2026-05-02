@@ -8,7 +8,7 @@ use PDOException;
 
 class Favorite
 {
-    private $db;
+    private Database $db;
 
     public function __construct()
     {
@@ -18,16 +18,16 @@ class Favorite
     /**
      * Obtener todos los favoritos del usuario
      */
-    public function getByUser($userId)
+    public function getByUser( int $userId)
     {
         try {
             $conn = $this->db->getConnection();
             $stmt = $conn->prepare(
-                "SELECT g.*, f.user_id
-                 FROM favorites f
-                 JOIN games g ON f.game_id = g.id
-                 WHERE f.user_id = ?
-                 ORDER BY g.nombre ASC"
+                "SELECT games.*, favorites.user_id
+                 FROM favorites
+                 JOIN games ON favorites.game_id = games.id
+                 WHERE favorites.user_id = ?
+                 ORDER BY games.title ASC"
             );
             $stmt->execute([$userId]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
@@ -39,7 +39,7 @@ class Favorite
     /**
      * Verificar si juego es favorito
      */
-    public function isFavorite($userId, $gameId)
+    public function isFavorite(int $userId, int $gameId): bool
     {
         try {
             $conn = $this->db->getConnection();
@@ -56,24 +56,24 @@ class Favorite
     /**
      * Agregar favorito
      */
-    public function add($userId, $gameId)
+    public function add(int $userId, int $gameId)
     {
         try {
             $conn = $this->db->getConnection();
 
-            // Verificar que el juego existe
+            //Verificar que el juego existe
             $stmt = $conn->prepare("SELECT id FROM games WHERE id = ?");
             $stmt->execute([$gameId]);
             if (!$stmt->fetch()) {
-                throw new Exception("Game not found");
+                throw new Exception("Juego no encontrado");
             }
 
-            // Verificar que no es ya favorito
+            //Verificar que no es ya favorito
             if ($this->isFavorite($userId, $gameId)) {
-                throw new Exception("Game already in favorites");
+                throw new Exception("El juego ya está en favoritos");
             }
 
-            // Agregar favorito
+            //Agregar favorito
             $stmt = $conn->prepare(
                 "INSERT INTO favorites (user_id, game_id) VALUES (?, ?)"
             );
@@ -90,14 +90,14 @@ class Favorite
     /**
      * Eliminar favorito
      */
-    public function remove($userId, $gameId)
+    public function remove(int $userId, int $gameId)
     {
         try {
             $conn = $this->db->getConnection();
             
             // Verificar que es favorito
             if (!$this->isFavorite($userId, $gameId)) {
-                throw new Exception("Game is not in favorites");
+                throw new Exception("El juego no está en favoritos");
             }
 
             $stmt = $conn->prepare(
@@ -116,7 +116,7 @@ class Favorite
     /**
      * Obtener cantidad de favoritos del usuario
      */
-    public function getCount($userId)
+    public function getCount(int $userId): int
     {
         try {
             $conn = $this->db->getConnection();
@@ -125,11 +125,9 @@ class Favorite
             );
             $stmt->execute([$userId]);
             $result = $stmt->fetch(\PDO::FETCH_ASSOC);
-            return $result['count'] ?? 0;
+            return (int)($result['count'] ?? 0);
         } catch (PDOException $e) {
             throw new Exception("Error contando favoritos: " . $e->getMessage());
         }
     }
-
-
 }

@@ -17,7 +17,9 @@ class AuthController
 
     /**
      * POST /api/auth/login
-     * Solo @jugador_pro y @admin pueden loguearse
+     * Solo @jugador_pro y @admin pueden loguearse en nuestra app pero bueno, el login es necesario para obtener el id del usuario y su rol, 
+     * que se necesitan para otras funcionalidades como seguir o dejar de seguir
+     * agregar juegos a la biblioteca, etc.
      */
     public function login(Request $request, Response $response): Response
     {
@@ -35,14 +37,6 @@ class AuthController
             $username = trim($body['username']);
             $password = $body['password'];
 
-            if (!in_array($username, ['@jugador_pro', '@admin'])) {
-                $response->getBody()->write(json_encode([
-                    'success' => false,
-                    'message' => 'Acceso denegado',
-                ]));
-                return $response->withHeader('Content-Type', 'application/json')->withStatus(403);
-            }
-
             $user = $this->authModel->authenticate($username, $password);
 
             if (!$user) {
@@ -55,12 +49,12 @@ class AuthController
 
             $response->getBody()->write(json_encode([
                 'success' => true,
-                'message' => 'Login successful',
+                'message' => 'Login hecho',
                 'user'    => [
                     'id'       => $user['id'],
                     'username' => $user['username'],
                     'email'    => $user['email'],
-                    'rol'      => $user['rol'],
+                    'role'     => $user['role'], 
                 ],
             ]));
 
@@ -73,9 +67,10 @@ class AuthController
             return $response->withHeader('Content-Type', 'application/json')->withStatus(500);
         }
     }
-
     /**
-     * POST /api/auth/verify - Verificar credenciales
+     * POST /api/auth/verify
+     * realmente se usa esta ruta? no se si es necesaria, pero bueno, la dejo por si acaso, que ya llevo mucho tiempo aqui sentada
+     * y empiezo a delirar, aunque podria ser util la funcion supongo para verificar las credenciales antes de realizar alguna accion
      */
     public function verify(Request $request, Response $response): Response
     {
@@ -98,7 +93,7 @@ class AuthController
             if (!$user) {
                 $response->getBody()->write(json_encode([
                     'success' => false,
-                    'message' => 'Invalid credentials',
+                    'message' => 'Credenciales invalidas',
                 ]));
                 return $response->withHeader('Content-Type', 'application/json')->withStatus(401);
             }
@@ -109,7 +104,7 @@ class AuthController
                     'id'       => $user['id'],
                     'username' => $user['username'],
                     'email'    => $user['email'],
-                    'rol'      => $user['rol'],
+                    'role'      => $user['role'],
                 ],
             ]));
 

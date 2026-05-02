@@ -9,11 +9,12 @@ use PDO;
 use PDOException;
 
 class Database {
-    private $pdo;
+    private PDO $pdo;
     private static $instance = null;
 
     private function __construct() {
         try {
+            //si no le enviamos parametros porel .env usamos estos por defecto que son los locales se pueden cmabiar segun necesidad
             $host = $_ENV['DB_HOST'] ?? 'localhost';
             $dbname = $_ENV['DB_NAME'] ?? 'pixelbox';
             $user = $_ENV['DB_USER'] ?? 'root';
@@ -48,16 +49,16 @@ class Database {
     /**
      * Ejecutar query SELECT
      */
-    public function query($sql, $params = []) {
+    public function query(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetchAll();
     }
 
     /**
-     * Ejecutar query que retorna un resultado
+     * Ejecutar query que devuelve un solo resultado
      */
-    public function queryOne($sql, $params = []) {
+    public function queryOne(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
         $stmt->execute($params);
         return $stmt->fetch();
@@ -66,13 +67,13 @@ class Database {
     /**
      * Ejecutar query INSERT/UPDATE/DELETE
      */
-    public function execute($sql, $params = []) {
+    public function execute(string $sql, array $params = []) {
         $stmt = $this->pdo->prepare($sql);
         return $stmt->execute($params);
     }
 
     /**
-     * Obtener último ID insertado
+     * Obtener último ID insertado para que se pueda usar en los insert de las tablas
      */
     public function lastInsertId() {
         return $this->pdo->lastInsertId();

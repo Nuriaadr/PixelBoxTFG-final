@@ -1,57 +1,61 @@
-// ===================== LOGIN =====================
-// Reemplazar credenciales hardcodeadas con llamadas API a /api/auth/login
-
 lucide.createIcons();
 
-let usuario = document.getElementById("usuario");
-let password = document.getElementById("password");
+const usuario = document.getElementById("usuario");
+const password = document.getElementById("password");
+const errorUsuario = document.getElementById("errorUsuario");
+const errorPassword = document.getElementById("errorPassword");
 
-let errorUsuario = document.getElementById("errorUsuario");
-let errorPassword = document.getElementById("errorPassword");
+document
+  .getElementById("loginForm")
+  .addEventListener("submit", async function (e) {
+    e.preventDefault();
 
-document.getElementById("loginForm").addEventListener("submit", function (e) {
-  e.preventDefault();
+    errorUsuario.textContent = "";
+    errorPassword.textContent = "";
 
-  let valido = true;
+    let valido = true;
 
-  errorUsuario.textContent = "";
-  errorPassword.textContent = "";
-
-  if (usuario.value.trim() === "" || usuario.value.length < 4) {
-    errorUsuario.textContent = "El usuario debe tener al menos 4 caracteres";
-    valido = false;
-  }
-
-  if (password.value.trim() === "" || password.value.length < 6) {
-    errorPassword.textContent =
-      "La contraseña debe tener al menos 6 caracteres";
-    valido = false;
-  }
-
-  if (valido) {
-    /**
-     *  Reemplazar autenticación hardcodeada con API backend
-     *
-     * API backend: POST /api/auth/login
-     *
-     */
-    
-    if (usuario.value === "admin" && password.value === "admin123") {
-      localStorage.setItem("usuario", "admin");
-      localStorage.setItem("rol", "admin");
-      window.location.href = "html/vista_admin.html";
-    } else if (
-      usuario.value === "jugador_pro" &&
-      password.value === "password"
-    ) {
-      localStorage.setItem("usuario", "@jugador_pro");
-      localStorage.setItem("rol", "jugador");
-      window.location.href = "html/inicio.html";
-    } else {
-      errorPassword.textContent =
-        "Usuario o contraseña incorrecta";
+    if (usuario.value.trim() === "" || usuario.value.length < 4) {
+      errorUsuario.textContent = "El usuario debe tener al menos 4 caracteres";
+      valido = false;
     }
-  }
-});
 
-let rol = localStorage.getItem("rol");
+    if (password.value.trim() === "" || password.value.length < 6) {
+      errorPassword.textContent =
+        "La contraseña debe tener al menos 6 caracteres";
+      valido = false;
+    }
+
+    if (!valido) return;
+
+    try {
+      const response = await fetch(`${API_URL}/api/auth/login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          username: usuario.value.trim(),
+          password: password.value,
+        }),
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        //Esto es para sobretodo poder hacer las acciones de admin con el middleware 
+        localStorage.setItem("usuario", JSON.stringify(data.user));
+        localStorage.setItem("rol", data.user.role);
+        localStorage.setItem("password", password.value);
+        if (data.user.role === "admin") {
+          window.location.href = "html/vista_admin.html";
+        } else {
+          window.location.href = "html/inicio.html";
+        }
+      } else {
+        errorPassword.textContent =
+          data.message || "Usuario o contraseña incorrecta";
+      }
+    } catch (error) {
+      console.error("Error:", error);
+      errorPassword.textContent = "No se pudo conectar con el servidor";
+    }
+  });

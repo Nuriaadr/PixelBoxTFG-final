@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class FavoriteController
 {
-    private $favoriteModel;
+    private Favorite $favoriteModel;
 
     public function __construct()
     {
@@ -46,7 +46,6 @@ class FavoriteController
             $userId     = $args['userId'];
             $gameId     = $args['gameId'];
             $isFavorite = $this->favoriteModel->isFavorite($userId, $gameId);
-
             $response->getBody()->write(json_encode([
                 'success' => true,
                 'data'    => ['is_favorite' => $isFavorite],
@@ -99,7 +98,7 @@ class FavoriteController
 
             $response->getBody()->write(json_encode([
                 'success' => true,
-                'message' => 'Game removed from favorites',
+                'message' => 'Juego eliminado de fvoritos',
             ]));
 
             return $response->withHeader('Content-Type', 'application/json')->withStatus(200);

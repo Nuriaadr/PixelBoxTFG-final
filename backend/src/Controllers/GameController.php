@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class GameController
 {
-    private $gameModel;
+    private Game $gameModel;
 
     public function __construct()
     {
@@ -112,7 +112,7 @@ class GameController
         try {
             $body = $request->getParsedBody();
 
-            $required = ['nombre', 'año', 'desarrollador', 'descripcion', 'genero', 'plataforma', 'rating'];
+            $required = ['title', 'release_year', 'developer', 'description', 'genre', 'platform', 'average_rating'];
             foreach ($required as $field) {
                 if (empty($body[$field])) {
                     return $this->json($response, [
@@ -122,10 +122,10 @@ class GameController
                 }
             }
 
-            $year   = intval($body['año']);
-            $rating = floatval($body['rating']);
-
-            if ($year < 1980 || $year > date('Y') + 5) {
+            $year   = intval($body['release_year']);
+            $rating = floatval($body['average_rating']);
+            //fun fact:el primer videojuego salio en 1950 ajajjajaja
+            if ($year < 1950 || $year > date('Y')) {
                 return $this->json($response, ['success' => false, 'message' => 'Año inválido'], 400);
             }
 
@@ -134,14 +134,14 @@ class GameController
             }
 
             $gameId = $this->gameModel->create(
-                $body['nombre'],
+                $body['title'],
                 $year,
-                $body['desarrollador'],
-                $body['descripcion'],
-                $body['genero'],
-                $body['plataforma'],
+                $body['developer'],
+                $body['description'],
+                $body['genre'],
+                $body['platform'],
                 $rating,
-                $body['imagen_url'] ?? null
+                $body['cover_image_url'] ?? null
             );
 
             return $this->json($response, [

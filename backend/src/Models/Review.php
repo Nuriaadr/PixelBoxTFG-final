@@ -8,7 +8,7 @@ use PDOException;
 
 class Review
 {
-    private $db;
+    private Database $db;
 
     public function __construct()
     {
@@ -18,16 +18,16 @@ class Review
     /**
      * Obtener todas las reseñas de un juego
      */
-    public function getByGame($gameId)
+    public function getByGame(int $gameId)
     {
         try {
             $conn = $this->db->getConnection();
             $stmt = $conn->prepare(
-                "SELECT r.*, u.username, u.avatar_url
-                 FROM reviews r
-                 JOIN users u ON r.user_id = u.id
-                 WHERE r.game_id = ?
-                 ORDER BY r.fecha DESC"
+                "SELECT reviews.*, users.username, users.email
+                 FROM reviews
+                 JOIN users ON reviews.user_id = users.id
+                 WHERE reviews.game_id = ?
+                 ORDER BY reviews.created_at DESC"
             );
             $stmt->execute([$gameId]);
             return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
@@ -36,12 +36,10 @@ class Review
         }
     }
 
-
-
     /**
      * Obtener reseña del usuario para un juego
      */
-    public function getUserReviewForGame($userId, $gameId)
+    public function getUserReviewForGame(int $userId, int $gameId)
     {
         try {
             $conn = $this->db->getConnection();
@@ -52,22 +50,42 @@ class Review
             $stmt->execute([$userId, $gameId]);
             return $stmt->fetch(\PDO::FETCH_ASSOC);
         } catch (PDOException $e) {
-            throw new Exception("Error obteniendo la reseña del jugador:" . $e->getMessage());
+            throw new Exception("Error obteniendo la reseña del jugador: " . $e->getMessage());
         }
     }
 
+    /**
+     * Obtener todas las reseñas de un usuario
+     */
+    public function getByUser(int $userId)
+    {
+        try {
+            $conn = $this->db->getConnection();
+            $stmt = $conn->prepare(
+                "SELECT reviews.*, games.title, games.cover_image_url
+                 FROM reviews
+                 JOIN games ON reviews.game_id = games.id
+                 WHERE reviews.user_id = ?
+                 ORDER BY reviews.created_at DESC"
+            );
+            $stmt->execute([$userId]);
+            return $stmt->fetchAll(\PDO::FETCH_ASSOC) ?: [];
+        } catch (PDOException $e) {
+            throw new Exception("Error obteniendo reseñas del usuario: " . $e->getMessage());
+        }
+    }
 
     /**
      * Crear reseña
      */
-    public function create($gameId, $userId, $rating, $comentario = null, $es_spoiler = false)
+    public function create(int $gameId, int $userId, int $rating, string $content)
     {
         try {
             $conn = $this->db->getConnection();
 
             // Verificar que el usuario tenga el juego en su biblioteca
             $stmt = $conn->prepare(
-                "SELECT id FROM user_library WHERE user_id = ? AND game_id = ?"
+                "SELECT id FROM user_games WHERE user_id = ? AND game_id = ?"
             );
             $stmt->execute([$userId, $gameId]);
 
@@ -81,18 +99,40 @@ class Review
                 throw new Exception("El usuario ya tiene una reseña para este juego");
             }
 
+            // Validar rating
+            if ($rating < 1 || $rating > 5) {
+                throw new Exception("El rating debe estar entre 1 y 5");
+            }
+
             // Crear reseña
             $stmt = $conn->prepare(
-                "INSERT INTO reviews (game_id, user_id, rating, comentario, es_spoiler, fecha, ayudas_utiles)
-                 VALUES (?, ?, ?, ?, ?, NOW(), 0)"
+                "INSERT INTO reviews (user_id, game_id, rating, content)
+                 VALUES (?, ?, ?, ?)"
             );
 
-            $stmt->execute([$gameId, $userId, $rating, $comentario, $es_spoiler ? 1 : 0]);
-            return $this->db->lastInsertId();
+            $stmt->execute([$userId, $gameId, $rating, $content]);
+            return $conn->lastInsertId();
         } catch (PDOException $e) {
-            throw new Exception("Error creating review: " . $e->getMessage());
+            throw new Exception("Error creando reseña: " . $e->getMessage());
         } catch (Exception $e) {
             throw $e;
+        }
+    }
+    public function getById(int $id)
+    {
+        try {
+            $conn = $this->db->getConnection();
+            $stmt = $conn->prepare(
+                "SELECT reviews.*, users.username, games.title
+             FROM reviews
+             JOIN users ON reviews.user_id = users.id
+             JOIN games ON reviews.game_id = games.id
+             WHERE reviews.id = ?"
+            );
+            $stmt->execute([$id]);
+            return $stmt->fetch(\PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            throw new Exception("Error obteniendo reseña: " . $e->getMessage());
         }
     }
 }

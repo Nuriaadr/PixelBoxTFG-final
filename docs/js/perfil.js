@@ -1,527 +1,351 @@
-// ===================== PERFIL (USER PROFILE) =====================
-// CRUD OPERATIONS: Operaciones CRUD deben implementarse en PHP
-// - READ: GET /api/user/{userId}/profile (obtener perfil)
-// - UPDATE: PUT /api/user/{userId}/profile (actualizar bio, etc.)
-// - READ: GET /api/user/{userId}/biblioteca (obtener biblioteca para stats)
-// - READ: GET /api/user/{userId}/followers (obtener seguidores)
-document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
+document.addEventListener("DOMContentLoaded", async () => {
+    lucide.createIcons();
 
-  // ======================
-  // USUARIO
-  // ======================
-  let user = localStorage.getItem("usuario");
+    const userStr = localStorage.getItem("usuario");
+    const user = JSON.parse(userStr);
 
-  // Migrar usuario sin @ a con @
-  if (user && !user.startsWith("@")) {
-    user = "@" + user;
-    localStorage.setItem("usuario", user);
-  }
+    if (!user) {
+        window.location.href = "../index.html";
+        return;
+    }
 
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
+    const userAvatar = document.getElementById("userAvatar");
+    if (userAvatar) {
+        userAvatar.style.cursor = "pointer";
+        userAvatar.addEventListener("click", () => {
+            window.location.href = "perfil.html";
+        });
+    }
 
-  let userAvatar = document.getElementById("userAvatar");
-  if (userAvatar) {
-    userAvatar.style.cursor = "pointer";
-    userAvatar.addEventListener("click", () => {
-      window.location.href = "perfil.html";
-    });
-  }
-
-  let logoutBtn = document.getElementById("logoutBtn");
-  if (logoutBtn) {
     setupLogoutHandler();
-  }
 
-  // ======================
-  // CARGA DE DATOS DEL PERFIL
-  // ======================
-  const userData = USERS_DATA.find((u) => u.username === user);
-
-  if (userData) {
-    document.getElementById("profileUsername").textContent = userData.username;
-    document.getElementById("profileBio").textContent = userData.description;
-
-    // Cargar avatar
-    const avatarLarge = document.querySelector(".avatar-large");
-    if (avatarLarge && userData.avatar) {
-      avatarLarge.style.backgroundImage = `url(${userData.avatar})`;
-    }
-  }
-
-  // Verificar si hay bio guardada en localStorage
-  const savedBio = localStorage.getItem(`bio_${user}`);
-  if (savedBio) {
-    document.getElementById("profileBio").textContent = savedBio;
-  }
-
-  // ======================
-  // ESTADÍSTICAS DINÁMICAS DEL PERFIL
-  // ======================
-  function updateGameStats() {
-    // Solo calcular dinámicamente para @jugador_pro (usuario principal)
-    if (user !== "@jugador_pro") {
-      // Para otros usuarios, usar valores por defecto o del USERS_DATA
-      const userData = USERS_DATA.find((u) => u.username === user);
-      const totalGamesText = document.getElementById("totalGamesText");
-      const completedGamesText = document.getElementById("completedGamesText");
-
-      if (totalGamesText && userData) {
-        totalGamesText.textContent = userData.games || 0;
-      }
-      if (completedGamesText) {
-        completedGamesText.textContent = "0"; // Por defecto 0 para otros usuarios
-      }
-      return;
+    
+    async function cargarPerfil() {
+        try {
+            //carga los datos del perfil y los muestra en la página
+            const response = await fetch(`${API_URL}/api/users/${user.id}`);
+            const data = await response.json();
+            if (data.success) {
+                document.getElementById("profileUsername").textContent = data.data.username;
+                document.getElementById("profileBio").textContent = data.data.description || "Sin biografía"; //si no hay descripción se muestra algo por defecto  
+            }
+        } catch (error) {
+            console.error("Error cargando perfil:", error);
+        }
     }
 
-    // Para @jugador_pro: calcular desde la biblioteca real
-    const biblioteca = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-
-    // Contar juegos totales
-    const totalGames = biblioteca.length;
-
-    // Contar juegos completados
-    const completedGames = biblioteca.filter(
-      (juego) => juego.estado === "completado" || juego.estado === "terminado",
-    ).length;
-
-    // Actualizar elementos HTML
-    const totalGamesText = document.getElementById("totalGamesText");
-    const completedGamesText = document.getElementById("completedGamesText");
-
-    if (totalGamesText) {
-      totalGamesText.textContent = totalGames;
-    }
-    if (completedGamesText) {
-      completedGamesText.textContent = completedGames;
-    }
-  }
-
-  // Actualizar estadísticas iniciales
-  updateGameStats();
-
-  // Actualizar estadísticas cuando se regresa a la pestaña
-  window.addEventListener("focus", () => {
-    updateGameStats();
-  });
-
-  // ======================
-  // JUEGOS Y LOGROS
-  // ======================
-  // Los juegos se cargan de GAMES_DATA
-  // La biblioteca solo guarda referencias
-
-  // Cargar referencias de la biblioteca
-  let bibliotecaRaw = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-
-  let bibliotecaReferencias = bibliotecaRaw.map((item) => {
-    if (item.nombreJuego) {
-      return item;
-    } else if (item.nombre) {
-      return {
-        nombreJuego: item.nombre,
-        estado: item.estado || "pendiente",
-      };
-    }
-    // Si no tiene ninguno, asumir que es nombreJuego
-    else {
-      return {
-        nombreJuego: item,
-        estado: "pendiente",
-      };
-    }
-  });
-
-  localStorage.setItem("biblioteca", JSON.stringify(bibliotecaReferencias));
-
-  // Función para obtener juego completo desde GAMES_DATA
-  function obtenerJuegoCompleto(nombreJuego) {
-    const juego = GAMES_DATA.find(
-      (g) => g.nombre.toLowerCase() === nombreJuego.toLowerCase(),
-    );
-    if (juego) {
-      const ref = bibliotecaReferencias.find(
-        (b) => b.nombreJuego.toLowerCase() === juego.nombre.toLowerCase(),
-      );
-      return {
-        ...juego,
-        estado: ref?.estado || "pendiente",
-      };
-    }
-    return null;
-  }
-
-  // Obtener todos los juegos con datos
-  function obtenerTodosLosJuegos() {
-    return bibliotecaReferencias
-      .map((ref) => obtenerJuegoCompleto(ref.nombreJuego))
-      .filter((juego) => juego !== null);
-  }
-
-  let gamesData = obtenerTodosLosJuegos();
-
-  // Elementos del DOM
-  const tabs = document.querySelectorAll(".tab-btn");
-  const gameGrid = document.querySelector(".game-grid");
-
-  const mensaje = document.createElement("p");
-  mensaje.id = "noGamesMessage";
-  mensaje.textContent = "No hay juegos en este apartado";
-  mensaje.classList.add("hidden");
-
-  // Generar tarjetas de juegos dinámicamente con logros
-  function renderGameCards(filtro = "todos") {
-    gameGrid.innerHTML = "";
-
-    let juegosFiltrados = gamesData;
-
-    if (filtro !== "todos") {
-      juegosFiltrados = gamesData.filter((game) => {
-        if (filtro === "jugando") return game.estado === "jugando";
-        if (filtro === "completados") return game.estado === "completado";
-        if (filtro === "pendientes") return game.estado === "pendiente";
-        if (filtro === "abandonados") return game.estado === "abandonado";
-        return true;
-      });
+  
+    let biblioteca = [];
+    async function cargarBiblioteca() {
+        try {
+            //carga la biblioteca del usuario y la guarda en la variable biblioteca para usarla luego
+            const response = await fetch(`${API_URL}/api/users/${user.id}/library`);
+            const data = await response.json();
+            if (data.success && Array.isArray(data.data)) {
+                biblioteca = data.data.map(game => ({
+                    id: game.game_id,
+                    nombre: game.title,
+                    imagen: game.cover_image_url,
+                    año: game.release_year,
+                    desarrollador: game.developer,
+                    descripcion: game.description,
+                    rating: game.average_rating,
+                    genero: game.genre,
+                    plataforma: game.platform,
+                    estado: game.status || "pendiente"
+                }));
+            }
+        } catch (error) {
+            console.error("Error cargando biblioteca:", error);
+        }
     }
 
-    if (juegosFiltrados.length === 0) {
-      mensaje.classList.remove("hidden");
-      gameGrid.appendChild(mensaje);
-      return;
-    } else {
-      mensaje.classList.add("hidden");
+    // CARGAR STATS
+   
+    async function cargarStats() {
+        try {
+            const response = await fetch(`${API_URL}/api/users/${user.id}/stats`);
+            const data = await response.json();
+            if (data.success) {
+                //estadisticas de la pagina, para contadores y demas
+                const stats = data.data;
+                const total = stats.total_games || 0;
+                const completados = stats.completed_games || 0;
+                const jugando = stats.playing_games || 0;
+                const pendientes = stats.pending_games || 0;
+                const abandonados = biblioteca.filter(j => j.estado === "abandonado").length;
+
+                document.getElementById("totalGamesText").textContent = total;
+                document.getElementById("completedGamesText").textContent = completados;
+
+                const statCards = document.querySelectorAll(".stat-card h2");
+                //actualiza las tarjetas de estadísticas, si alguna tarjeta no se encuentra no se hace nada pero deberían encontrarse todas porque están en el HTML
+                if (statCards[0]) statCards[0].textContent = total;
+                if (statCards[1]) statCards[1].textContent = completados;
+                if (statCards[2]) statCards[2].textContent = jugando;
+                if (statCards[3]) statCards[3].textContent = pendientes;
+
+                //actualiza los contadores del perfil, lo mismo que antes
+                const quickStats = document.querySelectorAll(".quick-stats span");
+                if (quickStats[0]) quickStats[0].innerHTML = `<i data-lucide="trophy"></i> ${completados} completados`;
+                if (quickStats[1]) quickStats[1].innerHTML = `<i data-lucide="gamepad-2"></i> ${total} jugados`;
+
+                actualizarTabs(jugando, completados, pendientes, abandonados);
+                lucide.createIcons();
+            }
+        } catch (error) {
+            console.error("Error cargando stats:", error);
+        }
     }
 
-    const fragment = document.createDocumentFragment();
+    // CARGAR SEGUIDORES
+    async function cargarSeguidores() {
+        try {
+            //carga los seguidores y seguidos del usuario, los muestra en los modales correspondientes y devuelve un objeto con ambos arrays para usarlos luego
+            const [followersRes, followingRes] = await Promise.all([
+                fetch(`${API_URL}/api/users/${user.id}/followers`),
+                fetch(`${API_URL}/api/users/${user.id}/following`)
+            ]);
+            const followersData = await followersRes.json();
+            const followingData = await followingRes.json();
 
-    juegosFiltrados.forEach((game) => {
-      const params = new URLSearchParams({
-        titulo: game.nombre,
-        imagen: game.imagen,
-        año: game.año,
-        descripcion: game.descripcion,
-        rating: game.rating,
-        desarrollador: game.desarrollador || "Desarrollador Desconocido",
-        genero: game.genero || "Género Desconocido",
-        plataforma: game.plataforma || "Plataforma Desconocida"
-      }).toString();
+            if (followersData.success) {
+                document.getElementById("followerCountText").textContent = followersData.count;
+            }
+            if (followingData.success) {
+                document.getElementById("followingCountText").textContent = followingData.count;
+            }
 
-      const gameCard = document.createElement("div");
-      gameCard.className = "game-card";
-      gameCard.id = `game-${game.nombre}`;
-      gameCard.innerHTML = `
-        <a href="detalles_juego.html?${params}">
-          <div class="game-img">
-            <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
-          </div>
-          <h3>${game.nombre}</h3>
-          <p>${game.año}</p>
-        </a>
-      `;
-      fragment.appendChild(gameCard);
+            return {
+                followers: followersData.success ? followersData.data : [],
+                following: followingData.success ? followingData.data : []
+            };
+        } catch (error) {
+            console.error("Error cargando seguidores:", error);
+            return { followers: [], following: [] };
+        }
+    }
+
+    // RENDER JUEGOS
+    function renderGameCards(filtro = "jugando") {
+        //tarjetas de los juegos, si no hay juegos se muestra un mensaje informativo
+        const gameGrid = document.querySelector(".game-grid");
+        if (!gameGrid) return;
+        gameGrid.innerHTML = "";
+
+        //filtra los juegos según el filtro seleccionado, si el filtro es "todos" se muestran todos los juegos
+        const filtrados = filtro === "todos"
+            ? biblioteca
+            : biblioteca.filter(g => {
+                if (filtro === "jugando") return g.estado === "jugando";
+                if (filtro === "completados") return g.estado === "completado";
+                if (filtro === "pendientes") return g.estado === "pendiente";
+                if (filtro === "abandonados") return g.estado === "abandonado";
+                return true;
+            });
+
+        if (filtrados.length === 0) {
+            gameGrid.innerHTML = '<p style="text-align:center; padding: 32px; color: var(--text-muted);">No hay juegos en este apartado</p>';
+            return;
+        }
+
+        //renderiza las tarjetas de los juegos filtrados, si alguna información del juego no está disponible se muestra un valor por defecto
+        filtrados.forEach(game => {
+            const params = new URLSearchParams({
+                id: game.id,
+                titulo: game.nombre,
+                imagen: game.imagen,
+                año: game.año,
+                descripcion: game.descripcion || "",
+                rating: game.rating || 0,
+                desarrollador: game.desarrollador || "",
+                genero: game.genero || "",
+                plataforma: game.plataforma || ""
+            }).toString();
+
+            const card = document.createElement("div");
+            card.className = "game-card";
+            card.innerHTML = `
+                <a href="detalles_juego.html?${params}">
+                    <div class="game-img">
+                        <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
+                    </div>
+                    <h3>${game.nombre}</h3>
+                    <p>${game.año || ""}</p>
+                </a>
+            `;
+            gameGrid.appendChild(card);
+        });
+    }
+
+    // TABS
+    //función para actualizar el texto de los tabs con el número de juegos que hay en cada estado
+    function actualizarTabs(jugando, completados, pendientes, abandonados) {
+        document.getElementById("tab-jugando").textContent = `Jugando (${jugando})`;
+        document.getElementById("tab-completados").textContent = `Completados (${completados})`;
+        document.getElementById("tab-pendientes").textContent = `Pendientes (${pendientes})`;
+        document.getElementById("tab-abandonados").textContent = `Abandonados (${abandonados})`;
+    }
+
+    //evento para mostrar los juegos caundo haces click en los tabs, por defecto se muestran los de "jugando"
+    const tabs = document.querySelectorAll(".tab-btn");
+    tabs.forEach(tab => {
+        tab.addEventListener("click", () => {
+            tabs.forEach(t => t.classList.remove("active"));
+            tab.classList.add("active");
+            if (tab.id === "tab-jugando") renderGameCards("jugando");
+            else if (tab.id === "tab-completados") renderGameCards("completados");
+            else if (tab.id === "tab-pendientes") renderGameCards("pendientes");
+            else if (tab.id === "tab-abandonados") renderGameCards("abandonados");
+        });
     });
 
-    gameGrid.appendChild(fragment);
-  }
+    // MODAL SEGUIDORES
+    
+    let seguidoresData = { followers: [], following: [] };
+    function renderFollowersList(lista, containerId) {
+        const container = document.getElementById(containerId);
+        if (!container) return;
+        container.innerHTML = "";
 
-  // Renderizar juegos al cargar con filtro inicial
-  renderGameCards("jugando");
+        if (lista.length === 0) {
+            container.innerHTML = '<p style="text-align:center; padding: 32px; color: var(--text-muted);">No hay usuarios aquí aún</p>';
+            return;
+        }
 
-  // ======================
-  // MODAL DE SEGUIDORES
-  // ======================
-  const followersCounter = document.getElementById("followersCounter");
-  const followerCountText = document.getElementById("followerCountText");
-  const followersModal = document.getElementById("followersModal");
-  const closeFollowersModal = document.getElementById("closeFollowersModal");
-  const followersList = document.getElementById("followersList");
-
-  // Actualizar contador de seguidores dinámicamente
-  function updateFollowerCounter() {
-    const seguidores = getFollowersOfUser(user);
-    followerCountText.textContent = seguidores.length;
-  }
-
-  // actualización de contadores después de inicializar seguidores
-  setTimeout(() => {
-    updateFollowerCounter();
-    updateFollowingCounter();
-  }, 100);
-
-  function renderFollowers() {
-    followersList.innerHTML = "";
-
-    // Obtener seguidores dinámicamente del usuario actual
-    const seguidores = getFollowersOfUser(user);
-
-    if (seguidores.length === 0) {
-      followersList.innerHTML =
-        "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No tienes seguidores aún</p>";
-      return;
-    }
-
-    seguidores.forEach((follower) => {
-      const bio = localStorage.getItem(`bio_${follower.username}`) || follower.description;
-      const isFollowingUser = isFollowing(user, follower.username);
-      const buttonText = isFollowingUser ? "Dejar de seguir" : "Seguir";
-      const buttonClass = "btn-secondary follow-btn";
-
-      const followerCard = document.createElement("div");
-      followerCard.className = "follower-card";
-      followerCard.innerHTML = `
-        <div class="follower-avatar" style="background-image: url('${follower.avatar}')"></div>
-        <div class="follower-info">
-          <h3>${follower.username}</h3>
-          <p>${bio}</p>
-          <span class="follower-games">${follower.games} juegos</span>
-        </div>
-        <button class="${buttonClass}" data-username="${follower.username}">
-          ${buttonText}
-        </button>
-      `;
-      followersList.appendChild(followerCard);
-    });
-
-    // Añadir event listeners a los botones
-    document.querySelectorAll(".follow-btn").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const targetUser = e.target.dataset.username;
-        toggleFollow(user, targetUser);
-        // actualizar botones
-        renderFollowers();
-        updateFollowerCounter();
-      });
-    });
-
-    lucide.createIcons();
-  }
-
-  if (followersCounter) {
-    followersCounter.addEventListener("click", () => {
-      updateFollowerCounter();
-      renderFollowers();
-      followersModal?.classList.remove("hidden");
-    });
-  }
-
-  if (closeFollowersModal) {
-    closeFollowersModal.addEventListener("click", () => {
-      followersModal?.classList.add("hidden");
-    });
-  }
-
-  if (followersModal) {
-    followersModal.addEventListener("click", (e) => {
-      if (e.target === followersModal) {
-        followersModal.classList.add("hidden");
-      }
-    });
-  }
-
-  // ======================
-  // MODAL DE EDICIÓN DE PERFIL
-  // ======================
-  const editProfileBtn = document.getElementById("editProfileBtn");
-  const editProfileModal = document.getElementById("editProfileModal");
-  const closeEditModal = document.getElementById("closeEditModal");
-  const editProfileForm = document.getElementById("editProfileForm");
-  const editUsername = document.getElementById("editUsername");
-  const editBio = document.getElementById("editBio");
-
-  if (editProfileBtn) {
-    editProfileBtn.addEventListener("click", () => {
-      // Cargar datos actuales
-      if (editUsername) editUsername.value = user;
-      if (editBio) {
-        const currentBio =
-          localStorage.getItem(`bio_${user}`) || userData?.description || "";
-        editBio.value = currentBio;
-      }
-      editProfileModal?.classList.remove("hidden");
-    });
-  }
-
-  if (closeEditModal) {
-    closeEditModal.addEventListener("click", () => {
-      editProfileModal?.classList.add("hidden");
-    });
-  }
-
-  if (editProfileModal) {
-    editProfileModal.addEventListener("click", (e) => {
-      if (e.target === editProfileModal) {
-        editProfileModal.classList.add("hidden");
-      }
-    });
-  }
-
-  if (editProfileForm) {
-    editProfileForm.addEventListener("submit", (e) => {
-      e.preventDefault();
-      const newBio = editBio.value.trim();
-
-      // Guardar bio en localStorage
-      localStorage.setItem(`bio_${user}`, newBio);
-
-      // Actualizar la bio en la página
-      document.getElementById("profileBio").textContent = newBio;
-
-      // Cerrar modal
-      editProfileModal?.classList.add("hidden");
-    });
-  }
-  const followingCounter = document.getElementById("followingCounter");
-  const followingCountText = document.getElementById("followingCountText");
-  const followingModal = document.getElementById("followingModal");
-  const closeFollowingModal = document.getElementById("closeFollowingModal");
-  const followingList = document.getElementById("followingList");
-
-  // Actualizar contador de seguidos dinámicamente
-  function updateFollowingCounter() {
-    const following = getUserFollowing(user);
-    followingCountText.textContent = following.length;
-  }
-
-  // Forzar actualización de contador después de inicializar seguidores
-  setTimeout(() => {
-    updateFollowingCounter();
-  }, 100);
-
-  function renderFollowing() {
-    followingList.innerHTML = "";
-
-    // Obtener usuarios que se siguen
-    const following = getUserFollowing(user);
-
-    if (following.length === 0) {
-      followingList.innerHTML =
-        "<p style='text-align: center; padding: 32px; color: var(--text-muted);'>No sigues a nadie aún</p>";
-      return;
-    }
-
-    following.forEach((followingUsername) => {
-      const followedUser = USERS_DATA.find(
-        (u) => u.username === followingUsername,
-      );
-
-      if (followedUser) {
-        const bio = localStorage.getItem(`bio_${followedUser.username}`) || followedUser.description;
-        const followingCard = document.createElement("div");
-        followingCard.className = "follower-card";
-        followingCard.innerHTML = `
-          <div class="follower-avatar" style="background-image: url('${followedUser.avatar}')"></div>
-          <div class="follower-info">
-            <h3>${followedUser.username}</h3>
-            <p>${bio}</p>
-            <span class="follower-games">${followedUser.games} juegos</span>
-          </div>
-          <button class="btn-secondary follow-btn-unfollow" data-username="${followedUser.username}">
-            Dejar de Seguir
-          </button>
+        lista.forEach(u => {
+            //renderiza la lista de seguidores o seguidos
+            // si no hay descripción se muestra un texto por defecto
+            // en la foto de perfil se podrían mostrar imágenes pero como nuestra base de datos no las tiene se muestran las iniciales del usuario
+            //  también se muestra un botón para seguir o dejar de seguir dependiendo de si ya se sigue al usuario o no
+            const iniciales = u.username.substring(0, 2).toUpperCase();
+            const esSiguiendo = seguidoresData.following.some(f => f.id === u.id);
+            const card = document.createElement("div");
+            card.className = "follower-card";
+            card.innerHTML = `
+            <div class="follower-avatar" style="display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem;">
+                ${iniciales} 
+            </div>
+            <div class="follower-info">
+                <h3>${u.username}</h3>
+                <p>${u.description || "Sin biografía"}</p>
+            </div>
+            ${u.id !== user.id ? `
+                <button class="btn-secondary follow-toggle-btn" data-user-id="${u.id}" data-siguiendo="${esSiguiendo}">
+                    ${esSiguiendo ? "Dejar de seguir" : "Seguir"}
+                </button>
+            ` : ''}
         `;
-        followingList.appendChild(followingCard);
-      }
-    });
+            container.appendChild(card);
+        });
 
-    // Añadir event listeners a los botones de dejar de seguir
-    document.querySelectorAll(".follow-btn-unfollow").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        const targetUser = e.target.dataset.username;
-        toggleFollow(user, targetUser);
-        // Re-render para actualizar lista
-        renderFollowing();
-        updateFollowingCounter();
-      });
-    });
+        //Eventos de los botones
+        container.querySelectorAll(".follow-toggle-btn").forEach(btn => {
+            btn.addEventListener("click", async () => {
+                const targetId = btn.dataset.userId;
+                const esSiguiendo = btn.dataset.siguiendo === "true";
 
-    lucide.createIcons();
-  }
+                try {
+                    const method = esSiguiendo ? "DELETE" : "POST";
+                    const response = await fetch(`${API_URL}/api/users/${targetId}/follow`, {
+                        method,
+                        headers: { "Content-Type": "application/json" },
+                        body: JSON.stringify({ follower_id: user.id })
+                    });
+                    const data = await response.json();
 
-  if (followingCounter) {
-    followingCounter.addEventListener("click", () => {
-      updateFollowingCounter();
-      renderFollowing();
-      followingModal?.classList.remove("hidden");
-    });
-  }
+                    if (data.success) {
+                        //Actualizar datos de seguidores en la interfaz 
+                        if (esSiguiendo) {
+                            seguidoresData.following = seguidoresData.following.filter(f => f.id != targetId);
+                        } else {
+                            seguidoresData.following.push({ id: parseInt(targetId), username: btn.closest(".follower-card").querySelector("h3").textContent });
+                        }
 
-  if (closeFollowingModal) {
-    closeFollowingModal.addEventListener("click", () => {
-      followingModal?.classList.add("hidden");
-    });
-  }
+                        //Actualizar contador
+                        document.getElementById("followingCountText").textContent = seguidoresData.following.length;
 
-  if (followingModal) {
-    followingModal.addEventListener("click", (e) => {
-      if (e.target === followingModal) {
-        followingModal.classList.add("hidden");
-      }
-    });
-  }
+                        //Actualizar botón segun si se sigue o no al usuario
+                        btn.dataset.siguiendo = esSiguiendo ? "false" : "true";
+                        btn.textContent = esSiguiendo ? "Seguir" : "Dejar de seguir";
+                    }
+                } catch (error) {
+                    console.error("Error al seguir/dejar de seguir:", error);
+                }
+            });
+        });
+    }
 
-  function actualizarTabs() {
-    let jugando = gamesData.filter((g) => g.estado === "jugando").length;
-    let completados = gamesData.filter((g) => g.estado === "completado").length;
-    let pendientes = gamesData.filter((g) => g.estado === "pendiente").length;
-    let abandonados = gamesData.filter((g) => g.estado === "abandonado").length;
+    const followersCounter = document.getElementById("followersCounter");
+    const followersModal = document.getElementById("followersModal");
+    const closeFollowersModal = document.getElementById("closeFollowersModal");
 
-    document.getElementById("tab-jugando").textContent = `Jugando (${jugando})`;
-    document.getElementById("tab-completados").textContent =
-      `Completados (${completados})`;
-    document.getElementById("tab-pendientes").textContent =
-      `Pendientes (${pendientes})`;
+    if (followersCounter) {
+        followersCounter.addEventListener("click", () => {
+            renderFollowersList(seguidoresData.followers, "followersList");
+            followersModal?.classList.remove("hidden");
+        });
+    }
+    if (closeFollowersModal) closeFollowersModal.addEventListener("click", () => followersModal?.classList.add("hidden"));
+    if (followersModal) followersModal.addEventListener("click", e => { if (e.target === followersModal) followersModal.classList.add("hidden"); });
 
-    document.getElementById("tab-abandonados").textContent =
-      `Abandonados (${abandonados})`;
-  }
+    const followingCounter = document.getElementById("followingCounter");
+    const followingModal = document.getElementById("followingModal");
+    const closeFollowingModal = document.getElementById("closeFollowingModal");
 
-  function actualizarStats() {
-    let total = gamesData.length;
-    let jugando = gamesData.filter((g) => g.estado === "jugando").length;
-    let completados = gamesData.filter((g) => g.estado === "completado").length;
-    let pendientes = gamesData.filter((g) => g.estado === "pendiente").length;
+    if (followingCounter) {
+        followingCounter.addEventListener("click", () => {
+            renderFollowersList(seguidoresData.following, "followingList");
+            followingModal?.classList.remove("hidden");
+        });
+    }
+    if (closeFollowingModal) closeFollowingModal.addEventListener("click", () => followingModal?.classList.add("hidden"));
+    if (followingModal) followingModal.addEventListener("click", e => { if (e.target === followingModal) followingModal.classList.add("hidden"); });
 
-    // Actualizar quick-stats
-    const quickStats = document.querySelectorAll(".quick-stats span");
-    if (quickStats[0])
-      quickStats[0].innerHTML = `<i data-lucide="trophy"></i> ${completados} completados`;
-    if (quickStats[1])
-      quickStats[1].innerHTML = `<i data-lucide="gamepad-2"></i> ${total} jugados`;
+    //EDITAR PERFIL (solo la bio srry)
+  
+    const editProfileBtn = document.getElementById("editProfileBtn");
+    const editProfileModal = document.getElementById("editProfileModal");
+    const closeEditModal = document.getElementById("closeEditModal");
+    const editProfileForm = document.getElementById("editProfileForm");
+    const editBio = document.getElementById("editBio");
+    const editUsername = document.getElementById("editUsername");
 
-    // Actualizar stat-cards
-    const statCards = document.querySelectorAll(".stat-card h2");
-    if (statCards[0]) statCards[0].textContent = total;
-    if (statCards[1]) statCards[1].textContent = completados;
-    if (statCards[2]) statCards[2].textContent = jugando;
-    if (statCards[3]) statCards[3].textContent = pendientes;
+    if (editProfileBtn) {
+        editProfileBtn.addEventListener("click", () => {
+            if (editUsername) editUsername.value = user.username;
+            if (editBio) editBio.value = document.getElementById("profileBio").textContent;
+            editProfileModal?.classList.remove("hidden");
+        });
+    }
 
-    lucide.createIcons();
-  }
+    if (closeEditModal) closeEditModal.addEventListener("click", () => editProfileModal?.classList.add("hidden"));
+    if (editProfileModal) editProfileModal.addEventListener("click", e => { if (e.target === editProfileModal) editProfileModal.classList.add("hidden"); });
 
-  // Tab switching - consolidado
-  tabs.forEach((tab) => {
-    tab.addEventListener("click", () => {
-      tabs.forEach((t) => t.classList.remove("active"));
-      tab.classList.add("active");
+    if (editProfileForm) {
+        editProfileForm.addEventListener("submit", async (e) => {
+            e.preventDefault();
+            const newBio = editBio.value.trim();
+            try {
+                const response = await fetch(`${API_URL}/api/users/${user.id}`, {
+                    method: "PUT",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({ description: newBio })
+                });
+                const data = await response.json();
+                if (data.success) {
+                    document.getElementById("profileBio").textContent = newBio;
+                    editProfileModal?.classList.add("hidden");
+                }
+            } catch (error) {
+                console.error("Error actualizando perfil:", error);
+            }
+        });
+    }
 
-      // Mostrar sección correspondiente
-      if (tab.id === "tab-jugando") {
-        renderGameCards("jugando");
-      } else if (tab.id === "tab-completados") {
-        renderGameCards("completados");
-      } else if (tab.id === "tab-pendientes") {
-        renderGameCards("pendientes");
-      } else if (tab.id === "tab-abandonados") {
-        renderGameCards("abandonados");
-      }
-    });
-  });
-
-  actualizarTabs();
-  actualizarStats();
+    await cargarPerfil();
+    await cargarBiblioteca();
+    await cargarStats();
+    seguidoresData = await cargarSeguidores();
+    renderGameCards("jugando"); //carga primero los que tienen el estado jugando
 });

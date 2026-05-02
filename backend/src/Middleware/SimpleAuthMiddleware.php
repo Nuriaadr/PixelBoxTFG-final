@@ -8,7 +8,7 @@ use Psr\Http\Message\ServerRequestInterface as Request;
 
 class SimpleAuthMiddleware
 {
-    private $authModel;
+    private Auth $authModel;
 
     public function __construct()
     {
@@ -17,7 +17,6 @@ class SimpleAuthMiddleware
 
     public function __invoke(Request $request, $handler)
     {
-        // Para requests POST/PUT/DELETE, verificar credenciales
         if (in_array($request->getMethod(), ['POST', 'PUT', 'DELETE', 'PATCH'])) {
             $body = $request->getParsedBody();
 
@@ -25,7 +24,7 @@ class SimpleAuthMiddleware
                 $response = new \Slim\Psr7\Response();
                 $response->getBody()->write(json_encode([
                     'success' => false,
-                    'message' => 'Usuario y contraseña requeridos para esta operación'
+                    'message' => 'Usuario y contraseña requeridos para esta acción'
                 ]));
                 return $response
                     ->withHeader('Content-Type', 'application/json')
@@ -35,7 +34,6 @@ class SimpleAuthMiddleware
             $username = trim($body['username']);
             $password = $body['password'];
 
-            // Verificar credenciales
             $user = $this->authModel->authenticate($username, $password);
 
             if (!$user) {
@@ -49,7 +47,18 @@ class SimpleAuthMiddleware
                     ->withStatus(401);
             }
 
-            // Agregar usuario al request para que los controllers lo usen
+            //Verificar que sea admin para hacer las acciones de admin
+            if ($user['role'] !== 'admin') {
+                $response = new \Slim\Psr7\Response();
+                $response->getBody()->write(json_encode([
+                    'success' => false,
+                    'message' => 'No tienes permisos para realizar esta acción'
+                ]));
+                return $response
+                    ->withHeader('Content-Type', 'application/json')
+                    ->withStatus(403);
+            }
+
             $request = $request->withAttribute('user', $user);
         }
 

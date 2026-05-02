@@ -1,414 +1,242 @@
-// ===================== BIBLIOTECA =====================
-// - Reemplazar todas las operaciones de localStorage con llamadas API
-// - Mover la persistencia de datos al backend PHP con base de datos
-// - Mantener la lógica de renderizado y manejo de eventos
-document.addEventListener("DOMContentLoaded", () => {
-  lucide.createIcons();
+document.addEventListener("DOMContentLoaded", async () => {
+    lucide.createIcons();
 
-  // ======================
-  // USUARIO
-  // ======================
-  const user = localStorage.getItem("usuario");
+    const userStr = localStorage.getItem("usuario");
+    const user = JSON.parse(userStr);
 
-  if (!user) {
-    window.location.href = "../index.html";
-    return;
-  }
-
-  const userAvatar = document.getElementById("userAvatar");
-  if (userAvatar) {
-    userAvatar.style.cursor = "pointer";
-    userAvatar.addEventListener("click", () => {
-      window.location.href = "perfil.html";
-    });
-  }
-
-  // LOGOUT
-  setupLogoutHandler();
-
-  // ======================
-  // MODAL
-  // ======================
-  const modal = document.getElementById("modal");
-  const modalText = document.getElementById("modalText");
-  const confirmDeleteBtn = document.getElementById("confirmDelete");
-  const cancelDeleteBtn = document.getElementById("cancelDelete");
-
-  let juegoAEliminar = null;
-
-  function cerrarModal() {
-    if (modal) {
-      modal.classList.add("hidden");
-      modal.style.display = "none";
-    }
-    juegoAEliminar = null;
-  }
-
-  if (confirmDeleteBtn) {
-    confirmDeleteBtn.addEventListener("click", () => {
-      if (juegoAEliminar) {
-        biblioteca = biblioteca.filter((j) => j.nombreJuego !== juegoAEliminar.nombreJuego);
-        guardarBiblioteca();
-
-        renderizarJuegos();
-        aplicarFiltro();
-        actualizarContadores();
-      }
-
-      cerrarModal();
-    });
-  }
-
-  if (cancelDeleteBtn) {
-    cancelDeleteBtn.addEventListener("click", cerrarModal);
-  }
-
-  if (modal) {
-    modal.addEventListener("click", (e) => {
-      if (e.target === modal) cerrarModal();
-    });
-  }
-
-  // ======================
-  // DATOS
-  // ======================
-  // La biblioteca guarda solo: nombre del juego + estado personal
-  // Los datos completos se obtienen de GAMES_DATA 
-
-  // Verificar que GAMES_DATA está disponible
-  if (typeof GAMES_DATA === "undefined" || !Array.isArray(GAMES_DATA)) {
-    window.location.reload();
-  }
-
-  let bibliotecaStorage = JSON.parse(localStorage.getItem("biblioteca") || "[]");
-
-  // Asegurar que bibliotecaStorage sea un array
-  if (!Array.isArray(bibliotecaStorage)) {
-    bibliotecaStorage = [];
-  }
-
-  /**
-  * ELIMINAR - Esta función de migración no será necesaria con el backend
-   * 
-   */
-
-  // Función para migrar datos antiguos 
-  function migrarBibliotecaAntigua(datos) {
-    if (!Array.isArray(datos)) {
-      return [];
+    if (!user) {
+        window.location.href = "../index.html";
+        return;
     }
 
-    if (datos.length === 0) return [];
-
-    // Verificar si están en formato antiguo (tienen 'titulo' o 'imagen')
-    if (datos[0] && (datos[0].titulo || datos[0].imagen)) {
-      return datos.map(juego => ({
-        nombreJuego: juego.nombre || juego.titulo || "Juego sin nombre",
-        estado: juego.estado || "pendiente"
-      }));
+    const userAvatar = document.getElementById("userAvatar");
+    if (userAvatar) {
+        userAvatar.style.cursor = "pointer";
+        userAvatar.addEventListener("click", () => {
+            window.location.href = "perfil.html";
+        });
     }
 
-    return datos;
-  }
+    setupLogoutHandler();
+    await initializeGamesData();
 
-  let biblioteca = migrarBibliotecaAntigua(bibliotecaStorage);
+    let biblioteca = [];
+    let favoritosActuales = [];
+    let filtroActual = "todos";
 
-  // Asegurar que biblioteca sea un array
-  if (!Array.isArray(biblioteca)) {
-    biblioteca = [];
-  }
-
-  // Guardar la migración
-  if (biblioteca.length > 0) {
-    localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
-  }
-
-  /**
-   * ELIMINAR - La validación backend no es necesaria en el frontend
-   * 
-   */
-  // Validar que los nombres coincidan con GAMES_DATA
-  function validarNombresBiblioteca() {
-    if (!Array.isArray(GAMES_DATA)) {
-      return;
-    }
-
-    let actualizada = false;
-
-    biblioteca = biblioteca.map(item => {
-      if (!item || !item.nombreJuego) {
-        return item;
-      }
-
-      const juegoEnGAMES = GAMES_DATA.find(g =>
-        g && g.nombre && typeof g.nombre === 'string' &&
-        g.nombre.toLowerCase() === item.nombreJuego.toLowerCase()
-      );
-
-      if (juegoEnGAMES && juegoEnGAMES.nombre !== item.nombreJuego) {
-        actualizada = true;
-        return {
-          nombreJuego: juegoEnGAMES.nombre,
-          estado: item.estado
-        };
-      }
-      return item;
-    });
-
-    if (actualizada) {
-      localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
-    }
-  }
-
-  // Ejecutar validación
-  if (biblioteca.length > 0 && Array.isArray(GAMES_DATA) && GAMES_DATA.length > 0) {
-    validarNombresBiblioteca();
-  }
-
-  // Función para obtener juego completo desde GAMES_DATA
-  function obtenerJuegoCompleto(nombreJuego) {
-    if (!nombreJuego) return null;
-
-    const juego = GAMES_DATA.find(g => g && g.nombre && g.nombre.toLowerCase() === nombreJuego.toLowerCase());
-    if (juego) {
-      return { ...juego };
-    } else {
-      // Intentar encontrar por búsqueda parcial si no hay coincidencia exacta
-      const juegoAproximado = GAMES_DATA.find(g =>
-        g && g.nombre &&
-        (g.nombre.toLowerCase().includes(nombreJuego.toLowerCase()) ||
-          nombreJuego.toLowerCase().includes(g.nombre.toLowerCase()))
-      );
-      if (juegoAproximado) {
-        return { ...juegoAproximado };
-      }
-      console.warn("No encontrado en GAMES_DATA:", nombreJuego);
-    }
-    return null;
-  }
-
-  // Función para obtener todos los juegos de la biblioteca con datos completos
-  function obtenerJuegosConDatos() {
-    return biblioteca
-      .map(item => {
-        const juegoCompleto = obtenerJuegoCompleto(item.nombreJuego);
-        if (!juegoCompleto) return null;
-        return {
-          ...juegoCompleto,
-          nombreBiblioteca: item.nombreJuego,
-          estado: item.estado
-        };
-      })
-      .filter(juego => juego !== null);
-  }
-
-  /**
-   * ELIMINAR - Mover al backend PHP
-   * Los datos de la biblioteca deben persistir en la base de datos
-   * Endpoint backend: POST /api/user/{userId}/biblioteca/games
-  * Eliminar esta función completamente, reemplazar con llamadas API
-   */
-  // Guardar en localStorage solo las referencias
-  function guardarBiblioteca() {
-    localStorage.setItem("biblioteca", JSON.stringify(biblioteca));
-  }
-
-  /**
-   * ELIMINAR - El backend no necesita inicialización de datos por defecto
-   * 
-   */
-  // Si la biblioteca está vacía, cargar juegos iniciales de GAMES_DATA
-  function inicializarBibliotecaConDatosDefecto() {
-    if (biblioteca.length === 0 && GAMES_DATA && GAMES_DATA.length > 0) {
-
-      biblioteca = GAMES_DATA.map(juego => ({
-        nombreJuego: juego.nombre,
-        estado: juego.estado || "pendiente"
-      }));
-
-      guardarBiblioteca();
-    }
-  }
-
-  //Inicializar si es necesario
-  inicializarBibliotecaConDatosDefecto();
-
-  // ======================
-  // RENDER
-  // ======================
-  /**
-   * MANTENER ESTO - Lógica de renderizado UI pura, sin persistencia de datos
-   * Adaptar para trabajar con datos del backend API
-   * No se necesitan cambios en el backend, solo cambiar la fuente de datos
-   */
-
-  function renderizarJuegos() {
-    const container = document.querySelector(".card-grid");
-    if (!container) {
-      console.error("No se encontró .card-grid");
-      return;
-    }
-
-    container.querySelectorAll(".game-card").forEach((card) => card.remove());
-
-    const juegosConDatos = obtenerJuegosConDatos();
-
-
-    juegosConDatos.forEach((juego) => {
-      const card = document.createElement("div");
-      card.className = "game-card";
-      card.dataset.nombreJuego = juego.nombreBiblioteca || juego.nombre;
-
-      const href = `detalles_juego.html?titulo=${encodeURIComponent(juego.nombre)}&imagen=${encodeURIComponent(juego.imagen)}&año=${juego.año}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&desarrollador=${encodeURIComponent(juego.desarrollador || "Desarrollador Desconocido")}&genero=${encodeURIComponent(juego.genero || "Género Desconocido")}&plataforma=${encodeURIComponent(juego.plataforma || "Plataforma Desconocida")}`;
-
-      card.innerHTML = `
-        <i class="delete-game" data-lucide="x"></i>
-        <a href="${href}">
-          <div class="game-img">
-            <img src="${juego.imagen}" alt="${juego.nombre}" loading="lazy">
-          </div>
-          <h3>${juego.nombre}</h3>
-          <span>${juego.año}</span>
-        </a>
-      `;
-
-      container.appendChild(card);
-    });
-
-    if (juegosConDatos.length > 0) {
-      lucide.createIcons();
-      agregarEventosEliminar();
-    }
-  }
-
-  // ======================
-  // ELIMINAR
-  // ======================
-  /**
-   * MANTENER ESTO - Manejador de eventos puro para UI
-   * Integración backend necesaria: El manejador DELETE debe llamar a la API DELETE
-   * Actual: biblioteca.filter() y guardarBiblioteca()
-   * Después: Llamar DELETE /api/user/{userId}/biblioteca/games/{gameId}
-   */
-  function agregarEventosEliminar() {
-    document.querySelectorAll(".delete-game").forEach((btn) => {
-      btn.addEventListener("click", (e) => {
-        e.preventDefault();
-        e.stopPropagation();
-
-        const card = btn.closest(".game-card");
-        const nombreJuego = card.dataset.nombreJuego;
-
-        juegoAEliminar = { nombreJuego };
-
-        if (modalText) {
-          modalText.textContent = `¿Seguro que quieres eliminar "${nombreJuego}"?`;
+    // CARGAR BIBLIOTECA
+    async function cargarBiblioteca() {
+        try {
+            const response = await fetch(`${API_URL}/api/users/${user.id}/library`);
+            if (!response.ok) return;
+            const data = await response.json();
+            if (data.success && Array.isArray(data.data)) {
+                biblioteca = data.data.map(game => ({
+                    id: game.id,
+                    gameId: game.game_id,
+                    nombre: game.title,
+                    imagen: game.cover_image_url,
+                    año: game.release_year,  
+                    desarrollador: game.developer,
+                    descripcion: game.description,
+                    rating: game.average_rating,
+                    genero: game.genre,
+                    plataforma: game.platform,
+                    estado: game.status || "pendiente" //si no hay estado se pone pendiente por defecto
+                }));
+            }
+        } catch (error) {
+            console.error('Error cargando biblioteca:', error);
         }
+    }
 
+    // MODAL ELIMINAR
+    const modal = document.getElementById("modal");
+    const modalText = document.getElementById("modalText");
+    const confirmDeleteBtn = document.getElementById("confirmDelete");
+    const cancelDeleteBtn = document.getElementById("cancelDelete");
+    let juegoAEliminar = null;
+
+    function cerrarModal() {
         if (modal) {
-          modal.classList.remove("hidden");
-          modal.style.display = "flex";
+            modal.classList.add("hidden");
+            modal.style.display = "none";
         }
-      });
-    });
-  }
-
-  // ======================
-  // FILTROS
-  // ======================
-  let filtroActual = "todos";
-
-  document.querySelectorAll(".filter-btn").forEach((btn) => {
-    btn.addEventListener("click", () => {
-      document
-        .querySelectorAll(".filter-btn")
-        .forEach((b) => b.classList.remove("active"));
-      btn.classList.add("active");
-
-      filtroActual = btn.dataset.filter || "todos";
-      aplicarFiltro();
-    });
-  });
-
-  /**
-   * MANTENER ESTO - Lógica de filtro UI pura
-   * No se necesitan cambios en el backend
-   */
-  function aplicarFiltro() {
-    const cards = document.querySelectorAll(".game-card");
-    let visibles = 0;
-    const favoritos = getFavoritos(user);
-
-    cards.forEach((card) => {
-      const nombreJuego = card.dataset.nombreJuego;
-      const item = biblioteca.find((b) => b.nombreJuego === nombreJuego);
-
-      let mostrar = false;
-
-      if (filtroActual === "todos") {
-        mostrar = true;
-      } else if (filtroActual === "favoritos") {
-        mostrar = favoritos.includes(nombreJuego);
-      } else {
-        mostrar = item && item.estado === filtroActual;
-      }
-
-      card.style.display = mostrar ? "block" : "none";
-
-      if (mostrar) visibles++;
-    });
-
-    const mensaje = document.getElementById("noGamesMessage");
-    if (mensaje) {
-      mensaje.style.display = visibles === 0 ? "block" : "none";
+        juegoAEliminar = null;
     }
-  }
 
-  // ======================
-  // CONTADORES
-  // ======================
-  /**
-   * MANTENER ESTO - Solo actualizar las visualizaciones de contadores
-   * Backend: Los contadores deben calcularse desde los datos de la API
-   */
-  function actualizarContadores() {
-    const total = biblioteca.length;
-    const jugando = biblioteca.filter((j) => j.estado === "jugando").length;
-    const completados = biblioteca.filter((j) => j.estado === "completado").length;
-    const pendientes = biblioteca.filter((j) => j.estado === "pendiente").length;
-    const abandonados = biblioteca.filter((j) => j.estado === "abandonado").length;
-    const favoritos = getFavoritos(user).filter(fav =>
-      biblioteca.some(b => b.nombreJuego === fav)
-    ).length;
+    if (confirmDeleteBtn) {
+        confirmDeleteBtn.addEventListener("click", async () => {
+            if (juegoAEliminar) {
+                try {
+                    const response = await fetch(
+                        `${API_URL}/api/users/${user.id}/library/${juegoAEliminar.gameId}`,
+                        { method: "DELETE" }
+                    );
+                    const data = await response.json();
+                    if (data.success) {
+                        biblioteca = biblioteca.filter(j => j.gameId !== juegoAEliminar.gameId);
+                        renderizarJuegos();
+                        await actualizarContadores();
+                        aplicarFiltro(favoritosActuales);
+                    }
+                } catch (error) {
+                    console.error('Error eliminando juego:', error);
+                }
+            }
+            cerrarModal();
+        });
+    }
 
-    // Actualizar tarjetas de stats
-    document.querySelector(".card-blue .number").textContent = total;
-    document.querySelector(".number.text-green").textContent = completados;
-    document.querySelector(".number.text-blue-light").textContent = jugando;
-    document.querySelector(".number.text-yellow").textContent = pendientes;
+    if (cancelDeleteBtn) cancelDeleteBtn.addEventListener("click", cerrarModal);
+    if (modal) modal.addEventListener("click", e => { if (e.target === modal) cerrarModal(); });
 
-    // Actualizar botones de filtro con el contador
-    const filterBtns = document.querySelectorAll(".filter-btn");
-    if (filterBtns[0])
-      filterBtns[0].querySelector(".count").textContent = total;
-    if (filterBtns[1])
-      filterBtns[1].querySelector(".count").textContent = jugando;
-    if (filterBtns[2])
-      filterBtns[2].querySelector(".count").textContent = completados;
-    if (filterBtns[3])
-      filterBtns[3].querySelector(".count").textContent = pendientes;
-    if (filterBtns[4])
-      filterBtns[4].querySelector(".count").textContent = abandonados;
-    if (filterBtns[5])
-      filterBtns[5].querySelector(".count").textContent = favoritos;
-  }
+    // RENDER
+    function renderizarJuegos() {
+        const container = document.querySelector(".card-grid");
+        if (!container) return;
 
+        container.querySelectorAll(".game-card").forEach(card => card.remove());
 
+        if (biblioteca.length === 0) {
+            const noGamesDiv = document.getElementById("noGamesMessage");
+            if (noGamesDiv) noGamesDiv.style.display = "block";
+            return;
+        }
 
-  // Intentar inicializar la biblioteca si está vacía
-  inicializarBibliotecaConDatosDefecto();
+        const noGamesDiv = document.getElementById("noGamesMessage");
+        if (noGamesDiv) noGamesDiv.style.display = "none";
 
-  renderizarJuegos();
-  aplicarFiltro();
-  actualizarContadores();
+        biblioteca.forEach(juego => {
+            const card = document.createElement("div");
+            card.className = "game-card";
+            card.dataset.gameId = juego.gameId;
+
+            //url del juego para ir a detalle juego
+            const href = `detalles_juego.html?id=${juego.gameId}&titulo=${encodeURIComponent(juego.nombre)}&imagen=${encodeURIComponent(juego.imagen)}&año=${juego.año}&descripcion=${encodeURIComponent(juego.descripcion || "")}&rating=${juego.rating || 0}&desarrollador=${encodeURIComponent(juego.desarrollador || "")}&genero=${encodeURIComponent(juego.genero || "")}&plataforma=${encodeURIComponent(juego.plataforma || "")}`;
+
+            card.innerHTML = `
+                <i class="delete-game" data-lucide="x"></i>
+                <a href="${href}">
+                    <div class="game-img">
+                        <img src="${juego.imagen}" alt="${juego.nombre}" loading="lazy">
+                    </div>
+                    <h3>${juego.nombre}</h3>
+                    <span>${juego.año || ""}</span>
+                </a>
+            `;
+            container.appendChild(card);
+        });
+
+        lucide.createIcons();
+        agregarEventosEliminar();
+    }
+
+    // ELIMINAR
+    function agregarEventosEliminar() {
+        document.querySelectorAll(".delete-game").forEach(btn => {
+            btn.addEventListener("click", e => {
+                e.preventDefault();
+                e.stopPropagation();
+
+                const card = btn.closest(".game-card");
+                const gameId = parseInt(card.dataset.gameId);
+                const juego = biblioteca.find(j => j.gameId === gameId);
+             
+                juegoAEliminar = juego;
+                if (modalText) modalText.textContent = `¿Seguro que quieres eliminar "${juego.nombre}" de tu biblioteca?`;
+                if (modal) {
+                    modal.classList.remove("hidden");
+                    modal.style.display = "flex";
+                }
+            });
+        });
+    }
+
+    // FAVORITOS
+    async function obtenerFavoritosList() {
+        try {
+            const response = await fetch(`${API_URL}/api/users/${user.id}/favorites`);
+            const data = await response.json();
+            if (data.success && Array.isArray(data.data)) {
+                return data.data.map(g => g.id);
+            }
+        } catch (error) {
+            console.error('Error obteniendo favoritos:', error);
+        }
+        return [];
+    }
+
+    // FILTROS
+    document.querySelectorAll(".filter-btn").forEach(btn => {
+        btn.addEventListener("click", () => {
+            document.querySelectorAll(".filter-btn").forEach(b => b.classList.remove("active"));
+            btn.classList.add("active");
+            filtroActual = btn.dataset.filter || "todos";
+            aplicarFiltro(favoritosActuales);
+        });
+    });
+
+    function aplicarFiltro(favoritosList = []) {
+        const cards = document.querySelectorAll(".game-card");
+        let visibles = 0;
+
+        //Mostrar u ocultar juegos según el filtro
+        cards.forEach(card => {
+            const gameId = parseInt(card.dataset.gameId);
+            const item = biblioteca.find(b => b.gameId === gameId);
+            let mostrar = false;
+
+            if (filtroActual === "todos") {
+                mostrar = true;
+            } else if (filtroActual === "favoritos") {
+                mostrar = favoritosList.includes(gameId);
+            } else {
+                mostrar = item && item.estado === filtroActual;
+            }
+
+            card.style.display = mostrar ? "block" : "none";
+            if (mostrar) visibles++;
+        });
+
+        // Mostrar mensaje si no hay juegos visibles
+        const mensaje = document.getElementById("noGamesMessage");
+        if (mensaje) mensaje.style.display = visibles === 0 ? "block" : "none"; 
+    }
+
+    // CONTADORES
+    async function actualizarContadores() {
+        favoritosActuales = await obtenerFavoritosList();
+
+        const total = biblioteca.length;
+        const jugando = biblioteca.filter(j => j.estado === "jugando").length;
+        const completados = biblioteca.filter(j => j.estado === "completado").length;
+        const pendientes = biblioteca.filter(j => j.estado === "pendiente").length;
+        const abandonados = biblioteca.filter(j => j.estado === "abandonado").length;
+        const favoritos = biblioteca.filter(b => favoritosActuales.includes(b.gameId)).length;
+
+        const cardBlue = document.querySelector(".card-blue .number");
+        const numberGreen = document.querySelector(".number.text-green");
+        const numberBlueLight = document.querySelector(".number.text-blue-light");
+        const numberYellow = document.querySelector(".number.text-yellow");
+
+        if (cardBlue) cardBlue.textContent = total;
+        if (numberGreen) numberGreen.textContent = completados;
+        if (numberBlueLight) numberBlueLight.textContent = jugando;
+        if (numberYellow) numberYellow.textContent = pendientes;
+
+        const filterBtns = document.querySelectorAll(".filter-btn");
+        if (filterBtns[0]) filterBtns[0].querySelector(".count").textContent = total;
+        if (filterBtns[1]) filterBtns[1].querySelector(".count").textContent = jugando;
+        if (filterBtns[2]) filterBtns[2].querySelector(".count").textContent = completados;
+        if (filterBtns[3]) filterBtns[3].querySelector(".count").textContent = pendientes;
+        if (filterBtns[4]) filterBtns[4].querySelector(".count").textContent = abandonados;
+        if (filterBtns[5]) filterBtns[5].querySelector(".count").textContent = favoritos;
+    }
+
+    //la biblioteca se carga solo una vez
+    await cargarBiblioteca();
+    renderizarJuegos();
+    await actualizarContadores();
+    aplicarFiltro(favoritosActuales);
 });

@@ -8,7 +8,7 @@ use PDOException;
 
 class Auth
 {
-    private $db;
+    private Database $db;
 
     public function __construct()
     {
@@ -16,52 +16,31 @@ class Auth
     }
 
     /**
-     * 
-     * Solo @jugador_pro y @admin pueden loguearse
+     * Autenticar usuario con username y password
      */
-    public function authenticate($username, $password)
+    public function authenticate(string $username, string $password): array|false
     {
         try {
             $conn = $this->db->getConnection();
 
-            // Solo permitir login de 2 usuarios específicos
-            if (!in_array($username, ['@jugador_pro', '@admin'])) {
-                return false;
-            }
-
-            // Buscar usuario
+            // Solo buscar por username
             $stmt = $conn->prepare(
-                "SELECT id, username, email, password_hash, rol
-                 FROM users
-                 WHERE username = ? AND is_active = TRUE"
+                "SELECT id, username, email, password, role, created_at, updated_at
+             FROM users
+             WHERE username = ?"
             );
             $stmt->execute([$username]);
             $user = $stmt->fetch(\PDO::FETCH_ASSOC);
-
-            if (!$user) {
+           
+            // Verificar contraseña con bcrypt
+            if (!password_verify($password, $user['password'])) {
                 return false;
             }
 
-            // Verificar contraseña
-            if (!password_verify($password, $user['password_hash'])) {
-                return false;
-            }
-
-            // Remover password_hash de la respuesta
-            unset($user['password_hash']);
-
+            unset($user['password']);
             return $user;
-
         } catch (PDOException $e) {
-            throw new Exception("Authentication error: " . $e->getMessage());
+            throw new Exception("Error de autenticación: " . $e->getMessage());
         }
-    }
-
-    /**
-     * Verificar si usuario puede hacer login
-     */
-    public function canLogin($username)
-    {
-        return in_array($username, ['@jugador_pro', '@admin']);
     }
 }

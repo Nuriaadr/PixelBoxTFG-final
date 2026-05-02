@@ -1,20 +1,17 @@
-document.addEventListener("DOMContentLoaded", () => {
+document.addEventListener("DOMContentLoaded", async () => {
  
     lucide.createIcons();
   
 
-  // =========================
   // PROTECCIÓN DE PÁGINA
-  // =========================
+  //si no hay user te manda de nuevo al login
   let user = localStorage.getItem("usuario");
-
   if (!user) {
     window.location.href = "../index.html";
     return;
   }
 
   // MOSTRAR USUARIO
-  
   // IR A PERFIL
   let userAvatar = document.getElementById("userAvatar");
   if (userAvatar) {
@@ -28,9 +25,10 @@ document.addEventListener("DOMContentLoaded", () => {
   // LOGOUT
   setupLogoutHandler();
 
-  // =========================
+  // CARGAR DATOS DE API
+  await initializeGamesData();
+
   // FILTROS
-  // =========================
 
   const container = document.getElementById("gamesContainer");
 
@@ -39,39 +37,54 @@ document.addEventListener("DOMContentLoaded", () => {
   const valoracion = document.getElementById("valoracion");
   const gamesCount = document.getElementById("gamesCount");
 
+  //Obtener géneros y plataformas únicos de los datos
+  function cargarOpcionesFilters() {
+    const generos = [...new Set(GAMES_DATA.map(g => g.genero).filter(Boolean))].sort();
+    const plataformas = [...new Set(GAMES_DATA.map(g => g.plataforma).filter(Boolean))].sort();
+
+    //Agregar opciones de género
+    generos.forEach(genero => {
+      const option = document.createElement("option");
+      option.value = genero;
+      option.textContent = genero;
+      gen.appendChild(option);
+    });
+
+    //Agregar opciones de plataforma
+    plataformas.forEach(plataforma => {
+      const option = document.createElement("option");
+      option.value = plataforma;
+      option.textContent = plataforma;
+      platform.appendChild(option);
+    });
+  }
+
   function renderGames(list) {
     container.innerHTML = "";
+    
+    if (list.length === 0) {
+      container.innerHTML = '<p style="grid-column: 1/-1; text-align: center; padding: 2rem;">No hay juegos que coincidan con los filtros.</p>';
+      gamesCount.textContent = "0 juegos";
+      return;
+    }
+
     list.forEach((game) => {
-      const params = new URLSearchParams({
-        titulo: game.nombre,
-        imagen: game.imagen,
-        año: game.año,
-        descripcion: game.descripcion || "Descripción del juego",
-        rating: game.rating || 4.0,
-        desarrollador: game.desarrollador || "Desarrollador Desconocido",
-        genero: game.genero || "Género Desconocido",
-        plataforma: game.plataforma || "Plataforma Desconocida"
-      }).toString();
+      const url = getGameDetailsUrl(game);
 
       container.innerHTML += `
         <div class="game-card">
-          <div class="game-card-header">
-            <a href="detalles_juego.html?${params}" class="game-card-link">
-              <div class="game-img">
-                <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
-              </div>
-              <h3>${game.nombre}</h3>
-              <span>${game.año}</span>
-            </a>
-          </div>
+          <a href="${url}">
+            <div class="game-img">
+              <img src="${game.imagen}" alt="${game.nombre}" loading="lazy">
+            </div>
+            <h3>${game.nombre}</h3>
+            <span>${game.año}</span>
+          </a>
         </div>
       `;
     });
     
-    if (gamesCount) {
-      gamesCount.textContent = `${list.length} juegos`;
-    }
-
+    gamesCount.textContent = `${list.length} ${list.length === 1 ? 'juego' : 'juegos'}`;
     lucide.createIcons();
   }
 
@@ -81,7 +94,6 @@ document.addEventListener("DOMContentLoaded", () => {
     let orden = valoracion.value;
 
     let filtrados = [...GAMES_DATA];
-
     if (genero !== "Todos los géneros") {
       filtrados = filtrados.filter((g) => g.genero === genero);
     }
@@ -90,12 +102,14 @@ document.addEventListener("DOMContentLoaded", () => {
       filtrados = filtrados.filter((g) => g.plataforma === plataforma);
     }
 
-    if (orden === "Más recientes") {
+    //Ordenar
+    if (orden === "Mejor valorados") {
+      filtrados.sort((a, b) => (b.rating || 0) - (a.rating || 0));
+    } else if (orden === "Más recientes") {
       filtrados.sort((a, b) => b.año - a.año);
     } else if (orden === "Más populares") {
-      filtrados.sort((a, b) => b.año - a.año);
+      filtrados.sort((a, b) => b.rating - a.rating);
     }
-
     renderGames(filtrados);
   }
 
@@ -103,17 +117,16 @@ document.addEventListener("DOMContentLoaded", () => {
   platform.addEventListener("change", filtrar);
   valoracion.addEventListener("change", filtrar);
 
-  renderGames(GAMES_DATA);
-
+  // Cargar opciones de filtros y juegos
+  cargarOpcionesFilters();
+  filtrar();
+  //resetear filtros
   const resetBtn = document.getElementById("resetFilters");
-
   resetBtn.addEventListener("click", (e) => {
     e.preventDefault();
-
     gen.value = "Todos los géneros";
     platform.value = "Todas las plataformas";
     valoracion.value = "Mejor valorados";
-
-    renderGames(GAMES_DATA);
+    filtrar();
   });
 });
