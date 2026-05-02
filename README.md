@@ -54,7 +54,7 @@ Copia el archivo `.env.example` y renómbralo a `.env`:
 cp .env.example .env
 ```
 
-Edita el `.env` con tus datos:
+Edita el `.env` con tus datos.
 
 **4. Crear la base de datos**
 
@@ -71,4 +71,4 @@ Abre `docs/index.html` con Live Server o accede directamente desde el navegador.
 
 ##  Autor
 
-Desarrollado como Trabajo de Fin de Grado :)
+Desarrollado como Trabajo de Fin de Grado ppor el equipo Penracode :)
