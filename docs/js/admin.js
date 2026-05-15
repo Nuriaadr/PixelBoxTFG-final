@@ -123,34 +123,39 @@ function renderUsers() {
   const usersList = document.getElementById("usersList");
   if (!usersList) return;
 
-  usersList.innerHTML = usersDatabase
-    .map(
-      (user) => `
-        <article class="user-card">
-            <div class="user-avatar">
-                <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem; background: var(--accent); border-radius:50%; color:white;">
-                    ${user.username.substring(0, 2).toUpperCase()}
-                </div>
-            </div>
-            <div class="user-info">
-                <h2>${user.username}</h2>
-                <p class="user-desc">${user.description || "Sin descripción"}</p>
-                <div class="user-stats">
-                    <span><strong>${user.role}</strong></span>
-                    <span>${user.email}</span>
-                </div>
-            </div>
-            <div class="user-actions">
-                <button class="edit" aria-label="editar" onclick="openEditUserModal(${user.id}, '${user.username}', '${(user.description || "").replace(/'/g, "\\'")}')" title="Editar">
-                    <i data-lucide="pencil"></i>
-                </button>
-                <button class="delete" aria-label="eliminar" onclick="openDeleteUserModal(${user.id}, '${user.username}')" title="Eliminar">
-                    <i data-lucide="trash-2"></i>
-                </button>
-            </div>
-        </article>
-    `,
-    )
+    usersList.innerHTML = usersDatabase
+    .map((user) => {
+      const initials = (user.username || "").substring(0, 2).toUpperCase();
+      const desc = user.description || "Sin descripción";
+      const safeDesc = desc.replace(/'/g, "\\'");
+      const usernameSafe = (user.username || "").replace(/'/g, "\\'");
+      const lower = (user.username || "").toLowerCase().trim();
+      const cannotDelete = lower === "admin" || lower === "jugador pro";
+
+      return `
+      <article class="user-card">
+        <div class="user-avatar">
+          <div style="width:100%; height:100%; display:flex; align-items:center; justify-content:center; font-weight:bold; font-size:1.2rem; background: var(--accent); border-radius:50%; color:white;">
+            ${initials}
+          </div>
+        </div>
+        <div class="user-info">
+          <h2>${user.username}</h2>
+          <p class="user-desc">${desc}</p>
+          <div class="user-stats">
+            <span><strong>${user.role}</strong></span>
+            <span>${user.email}</span>
+          </div>
+        </div>
+        <div class="user-actions">
+          <button class="edit" aria-label="editar" onclick="openEditUserModal(${user.id}, '${usernameSafe}', '${safeDesc}')" title="Editar">
+            <i data-lucide="pencil"></i>
+          </button>
+          ${cannotDelete ? "" : `<button class=\"delete\" aria-label=\"eliminar\" onclick=\"openDeleteUserModal(${user.id}, '${usernameSafe}')\" title=\"Eliminar\">\n                    <i data-lucide=\"trash-2\"></i>\n                </button>`}
+        </div>
+      </article>
+    `;
+    })
     .join("");
 
   const usersCount = document.getElementById("usersCount");
